@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Score Droid"
 include ':app'
+include ':core:features:create-match:public'
+include ':core:features:create-match:impl'
