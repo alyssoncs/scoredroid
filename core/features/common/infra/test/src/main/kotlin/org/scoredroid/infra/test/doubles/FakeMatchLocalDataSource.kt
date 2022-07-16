@@ -1,4 +1,4 @@
-package org.scoredroid.teams.testdouble.data.datasource.local
+package org.scoredroid.infra.test.doubles
 
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse

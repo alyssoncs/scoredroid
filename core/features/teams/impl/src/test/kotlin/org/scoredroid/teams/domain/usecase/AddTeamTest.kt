@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
+import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
 import org.scoredroid.teams.domain.request.AddTeamRequest
-import org.scoredroid.teams.testdouble.data.datasource.local.FakeMatchLocalDataSource
 
 @ExperimentalCoroutinesApi
 class AddTeamTest {
