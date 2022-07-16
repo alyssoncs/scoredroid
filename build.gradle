@@ -12,6 +12,12 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.7.10' apply false
 }
 
+allprojects {
+    tasks.withType(Test) {
+        useJUnitPlatform()
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
