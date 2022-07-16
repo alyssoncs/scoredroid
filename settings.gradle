@@ -16,3 +16,5 @@ rootProject.name = "Score Droid"
 include ':app'
 include ':core:features:create-match:public'
 include ':core:features:create-match:impl'
+include ':core:features:teams:public'
+include ':core:features:teams:impl'

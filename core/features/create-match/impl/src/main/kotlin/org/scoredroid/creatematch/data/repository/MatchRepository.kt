@@ -10,4 +10,10 @@ class MatchRepository(
     suspend fun createMatch(createMatchRequest: CreateMatchRequest): MatchResponse {
         return matchLocalDataSource.createMatch(createMatchRequest)
     }
+
+    suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<MatchResponse> {
+        return matchLocalDataSource.addTeam(matchId, team)
+    }
 }
+
+data class AddTeamRepositoryRequest(val name: String)

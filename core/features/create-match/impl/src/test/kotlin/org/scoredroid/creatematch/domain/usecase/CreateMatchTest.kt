@@ -5,7 +5,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.scoredroid.creatematch.data.repository.MatchRepository
-import org.scoredroid.creatematch.testdoubles.data.datasource.local.MatchLocalDataSourceStub
+import org.scoredroid.creatematch.testdouble.data.datasource.local.MatchLocalDataSourceStub
 
 @ExperimentalCoroutinesApi
 class CreateMatchTest {
