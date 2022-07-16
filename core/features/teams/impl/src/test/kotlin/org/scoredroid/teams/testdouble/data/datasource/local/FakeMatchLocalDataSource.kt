@@ -1,16 +1,16 @@
 package org.scoredroid.teams.testdouble.data.datasource.local
 
-import org.scoredroid.creatematch.data.datasource.local.MatchLocalDataSource
-import org.scoredroid.creatematch.data.repository.AddTeamRepositoryRequest
-import org.scoredroid.creatematch.data.request.CreateMatchRequest
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
+import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
+import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
+import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class FakeMatchLocalDataSource : MatchLocalDataSource {
     private var currentId = 0L
     private val matches = mutableMapOf<Long, MatchResponse>()
 
-    override suspend fun createMatch(createMatchRequest: CreateMatchRequest): MatchResponse {
+    override suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): MatchResponse {
         val matchId = currentId++
         val matchResponse = MatchResponse(
             id = matchId,

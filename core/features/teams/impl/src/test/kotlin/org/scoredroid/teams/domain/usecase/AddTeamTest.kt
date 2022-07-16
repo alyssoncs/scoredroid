@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.scoredroid.creatematch.data.repository.MatchRepository
-import org.scoredroid.creatematch.data.request.CreateMatchRequest
 import org.scoredroid.data.response.MatchResponse
+import org.scoredroid.infra.dataaccess.repository.MatchRepository
+import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.teams.domain.request.AddTeamRequest
 import org.scoredroid.teams.testdouble.data.datasource.local.FakeMatchLocalDataSource
 
@@ -44,7 +44,7 @@ class AddTeamTest {
         @BeforeEach
         internal fun setUp() = runTest {
             repeat(matchId.inc().toInt()) {
-                repository.createMatch(CreateMatchRequest(emptyList()))
+                repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
             }
         }
 

@@ -1,8 +1,8 @@
 package org.scoredroid.teams.domain.usecase
 
-import org.scoredroid.creatematch.data.repository.AddTeamRepositoryRequest
-import org.scoredroid.creatematch.data.repository.MatchRepository
 import org.scoredroid.data.response.MatchResponse
+import org.scoredroid.infra.dataaccess.repository.MatchRepository
+import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.teams.domain.request.AddTeamRequest
 
 class AddTeam(

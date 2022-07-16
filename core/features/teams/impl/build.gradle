@@ -10,8 +10,7 @@ java {
 
 dependencies {
     implementation project(':core:features:teams:public')
-    // TODO: this is because of the repository :(
-    implementation project(':core:features:create-match:impl')
+    implementation project(':core:features:common:infra')
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
