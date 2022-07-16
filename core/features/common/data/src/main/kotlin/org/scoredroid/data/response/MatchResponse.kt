@@ -1,6 +1,5 @@
-package org.scoredroid.creatematch.domain.response
+package org.scoredroid.data.response
 
-//TODO: move this class to common module
 data class MatchResponse(
     val id: Long,
     val teams: List<TeamResponse>,

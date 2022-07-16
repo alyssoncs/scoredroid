@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.creatematch.data.repository.MatchRepository
 import org.scoredroid.creatematch.data.request.CreateMatchRequest
-import org.scoredroid.creatematch.domain.response.MatchResponse
+import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.teams.domain.request.AddTeamRequest
 import org.scoredroid.teams.testdouble.data.datasource.local.FakeMatchLocalDataSource
 

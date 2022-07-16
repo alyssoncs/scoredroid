@@ -9,6 +9,5 @@ java {
 }
 
 dependencies {
-    //TODO: this is getting bad
-    api project(':core:features:create-match:public')
+    api project(':core:features:common:data')
 }

@@ -2,7 +2,7 @@ package org.scoredroid.creatematch.domain.usecase
 
 import org.scoredroid.creatematch.data.repository.MatchRepository
 import org.scoredroid.creatematch.data.request.CreateMatchRequest
-import org.scoredroid.creatematch.domain.response.MatchResponse
+import org.scoredroid.data.response.MatchResponse
 
 
 class CreateMatch(

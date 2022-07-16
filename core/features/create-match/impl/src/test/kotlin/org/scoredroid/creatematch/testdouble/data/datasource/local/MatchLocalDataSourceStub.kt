@@ -3,8 +3,8 @@ package org.scoredroid.creatematch.testdouble.data.datasource.local
 import org.scoredroid.creatematch.data.datasource.local.MatchLocalDataSource
 import org.scoredroid.creatematch.data.repository.AddTeamRepositoryRequest
 import org.scoredroid.creatematch.data.request.CreateMatchRequest
-import org.scoredroid.creatematch.domain.response.MatchResponse
-import org.scoredroid.creatematch.domain.response.TeamResponse
+import org.scoredroid.data.response.MatchResponse
+import org.scoredroid.data.response.TeamResponse
 
 class MatchLocalDataSourceStub : MatchLocalDataSource {
 
