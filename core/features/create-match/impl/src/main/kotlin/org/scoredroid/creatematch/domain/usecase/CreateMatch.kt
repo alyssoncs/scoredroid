@@ -1,4 +1,4 @@
-package org.scoredroid.creatematch.domain.usecases
+package org.scoredroid.creatematch.domain.usecase
 
 import org.scoredroid.creatematch.data.repository.MatchRepository
 import org.scoredroid.creatematch.data.request.CreateMatchRequest
