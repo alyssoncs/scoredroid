@@ -12,7 +12,12 @@ class MatchRepository(
         return matchLocalDataSource.createMatch(createMatchRequest)
     }
 
+    //TODO: create class for match id
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<MatchResponse> {
         return matchLocalDataSource.addTeam(matchId, team)
+    }
+
+    suspend fun incrementScoreBy(matchId: Long, teamAt: Int, increment: Int): Result<MatchResponse> {
+        return matchLocalDataSource.incrementScoreBy(matchId, teamAt, increment)
     }
 }
