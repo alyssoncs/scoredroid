@@ -1,4 +1,4 @@
-package org.scoredroid.creatematch.domain.usecase
+package org.scoredroid.match.domain.usecase
 
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
