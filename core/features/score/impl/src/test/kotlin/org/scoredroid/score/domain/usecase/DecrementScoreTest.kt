@@ -16,9 +16,8 @@ class DecrementScoreTest : UpdateScoreTest() {
     override fun updateStrategy(currentScore: Int, updateAmount: Int) = currentScore - updateAmount
 
     override fun createUpdateScoreUseCase(repository: MatchRepository): UpdateScore {
-        return DecrementScore(repository)::invoke
+        return DecrementScore(ScoreUpdater(repository))::invoke
     }
-
 
     @Nested
     inner class DecrementMoreThanCurrentScore {

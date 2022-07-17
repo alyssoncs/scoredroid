@@ -8,6 +8,6 @@ class IncrementScoreTest : UpdateScoreTest() {
     override fun updateStrategy(currentScore: Int, updateAmount: Int) = currentScore + updateAmount
 
     override fun createUpdateScoreUseCase(repository: MatchRepository): UpdateScore {
-        return IncrementScore(repository)::invoke
+        return IncrementScore(ScoreUpdater(repository))::invoke
     }
 }

@@ -24,7 +24,7 @@ abstract class UpdateScoreTest {
     lateinit var updateScore: UpdateScore
     private val localDataSource = FakeMatchLocalDataSource()
     protected val repository = MatchRepository(localDataSource)
-    protected val incrementScore = IncrementScore(repository)
+    protected val incrementScore = IncrementScore(ScoreUpdater(repository))
 
 
     @BeforeEach
