@@ -7,6 +7,5 @@ data class MatchResponse(
 
 data class TeamResponse(
     val name: String,
-    // TODO: should this be a value object?
     val score: Int,
 )
