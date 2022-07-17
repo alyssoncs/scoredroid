@@ -16,9 +16,8 @@ class MatchRepository(
     }
 
     //TODO: create class for match id
-    suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<MatchResponse> {
-        val addTeam = matchLocalDataSource.addTeam(matchId, team)
-        return addTeam.map { it.toMatchResponse() }
+    suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
+        return matchLocalDataSource.addTeam(matchId, team)
     }
 
     suspend fun updateScore(
