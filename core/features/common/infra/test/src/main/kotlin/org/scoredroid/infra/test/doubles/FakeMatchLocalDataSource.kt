@@ -51,6 +51,10 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         return Result.success(updatedMatch)
     }
 
+    override suspend fun getMatch(matchId: Long): Match? {
+        return matches[matchId]
+    }
+
     override suspend fun getTeam(matchId: Long, teamAt: Int): Team? {
         return matches[matchId]?.teams?.getOrNull(teamAt)
     }
