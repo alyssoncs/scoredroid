@@ -10,7 +10,10 @@ class CreateMatch(
     private val matchRepository: MatchRepository
 ) : CreateMatchUseCase {
     override suspend fun invoke(createMatchOptions: CreateMatchRequestOptions): MatchResponse {
-        val emptyMatch = CreateMatchRepositoryRequest(teams = emptyList())
+        val emptyMatch = CreateMatchRepositoryRequest(
+            name = createMatchOptions.matchName,
+            teams = emptyList(),
+        )
         return matchRepository.createMatch(emptyMatch).toMatchResponse()
     }
 }

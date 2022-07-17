@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
+import org.scoredroid.match.domain.request.CreateMatchRequestOptions
 
 @ExperimentalCoroutinesApi
 class CreateMatchTest {
@@ -21,7 +22,7 @@ class CreateMatchTest {
         @Test
         fun `id provided by local data source`() = runTest {
             repeat(2) {
-                repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+                repository.createMatch(CreateMatchRepositoryRequest("", emptyList()))
             }
 
             val match = createMatch()
@@ -30,10 +31,28 @@ class CreateMatchTest {
         }
 
         @Test
+        fun `empty match name`() = runTest {
+            val match = createMatch()
+
+            assertThat(match.name).isEmpty()
+        }
+
+        @Test
         fun `no teams are created`() = runTest {
             val match = createMatch()
 
             assertThat(match.teams).isEmpty()
+        }
+    }
+
+    @Nested
+    inner class CustomParam {
+
+        @Test
+        fun `custom match name`() = runTest {
+            val match = createMatch(CreateMatchRequestOptions(matchName = "match name"))
+
+            assertThat(match.name).isEqualTo("match name")
         }
     }
 }

@@ -2,6 +2,7 @@ package org.scoredroid.data.response
 
 data class MatchResponse(
     val id: Long,
+    val name: String,
     val teams: List<TeamResponse>,
 )
 

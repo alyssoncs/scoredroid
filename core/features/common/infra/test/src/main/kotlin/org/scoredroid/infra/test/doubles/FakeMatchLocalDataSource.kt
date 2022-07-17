@@ -17,6 +17,7 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         val matchId = currentId++
         val match = Match(
             id = matchId,
+            name = matchRequest.name,
             teams = matchRequest.teams.map { Team(it.toString(), score = 0.toScore()) },
         )
 
