@@ -7,8 +7,8 @@ import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class CreateMatch(
     private val matchRepository: MatchRepository
-) {
-    suspend operator fun invoke(): MatchResponse {
+) : CreateMatchUseCase {
+    override suspend fun invoke(): MatchResponse {
         val emptyMatch = CreateMatchRepositoryRequest(teams = emptyList())
         return matchRepository.createMatch(emptyMatch).toMatchResponse()
     }
