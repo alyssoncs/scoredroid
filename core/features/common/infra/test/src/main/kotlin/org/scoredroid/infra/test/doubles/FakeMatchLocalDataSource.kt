@@ -1,6 +1,5 @@
 package org.scoredroid.infra.test.doubles
 
-import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.Score.Companion.toScore
@@ -26,26 +25,29 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
     }
 
     override suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        val match = matches[matchId]
-
-        if (match != null) {
-            val updatedMatch = match.copy(
+        return updateMatch(matchId) { match ->
+            match.copy(
                 teams = match.teams + Team(name = team.name, score = 0.toScore())
             )
-            matches[matchId] = updatedMatch
-            return Result.success(updatedMatch)
         }
-
-        return Result.failure(Throwable())
     }
 
     override suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
+        return updateMatch(matchId) { match ->
+            match.copy(
+                teams = match.teams.filterIndexed { idx, _ -> idx != teamAt }
+            )
+        }
+    }
+
+    private fun updateMatch(
+        matchId: Long,
+        update: (Match) -> Match
+    ): Result<Match> {
         val match = matches[matchId]
 
         if (match != null) {
-            val updatedMatch = match.copy(
-                teams = match.teams.filterIndexed { idx, _ -> idx != teamAt }
-            )
+            val updatedMatch = update(match)
 
             matches[matchId] = updatedMatch
             return Result.success(updatedMatch)
