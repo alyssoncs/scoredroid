@@ -2,6 +2,8 @@ package org.scoredroid.infra.dataaccess.repository
 
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
+import org.scoredroid.domain.entities.Match
+import org.scoredroid.domain.entities.Team
 import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
@@ -11,12 +13,14 @@ class MatchRepository(
     private val matchLocalDataSource: MatchLocalDataSource
 ) {
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): MatchResponse {
-        return matchLocalDataSource.createMatch(createMatchRequest)
+        val response = matchLocalDataSource.createMatch(createMatchRequest)
+        return response.toMatchResponse()
     }
 
     //TODO: create class for match id
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<MatchResponse> {
-        return matchLocalDataSource.addTeam(matchId, team)
+        val addTeam = matchLocalDataSource.addTeam(matchId, team)
+        return addTeam.map { it.toMatchResponse() }
     }
 
     suspend fun updateScore(
@@ -26,10 +30,12 @@ class MatchRepository(
     ): Result<MatchResponse> {
         val currentScore = matchLocalDataSource.getTeam(matchId, teamAt)?.score ?: 0
         val updatedScore = max(update(currentScore), 0)
-        return matchLocalDataSource.updateScoreTo(matchId, teamAt, updatedScore)
+        return matchLocalDataSource.updateScoreTo(matchId, teamAt, updatedScore).map { it.toMatchResponse() }
     }
 
-    suspend fun getTeam(matchId: Long, teamAt: Int): TeamResponse? {
-        return matchLocalDataSource.getTeam(matchId, teamAt)
-    }
+    private fun Match.toMatchResponse() = MatchResponse(
+        id = id,
+        teams = teams.map { TeamResponse(it.name, it.score) }
+    )
+
 }
