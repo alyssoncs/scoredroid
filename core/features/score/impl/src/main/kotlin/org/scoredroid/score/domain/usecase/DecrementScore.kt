@@ -5,7 +5,7 @@ import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 
 class DecrementScore(
-    private val matchRepository: MatchRepository
+    private val matchRepository: MatchRepository,
 ) : DecrementScoreUseCase {
     override suspend fun invoke(matchId: Long, teamAt: Int, decrement: Int): Result<MatchResponse> {
         val result = matchRepository.updateScore(matchId, teamAt) { it - decrement }
