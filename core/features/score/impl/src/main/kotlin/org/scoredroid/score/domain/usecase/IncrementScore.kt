@@ -18,11 +18,11 @@ class IncrementScore(
         return result
     }
 
-    private fun mapError(e: Throwable): IncrementScoreUseCase.Error {
+    private fun mapError(e: Throwable): UpdateScoreError {
         val newException = when (e) {
-            TeamOperationError.MatchNotFound -> IncrementScoreUseCase.Error.MatchNotFound
-            TeamOperationError.TeamNotFound -> IncrementScoreUseCase.Error.TeamNotFound
-            else -> IncrementScoreUseCase.Error.TeamNotFound
+            TeamOperationError.MatchNotFound -> UpdateScoreError.MatchNotFound
+            TeamOperationError.TeamNotFound -> UpdateScoreError.TeamNotFound
+            else -> UpdateScoreError.TeamNotFound
         }
         return newException
     }

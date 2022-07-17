@@ -26,7 +26,7 @@ class IncrementScoreTest {
         fun `return match not found error`() = runTest {
             val result = incrementScore(matchId = 0L, teamAt = 0)
 
-            assertThrows<IncrementScoreUseCase.Error.MatchNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.MatchNotFound> { result.getOrThrow() }
         }
     }
 
@@ -41,7 +41,7 @@ class IncrementScoreTest {
         fun `return match not found error`() = runTest {
             val result = incrementScore(matchId = 3L, teamAt = 0)
 
-            assertThrows<IncrementScoreUseCase.Error.MatchNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.MatchNotFound> { result.getOrThrow() }
         }
     }
 
@@ -56,7 +56,7 @@ class IncrementScoreTest {
         fun `return team not found error`() = runTest {
             val result = incrementScore(matchId = 0L, teamAt = 0)
 
-            assertThrows<IncrementScoreUseCase.Error.TeamNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.TeamNotFound> { result.getOrThrow() }
         }
     }
 
@@ -74,14 +74,14 @@ class IncrementScoreTest {
         fun `index overflow, return team not found error`() = runTest {
             val result = incrementScore(matchId = match.id, teamAt = 2)
 
-            assertThrows<IncrementScoreUseCase.Error.TeamNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.TeamNotFound> { result.getOrThrow() }
         }
 
         @Test
         fun `index underflow, return team not found error`() = runTest {
             val result = incrementScore(matchId = match.id, teamAt = -1)
 
-            assertThrows<IncrementScoreUseCase.Error.TeamNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.TeamNotFound> { result.getOrThrow() }
         }
     }
 

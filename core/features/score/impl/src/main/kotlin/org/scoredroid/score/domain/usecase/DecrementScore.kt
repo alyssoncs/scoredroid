@@ -18,11 +18,11 @@ class DecrementScore(
         return result
     }
 
-    private fun mapError(e: Throwable): DecrementScoreUseCase.Error {
+    private fun mapError(e: Throwable): UpdateScoreError {
         val newException = when (e) {
-            TeamOperationError.MatchNotFound -> DecrementScoreUseCase.Error.MatchNotFound
-            TeamOperationError.TeamNotFound -> DecrementScoreUseCase.Error.TeamNotFound
-            else -> DecrementScoreUseCase.Error.TeamNotFound
+            TeamOperationError.MatchNotFound -> UpdateScoreError.MatchNotFound
+            TeamOperationError.TeamNotFound -> UpdateScoreError.TeamNotFound
+            else -> UpdateScoreError.TeamNotFound
         }
         return newException
     }

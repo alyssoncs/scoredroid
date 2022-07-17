@@ -27,7 +27,7 @@ class DecrementScoreTest {
         fun `return match not found error`() = runTest {
             val result = decrementScore(matchId = 0L, teamAt = 0)
 
-            assertThrows<DecrementScoreUseCase.Error.MatchNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.MatchNotFound> { result.getOrThrow() }
         }
     }
 
@@ -42,7 +42,7 @@ class DecrementScoreTest {
         fun `return match not found error`() = runTest {
             val result = decrementScore(matchId = 3L, teamAt = 0)
 
-            assertThrows<DecrementScoreUseCase.Error.MatchNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.MatchNotFound> { result.getOrThrow() }
         }
     }
 
@@ -57,7 +57,7 @@ class DecrementScoreTest {
         fun `return team not found error`() = runTest {
             val result = decrementScore(matchId = 0L, teamAt = 0)
 
-            assertThrows<DecrementScoreUseCase.Error.TeamNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.TeamNotFound> { result.getOrThrow() }
         }
     }
 
@@ -75,14 +75,14 @@ class DecrementScoreTest {
         fun `index overflow, return team not found error`() = runTest {
             val result = decrementScore(matchId = match.id, teamAt = 2)
 
-            assertThrows<DecrementScoreUseCase.Error.TeamNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.TeamNotFound> { result.getOrThrow() }
         }
 
         @Test
         fun `index underflow, return team not found error`() = runTest {
             val result = decrementScore(matchId = match.id, teamAt = -1)
 
-            assertThrows<DecrementScoreUseCase.Error.TeamNotFound> { result.getOrThrow() }
+            assertThrows<UpdateScoreError.TeamNotFound> { result.getOrThrow() }
         }
     }
 
