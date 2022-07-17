@@ -5,6 +5,7 @@ import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
+import java.lang.Integer.max
 
 class MatchRepository(
     private val matchLocalDataSource: MatchLocalDataSource
@@ -18,8 +19,14 @@ class MatchRepository(
         return matchLocalDataSource.addTeam(matchId, team)
     }
 
-    suspend fun incrementScoreBy(matchId: Long, teamAt: Int, increment: Int): Result<MatchResponse> {
-        return matchLocalDataSource.incrementScoreBy(matchId, teamAt, increment)
+    suspend fun updateScore(
+        matchId: Long,
+        teamAt: Int,
+        update: (currentScore: Int) -> Int,
+    ): Result<MatchResponse> {
+        val currentScore = matchLocalDataSource.getTeam(matchId, teamAt)?.score ?: 0
+        val updatedScore = max(update(currentScore), 0)
+        return matchLocalDataSource.updateScoreTo(matchId, teamAt, updatedScore)
     }
 
     suspend fun getTeam(matchId: Long, teamAt: Int): TeamResponse? {

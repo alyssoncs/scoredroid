@@ -8,7 +8,7 @@ class IncrementScore(
     private val matchRepository: MatchRepository
 ) : IncrementScoreUseCase {
     override suspend fun invoke(matchId: Long, teamAt: Int, increment: Int): Result<MatchResponse> {
-        val result = matchRepository.incrementScoreBy(matchId, teamAt, increment)
+        val result = matchRepository.updateScore(matchId, teamAt) { it + increment }
 
         val e = result.exceptionOrNull()
         if (e != null) {

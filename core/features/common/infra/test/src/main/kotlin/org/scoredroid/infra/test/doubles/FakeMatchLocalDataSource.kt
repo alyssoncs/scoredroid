@@ -39,15 +39,15 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         return Result.failure(Throwable())
     }
 
-    override suspend fun incrementScoreBy(
+    override suspend fun updateScoreTo(
         matchId: Long,
         teamAt: Int,
-        increment: Int
+        newScore: Int
     ): Result<MatchResponse> {
         val match = matches[matchId] ?: return Result.failure(TeamOperationError.MatchNotFound)
         if (teamAt !in match.teams.indices) return Result.failure(TeamOperationError.TeamNotFound)
 
-        val updatedMatch = match.incrementScore(teamAt, increment)
+        val updatedMatch = match.updateScore(teamAt, newScore)
         matches[matchId] = updatedMatch
         return Result.success(updatedMatch)
     }
@@ -56,14 +56,14 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         return matches[matchId]?.teams?.getOrNull(teamAt)
     }
 
-    private fun MatchResponse.incrementScore(
+    private fun MatchResponse.updateScore(
         teamAt: Int,
-        increment: Int
+        newScore: Int
     ): MatchResponse {
         return copy(
             teams = teams.mapIndexed { idx, team ->
                 if (idx == teamAt) {
-                    team.copy(score = team.score + increment)
+                    team.copy(score = newScore)
                 } else {
                     team
                 }

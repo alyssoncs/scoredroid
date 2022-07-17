@@ -8,6 +8,6 @@ import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 interface MatchLocalDataSource {
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): MatchResponse
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<MatchResponse>
-    suspend fun incrementScoreBy(matchId: Long, teamAt: Int, increment: Int): Result<MatchResponse>
+    suspend fun updateScoreTo(matchId: Long, teamAt: Int, newScore: Int): Result<MatchResponse>
     suspend fun getTeam(matchId: Long, teamAt: Int): TeamResponse?
 }
