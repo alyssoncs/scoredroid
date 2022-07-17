@@ -5,4 +5,8 @@ data class MatchResponse(
     val teams: List<TeamResponse>,
 )
 
-data class TeamResponse(val name: String, val score: Int)
+data class TeamResponse(
+    val name: String,
+    // TODO: should this be a value object?
+    val score: Int,
+)

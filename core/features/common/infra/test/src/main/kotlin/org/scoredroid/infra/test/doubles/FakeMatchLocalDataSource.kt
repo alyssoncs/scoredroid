@@ -52,6 +52,10 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         return Result.success(updatedMatch)
     }
 
+    override suspend fun getTeam(matchId: Long, teamAt: Int): TeamResponse? {
+        return matches[matchId]?.teams?.getOrNull(teamAt)
+    }
+
     private fun MatchResponse.incrementScore(
         teamAt: Int,
         increment: Int
