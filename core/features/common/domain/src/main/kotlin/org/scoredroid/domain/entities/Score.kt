@@ -1,5 +1,6 @@
 package org.scoredroid.domain.entities
 
+import org.scoredroid.domain.entities.Score.Companion.toScore
 import java.lang.Integer.max
 
 @JvmInline
@@ -13,4 +14,8 @@ value class Score private constructor(val intValue: Int) {
             return Score(max(this, 0))
         }
     }
+}
+
+fun Score?.orZero(): Score {
+    return this ?: 0.toScore()
 }
