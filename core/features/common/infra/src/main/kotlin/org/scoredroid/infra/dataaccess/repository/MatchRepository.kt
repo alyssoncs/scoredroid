@@ -2,7 +2,6 @@ package org.scoredroid.infra.dataaccess.repository
 
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
-import org.scoredroid.domain.entities.Score.Companion.toScore
 import org.scoredroid.domain.entities.orZero
 import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
@@ -16,9 +15,12 @@ class MatchRepository(
         return matchLocalDataSource.createMatch(createMatchRequest)
     }
 
-    //TODO: create class for match id
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
         return matchLocalDataSource.addTeam(matchId, team)
+    }
+
+    suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
+        return matchLocalDataSource.removeTeam(matchId, teamAt)
     }
 
     suspend fun updateScore(
@@ -54,17 +56,6 @@ class MatchRepository(
         var result: Result<Match> = Result.failure(TeamOperationError.MatchNotFound)
         match.teams.forEachIndexed { teamIdx, team ->
             result = matchLocalDataSource.updateScoreTo(matchId, teamIdx, update(team.score))
-        }
-        return result
-    }
-
-    private suspend fun resetScore(
-        match: Match,
-        matchId: Long
-    ): Result<Match> {
-        var result: Result<Match> = Result.failure(TeamOperationError.MatchNotFound)
-        for (teamIdx in match.teams.indices) {
-            result = matchLocalDataSource.updateScoreTo(matchId, teamIdx, 0.toScore())
         }
         return result
     }
