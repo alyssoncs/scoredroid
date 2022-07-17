@@ -1,6 +1,7 @@
 package org.scoredroid.infra.test.doubles
 
 import org.scoredroid.domain.entities.Match
+import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.Score.Companion.toScore
 import org.scoredroid.domain.entities.Team
 import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
@@ -40,7 +41,7 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
     override suspend fun updateScoreTo(
         matchId: Long,
         teamAt: Int,
-        newScore: Int
+        newScore: Score
     ): Result<Match> {
         val match = matches[matchId] ?: return Result.failure(TeamOperationError.MatchNotFound)
         if (teamAt !in match.teams.indices) return Result.failure(TeamOperationError.TeamNotFound)
@@ -56,12 +57,12 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
 
     private fun Match.updateScore(
         teamAt: Int,
-        newScore: Int
+        newScore: Score
     ): Match{
         return copy(
             teams = teams.mapIndexed { idx, team ->
                 if (idx == teamAt) {
-                    team.copy(score = newScore.toScore())
+                    team.copy(score = newScore)
                 } else {
                     team
                 }
