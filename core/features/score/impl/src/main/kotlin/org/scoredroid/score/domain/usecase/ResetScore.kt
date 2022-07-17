@@ -1,7 +1,6 @@
 package org.scoredroid.score.domain.usecase
 
 import org.scoredroid.data.response.MatchResponse
-import org.scoredroid.infra.dataaccess.repository.MatchRepository
 
 class ResetScore(
     private val scoreUpdater: ScoreUpdater,
