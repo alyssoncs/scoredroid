@@ -24,10 +24,10 @@ class MatchRepository(
         matchId: Long,
         teamAt: Int,
         update: (currentScore: Int) -> Int,
-    ): Result<MatchResponse> {
+    ): Result<Match> {
         val currentScore = matchLocalDataSource.getTeam(matchId, teamAt)?.score ?: 0
         val updatedScore = max(update(currentScore), 0)
-        return matchLocalDataSource.updateScoreTo(matchId, teamAt, updatedScore).map { it.toMatchResponse() }
+        return matchLocalDataSource.updateScoreTo(matchId, teamAt, updatedScore)
     }
 
     companion object {

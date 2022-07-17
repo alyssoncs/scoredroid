@@ -3,6 +3,7 @@ package org.scoredroid.score.domain.usecase
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
+import org.scoredroid.infra.dataaccess.repository.MatchRepository.Companion.toMatchResponse
 
 class ScoreUpdater(
     private val matchRepository: MatchRepository,
@@ -19,7 +20,7 @@ class ScoreUpdater(
             return Result.failure(mapError(e))
         }
 
-        return result
+        return result.map { it.toMatchResponse() }
     }
 
     private fun mapError(e: Throwable): UpdateScoreError {
