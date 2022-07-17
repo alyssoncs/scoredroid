@@ -3,6 +3,7 @@ package org.scoredroid.match.domain.usecase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
@@ -10,25 +11,29 @@ import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
 
 @ExperimentalCoroutinesApi
 class CreateMatchTest {
-    private val matchLocalDataSourceStub = FakeMatchLocalDataSource()
-    private val matchRepository = MatchRepository(matchLocalDataSourceStub)
-    private val createMatch = CreateMatch(matchRepository)
+    private val localDataSource = FakeMatchLocalDataSource()
+    private val repository = MatchRepository(localDataSource)
+    private val createMatch = CreateMatch(repository)
 
-    @Test
-    fun `id provided by local data source`() = runTest {
-        repeat(2) {
-            matchLocalDataSourceStub.createMatch(CreateMatchRepositoryRequest(emptyList()))
+    @Nested
+    inner class DefaultParam {
+
+        @Test
+        fun `id provided by local data source`() = runTest {
+            repeat(2) {
+                repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+            }
+
+            val match = createMatch()
+
+            assertThat(match.id).isEqualTo(2)
         }
 
-        val match = createMatch()
+        @Test
+        fun `no teams are created`() = runTest {
+            val match = createMatch()
 
-        assertThat(match.id).isEqualTo(2)
-    }
-
-    @Test
-    fun `no teams`() = runTest {
-        val match = createMatch()
-
-        assertThat(match.teams).isEmpty()
+            assertThat(match.teams).isEmpty()
+        }
     }
 }
