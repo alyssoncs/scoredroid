@@ -22,7 +22,7 @@ class ScoreUpdater(
         matchId: Long,
         updateScore: (currentScore: Score) -> Score,
     ): Result<MatchResponse> {
-        return updateScore { updateScoreOfAllTeams(matchId, updateScore) }
+        return updateScore { updateScoreForAllTeams(matchId, updateScore) }
     }
 
     private suspend fun updateScore(

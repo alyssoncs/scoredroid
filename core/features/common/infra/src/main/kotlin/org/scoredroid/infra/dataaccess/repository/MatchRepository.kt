@@ -30,7 +30,7 @@ class MatchRepository(
         return matchLocalDataSource.updateScoreTo(matchId, teamAt, update(currentScore))
     }
 
-    suspend fun updateScoreOfAllTeams(
+    suspend fun updateScoreForAllTeams(
         matchId: Long,
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
@@ -39,14 +39,14 @@ class MatchRepository(
             if (match.teams.isEmpty())
                 Result.success(match)
             else {
-                updateScoreOfAllTeams(match, matchId, update)
+                updateScoreForAllTeams(match, matchId, update)
             }
         } else {
             Result.failure(TeamOperationError.MatchNotFound)
         }
     }
 
-    private suspend fun updateScoreOfAllTeams(
+    private suspend fun updateScoreForAllTeams(
         match: Match,
         matchId: Long,
         update: (currentScore: Score) -> Score
@@ -56,20 +56,6 @@ class MatchRepository(
             result = matchLocalDataSource.updateScoreTo(matchId, teamIdx, update(team.score))
         }
         return result
-    }
-
-    suspend fun resetScore(
-        matchId: Long,
-    ): Result<Match> {
-        val match = matchLocalDataSource.getMatch(matchId)
-        return if (match != null) {
-            if (match.teams.isEmpty())
-                Result.success(match)
-            else
-                resetScore(match, matchId)
-        } else {
-            Result.failure(TeamOperationError.MatchNotFound)
-        }
     }
 
     private suspend fun resetScore(
