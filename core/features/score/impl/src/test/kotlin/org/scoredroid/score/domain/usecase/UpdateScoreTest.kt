@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.scoredroid.data.response.MatchResponse
+import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
@@ -75,7 +76,7 @@ abstract class UpdateScoreTest {
 
     @Nested
     inner class NonExistingTeam {
-        private lateinit var match: MatchResponse
+        private lateinit var match: Match
 
         @BeforeEach
         fun setUp() = runTest {
@@ -100,7 +101,7 @@ abstract class UpdateScoreTest {
 
     @Nested
     inner class ExistingTeam {
-        private lateinit var match: MatchResponse
+        private lateinit var match: Match
 
         @BeforeEach
         fun setUp() = runTest {

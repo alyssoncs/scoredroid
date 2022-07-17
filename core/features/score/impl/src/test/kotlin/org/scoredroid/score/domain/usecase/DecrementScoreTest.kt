@@ -6,7 +6,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.scoredroid.data.response.MatchResponse
+import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
@@ -22,7 +22,7 @@ class DecrementScoreTest : UpdateScoreTest() {
     @Nested
     inner class DecrementMoreThanCurrentScore {
 
-        private lateinit var match: MatchResponse
+        private lateinit var match: Match
 
         @BeforeEach
         fun setUp() = runTest {
