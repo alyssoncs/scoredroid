@@ -4,5 +4,5 @@ data class CreateMatchRequestOptions(
     val matchName: String = "",
     val teams: List<InitialTeamRequest> = emptyList(),
 ) {
-    class InitialTeamRequest
+    data class InitialTeamRequest(val name: String)
 }

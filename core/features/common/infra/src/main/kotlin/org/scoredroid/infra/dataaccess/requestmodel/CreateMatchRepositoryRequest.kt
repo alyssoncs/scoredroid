@@ -5,4 +5,4 @@ data class CreateMatchRepositoryRequest(
     val teams: List<TeamRequest>,
 )
 
-class TeamRequest
+data class TeamRequest(val name: String)

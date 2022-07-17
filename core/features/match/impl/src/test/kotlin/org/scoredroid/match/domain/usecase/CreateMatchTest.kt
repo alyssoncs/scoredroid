@@ -54,5 +54,21 @@ class CreateMatchTest {
 
             assertThat(match.name).isEqualTo("match name")
         }
+
+        @Test
+        fun `initial teams`() = runTest {
+            val match = createMatch(
+                CreateMatchRequestOptions(
+                    teams = listOf(
+                        CreateMatchRequestOptions.InitialTeamRequest(name = "team 1"),
+                        CreateMatchRequestOptions.InitialTeamRequest(name = "team 2"),
+                    )
+                )
+            )
+
+            assertThat(match.teams).hasSize(2)
+            assertThat(match.teams.first().name).isEqualTo("team 1")
+            assertThat(match.teams.last().name).isEqualTo("team 2")
+        }
     }
 }
