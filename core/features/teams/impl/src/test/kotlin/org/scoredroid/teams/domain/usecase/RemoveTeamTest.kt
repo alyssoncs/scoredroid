@@ -23,7 +23,7 @@ class RemoveTeamTest {
 
     @BeforeEach
     fun setUp() = runTest {
-        match = repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+        match = repository.createMatch(CreateMatchRepositoryRequest())
         repository.addTeam(match.id, AddTeamRepositoryRequest("team 1"))
         repository.addTeam(match.id, AddTeamRepositoryRequest("team 2"))
     }

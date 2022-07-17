@@ -37,7 +37,7 @@ class ResetScoreTest {
     inner class NonExistingMatch {
         @BeforeEach
         fun setUp() = runTest {
-            repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+            repository.createMatch(CreateMatchRepositoryRequest())
         }
 
         @Test
@@ -52,7 +52,7 @@ class ResetScoreTest {
     inner class NoTeamCreated {
         @BeforeEach
         fun setUp() = runTest {
-            repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+            repository.createMatch(CreateMatchRepositoryRequest())
         }
 
         @Test
@@ -69,7 +69,7 @@ class ResetScoreTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+            match = repository.createMatch(CreateMatchRepositoryRequest())
             repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 1"))
             repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 2"))
             repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 3"))

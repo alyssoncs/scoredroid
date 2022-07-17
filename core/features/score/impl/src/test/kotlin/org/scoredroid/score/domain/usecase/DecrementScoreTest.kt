@@ -26,7 +26,7 @@ class DecrementScoreTest : UpdateScoreTest() {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+            match = repository.createMatch(CreateMatchRepositoryRequest())
             repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
             incrementScore(matchId = match.id, teamAt = 0, increment = 5)
         }

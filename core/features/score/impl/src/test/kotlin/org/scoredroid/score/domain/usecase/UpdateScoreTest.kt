@@ -48,7 +48,7 @@ abstract class UpdateScoreTest {
     inner class NonExistingMatch {
         @BeforeEach
         fun setUp() = runTest {
-            repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+            repository.createMatch(CreateMatchRepositoryRequest())
         }
 
         @Test
@@ -63,7 +63,7 @@ abstract class UpdateScoreTest {
     inner class NoTeamCreated {
         @BeforeEach
         fun setUp() = runTest {
-            repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+            repository.createMatch(CreateMatchRepositoryRequest())
         }
 
         @Test
@@ -80,7 +80,7 @@ abstract class UpdateScoreTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+            match = repository.createMatch(CreateMatchRepositoryRequest())
             repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
         }
 
@@ -105,7 +105,7 @@ abstract class UpdateScoreTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = repository.createMatch(CreateMatchRepositoryRequest(emptyList()))
+            match = repository.createMatch(CreateMatchRepositoryRequest())
             repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
             incrementScore(matchId = match.id, teamAt = 0, increment = 5)
         }
