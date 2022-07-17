@@ -7,10 +7,6 @@ import org.scoredroid.infra.dataaccess.repository.MatchRepository
 class IncrementScore(
     private val matchRepository: MatchRepository
 ) : IncrementScoreUseCase {
-    override suspend fun invoke(matchId: Long, teamAt: Int): Result<MatchResponse> {
-        return invoke(matchId, teamAt, 1)
-    }
-
     override suspend fun invoke(matchId: Long, teamAt: Int, increment: Int): Result<MatchResponse> {
         val result = matchRepository.incrementScoreBy(matchId, teamAt, increment)
 
