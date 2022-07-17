@@ -1,9 +1,9 @@
 package org.scoredroid.score.domain.usecase
 
+import org.score.droid.utils.mappers.toMatchResponse
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
-import org.scoredroid.infra.dataaccess.repository.MatchRepository.Companion.toMatchResponse
 
 class ScoreUpdater(
     private val matchRepository: MatchRepository,
