@@ -1,6 +1,7 @@
 package org.scoredroid.infra.test.doubles
 
 import org.scoredroid.domain.entities.Match
+import org.scoredroid.domain.entities.Score.Companion.toScore
 import org.scoredroid.domain.entities.Team
 import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
@@ -11,15 +12,15 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
     private var currentId = 0L
     private val matches = mutableMapOf<Long, Match>()
 
-    override suspend fun createMatch(match: CreateMatchRepositoryRequest): Match {
+    override suspend fun createMatch(matchRequest: CreateMatchRepositoryRequest): Match {
         val matchId = currentId++
-        val matchResponse = Match(
+        val match = Match(
             id = matchId,
-            teams = match.teams.map { Team(it.toString(), score = 0) },
+            teams = matchRequest.teams.map { Team(it.toString(), score = 0.toScore()) },
         )
-        matches[matchId] = matchResponse
 
-        return matchResponse
+        matches[matchId] = match
+        return match
     }
 
     override suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
@@ -27,7 +28,7 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
 
         if (match != null) {
             val updatedMatch = match.copy(
-                teams = match.teams + Team(name = team.name, score = 0)
+                teams = match.teams + Team(name = team.name, score = 0.toScore())
             )
             matches[matchId] = updatedMatch
             return Result.success(updatedMatch)
@@ -60,7 +61,7 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         return copy(
             teams = teams.mapIndexed { idx, team ->
                 if (idx == teamAt) {
-                    team.copy(score = newScore)
+                    team.copy(score = newScore.toScore())
                 } else {
                     team
                 }

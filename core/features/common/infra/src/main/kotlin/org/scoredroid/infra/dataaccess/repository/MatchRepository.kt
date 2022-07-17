@@ -1,6 +1,7 @@
 package org.scoredroid.infra.dataaccess.repository
 
 import org.scoredroid.domain.entities.Match
+import org.scoredroid.domain.entities.Score.Companion.toScore
 import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
@@ -23,8 +24,8 @@ class MatchRepository(
         teamAt: Int,
         update: (currentScore: Int) -> Int,
     ): Result<Match> {
-        val currentScore = matchLocalDataSource.getTeam(matchId, teamAt)?.score ?: 0
-        val updatedScore = max(update(currentScore), 0)
+        val currentScore = matchLocalDataSource.getTeam(matchId, teamAt)?.score ?: 0.toScore()
+        val updatedScore = max(update(currentScore.intValue), 0)
         return matchLocalDataSource.updateScoreTo(matchId, teamAt, updatedScore)
     }
 }
