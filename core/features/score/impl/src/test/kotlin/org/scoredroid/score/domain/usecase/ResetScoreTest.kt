@@ -19,9 +19,9 @@ import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
 class ResetScoreTest {
     private val localDataSource = FakeMatchLocalDataSource()
     private val repository = MatchRepository(localDataSource)
-    private val incrementScore = IncrementScore(ScoreUpdater(repository))
-    private val resetScore = ResetScore(repository)
-
+    private val scoreUpdater = ScoreUpdater(repository)
+    private val incrementScore = IncrementScore(scoreUpdater)
+    private val resetScore = ResetScore(scoreUpdater)
 
     @Nested
     inner class NoMatchesCreated {

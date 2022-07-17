@@ -30,6 +30,34 @@ class MatchRepository(
         return matchLocalDataSource.updateScoreTo(matchId, teamAt, update(currentScore))
     }
 
+    suspend fun updateScoreOfAllTeams(
+        matchId: Long,
+        update: (currentScore: Score) -> Score,
+    ): Result<Match> {
+        val match = matchLocalDataSource.getMatch(matchId)
+        return if (match != null) {
+            if (match.teams.isEmpty())
+                Result.success(match)
+            else {
+                updateScoreOfAllTeams(match, matchId, update)
+            }
+        } else {
+            Result.failure(TeamOperationError.MatchNotFound)
+        }
+    }
+
+    private suspend fun updateScoreOfAllTeams(
+        match: Match,
+        matchId: Long,
+        update: (currentScore: Score) -> Score
+    ): Result<Match> {
+        var result: Result<Match> = Result.failure(TeamOperationError.MatchNotFound)
+        match.teams.forEachIndexed { teamIdx, team ->
+            result = matchLocalDataSource.updateScoreTo(matchId, teamIdx, update(team.score))
+        }
+        return result
+    }
+
     suspend fun resetScore(
         matchId: Long,
     ): Result<Match> {

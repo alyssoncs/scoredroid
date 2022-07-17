@@ -2,6 +2,7 @@ package org.scoredroid.score.domain.usecase
 
 import org.score.droid.utils.mappers.toMatchResponse
 import org.scoredroid.data.response.MatchResponse
+import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
@@ -9,12 +10,25 @@ import org.scoredroid.infra.dataaccess.repository.MatchRepository
 class ScoreUpdater(
     private val matchRepository: MatchRepository,
 ) {
-    suspend fun update(
+    suspend fun updateForTeam(
         matchId: Long,
         teamAt: Int,
-        updateStrategy: (currentScore: Score) -> Score,
+        updateScore: (currentScore: Score) -> Score,
     ): Result<MatchResponse> {
-        val result = matchRepository.updateScore(matchId, teamAt, updateStrategy)
+        return updateScore { updateScore(matchId, teamAt, updateScore) }
+    }
+
+    suspend fun updateForAllTeams(
+        matchId: Long,
+        updateScore: (currentScore: Score) -> Score,
+    ): Result<MatchResponse> {
+        return updateScore { updateScoreOfAllTeams(matchId, updateScore) }
+    }
+
+    private suspend fun updateScore(
+        updateStrategy: suspend MatchRepository.() -> Result<Match>
+    ): Result<MatchResponse> {
+        val result = matchRepository.updateStrategy()
 
         val e = result.exceptionOrNull()
         if (e != null) {
