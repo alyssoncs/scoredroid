@@ -59,4 +59,9 @@ class MatchRepository(
         }
         return result
     }
+
+    suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
+
+        return matchLocalDataSource.renameMatch(matchId, name)
+    }
 }
