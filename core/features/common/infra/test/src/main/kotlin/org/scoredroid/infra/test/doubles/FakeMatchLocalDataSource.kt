@@ -51,12 +51,9 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         teamAt: Int,
         newScore: Score
     ): Result<Match> {
-        val match = matches[matchId] ?: return Result.failure(TeamOperationError.MatchNotFound)
-        if (teamAt !in match.teams.indices) return Result.failure(TeamOperationError.TeamNotFound)
-
-        val updatedMatch = match.updateScore(teamAt, newScore)
-        matches[matchId] = updatedMatch
-        return Result.success(updatedMatch)
+        return updateMatch(matchId, onUpdateError = TeamOperationError.TeamNotFound) { match ->
+            match.updateScore(teamAt, newScore).takeIf { teamAt in match.teams.indices }
+        }
     }
 
     override suspend fun getTeam(matchId: Long, teamAt: Int): Team? {
