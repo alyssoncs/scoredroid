@@ -42,20 +42,8 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         }
     }
 
-    private fun updateMatch(
-        matchId: Long,
-        onUpdateError: Throwable = Throwable(),
-        update: (Match) -> Match?,
-    ): Result<Match> {
-        val match = matches[matchId] ?: return Result.failure(TeamOperationError.MatchNotFound)
-
-        val updatedMatch = update(match)
-        return if (updatedMatch != null) {
-            matches[matchId] = updatedMatch
-            Result.success(updatedMatch)
-        } else {
-            Result.failure(onUpdateError)
-        }
+    override suspend fun getMatch(matchId: Long): Match? {
+        return matches[matchId]
     }
 
     override suspend fun updateScoreTo(
@@ -69,10 +57,6 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         val updatedMatch = match.updateScore(teamAt, newScore)
         matches[matchId] = updatedMatch
         return Result.success(updatedMatch)
-    }
-
-    override suspend fun getMatch(matchId: Long): Match? {
-        return matches[matchId]
     }
 
     override suspend fun getTeam(matchId: Long, teamAt: Int): Team? {
@@ -124,5 +108,21 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
                 }
             }
         )
+    }
+
+    private fun updateMatch(
+        matchId: Long,
+        onUpdateError: Throwable = Throwable(),
+        update: (Match) -> Match?,
+    ): Result<Match> {
+        val match = matches[matchId] ?: return Result.failure(TeamOperationError.MatchNotFound)
+
+        val updatedMatch = update(match)
+        return if (updatedMatch != null) {
+            matches[matchId] = updatedMatch
+            Result.success(updatedMatch)
+        } else {
+            Result.failure(onUpdateError)
+        }
     }
 }
