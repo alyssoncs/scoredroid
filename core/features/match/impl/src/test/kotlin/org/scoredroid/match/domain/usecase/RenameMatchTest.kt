@@ -6,17 +6,15 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
+import org.scoredroid.infra.test.doubles.factories.repository.MatchRepositoryTestFactory
 import kotlin.properties.Delegates
 
 
 @ExperimentalCoroutinesApi
 class RenameMatchTest {
 
-    private val localDataSource = FakeMatchLocalDataSource()
-    private val repository = MatchRepository(localDataSource)
+    private val repository = MatchRepositoryTestFactory.create()
     private val renameMatch = RenameMatch(repository)
 
     @Nested
