@@ -70,17 +70,6 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         }
     }
 
-    private fun Match.moveTeam(
-        teamAt: Int,
-        moveTo: Int
-    ): List<Team> {
-        val teams = LinkedList(teams)
-        val indexToMove = moveTo.coerceIn(teams.indices)
-        val removed = teams.removeAt(teamAt)
-        teams.add(indexToMove, removed)
-        return teams
-    }
-
     override suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
         return updateMatch(matchId) { match ->
             match.copy(name = name)
@@ -100,6 +89,17 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
                 }
             }
         )
+    }
+
+    private fun Match.moveTeam(
+        teamAt: Int,
+        moveTo: Int
+    ): List<Team> {
+        val teams = LinkedList(teams)
+        val indexToMove = moveTo.coerceIn(teams.indices)
+        val removed = teams.removeAt(teamAt)
+        teams.add(indexToMove, removed)
+        return teams
     }
 
     private fun updateMatch(
