@@ -9,15 +9,14 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.scoredroid.domain.entities.Match
-import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
+import org.scoredroid.infra.test.doubles.factories.repository.MatchRepositoryTestFactory
 
 @ExperimentalCoroutinesApi
 class RemoveTeamTest {
-    private val localDataSource = FakeMatchLocalDataSource()
-    private val repository = MatchRepository(localDataSource)
+
+    private val repository = MatchRepositoryTestFactory.create()
     private val removeTeam = RemoveTeam(repository)
     private lateinit var match: Match
 
