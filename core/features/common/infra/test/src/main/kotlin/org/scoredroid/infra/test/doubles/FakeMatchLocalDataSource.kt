@@ -99,7 +99,7 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         val indexToMove = moveTo.coerceIn(teams.indices)
         val removed = teams.removeAt(teamAt)
         teams.add(indexToMove, removed)
-        return teams
+        return teams.toList()
     }
 
     private fun updateMatch(
