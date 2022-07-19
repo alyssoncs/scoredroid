@@ -82,14 +82,9 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
     }
 
     override suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        val match = matches[matchId]
-        if (match != null) {
-            val updatedMatch = match.copy(name = name)
-            matches[matchId] = updatedMatch
-            return Result.success(updatedMatch)
+        return updateMatch(matchId) { match ->
+            match.copy(name = name)
         }
-
-        return Result.failure(Throwable())
     }
 
     private fun Match.updateScore(
