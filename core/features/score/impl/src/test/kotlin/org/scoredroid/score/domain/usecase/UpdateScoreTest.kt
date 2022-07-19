@@ -12,7 +12,6 @@ import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
 import org.scoredroid.infra.test.doubles.factories.repository.MatchRepositoryTestFactory
 
 typealias UpdateScore = suspend (matchId: Long, teamAt: Int, updateAmount: Int) -> Result<MatchResponse>
