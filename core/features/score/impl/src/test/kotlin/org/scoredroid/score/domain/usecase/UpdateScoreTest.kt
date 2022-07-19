@@ -13,6 +13,7 @@ import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
+import org.scoredroid.infra.test.doubles.factories.repository.MatchRepositoryTestFactory
 
 typealias UpdateScore = suspend (matchId: Long, teamAt: Int, updateAmount: Int) -> Result<MatchResponse>
 
@@ -23,8 +24,7 @@ abstract class UpdateScoreTest {
     abstract fun createUpdateScoreUseCase(repository: MatchRepository) : UpdateScore
 
     lateinit var updateScore: UpdateScore
-    private val localDataSource = FakeMatchLocalDataSource()
-    protected val repository = MatchRepository(localDataSource)
+    protected val repository = MatchRepositoryTestFactory.create()
     protected val incrementScore = IncrementScore(ScoreUpdater(repository))
 
 
