@@ -13,12 +13,13 @@ import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
+import org.scoredroid.infra.test.doubles.factories.repository.MatchRepositoryTestFactory
 
 
 @ExperimentalCoroutinesApi
 class ResetScoreTest {
-    private val localDataSource = FakeMatchLocalDataSource()
-    private val repository = MatchRepository(localDataSource)
+
+    private val repository = MatchRepositoryTestFactory.create()
     private val scoreUpdater = ScoreUpdater(repository)
     private val incrementScore = IncrementScore(scoreUpdater)
     private val resetScore = ResetScore(scoreUpdater)
