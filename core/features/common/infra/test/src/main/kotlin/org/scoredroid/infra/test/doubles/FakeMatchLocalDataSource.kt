@@ -8,6 +8,7 @@ import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
+import java.util.LinkedList
 
 class FakeMatchLocalDataSource : MatchLocalDataSource {
     private var currentId = 0L
@@ -76,6 +77,28 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
 
     override suspend fun getTeam(matchId: Long, teamAt: Int): Team? {
         return matches[matchId]?.teams?.getOrNull(teamAt)
+    }
+
+    override suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
+        val match = matches[matchId] ?: return Result.failure(TeamOperationError.MatchNotFound)
+        if (teamAt !in match.teams.indices) return Result.failure(TeamOperationError.TeamNotFound)
+
+        val updatedMatch = match.copy(
+            teams = match.moveTeam(teamAt, moveTo)
+        )
+        matches[matchId] = updatedMatch
+        return Result.success(updatedMatch)
+    }
+
+    private fun Match.moveTeam(
+        teamAt: Int,
+        moveTo: Int
+    ): List<Team> {
+        val teams = LinkedList(teams)
+        val indexToMove = moveTo.coerceIn(teams.indices)
+        val removed = teams.removeAt(teamAt)
+        teams.add(indexToMove, removed)
+        return teams
     }
 
     override suspend fun renameMatch(matchId: Long, name: String): Result<Match> {

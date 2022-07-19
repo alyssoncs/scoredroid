@@ -14,4 +14,5 @@ interface MatchLocalDataSource {
     suspend fun updateScoreTo(matchId: Long, teamAt: Int, newScore: Score): Result<Match>
     suspend fun getMatch(matchId: Long): Match?
     suspend fun getTeam(matchId: Long, teamAt: Int): Team?
+    suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match>
 }

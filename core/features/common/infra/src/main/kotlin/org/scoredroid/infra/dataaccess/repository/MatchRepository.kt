@@ -64,4 +64,9 @@ class MatchRepository(
 
         return matchLocalDataSource.renameMatch(matchId, name)
     }
+
+    suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
+
+        return matchLocalDataSource.moveTeam(matchId, teamAt, moveTo)
+    }
 }
