@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'de.mannodermaus.android-junit5'
+    id 'io.gitlab.arturbosch.detekt'
 }
 
 android {
