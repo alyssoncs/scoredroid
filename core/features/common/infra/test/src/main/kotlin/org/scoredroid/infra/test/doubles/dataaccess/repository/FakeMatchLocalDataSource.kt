@@ -1,4 +1,4 @@
-package org.scoredroid.infra.test.doubles
+package org.scoredroid.infra.test.doubles.dataaccess.repository
 
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score

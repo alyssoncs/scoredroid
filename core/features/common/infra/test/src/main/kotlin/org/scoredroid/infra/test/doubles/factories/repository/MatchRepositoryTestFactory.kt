@@ -1,7 +1,7 @@
 package org.scoredroid.infra.test.doubles.factories.repository
 
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
-import org.scoredroid.infra.test.doubles.FakeMatchLocalDataSource
+import org.scoredroid.infra.test.doubles.dataaccess.repository.FakeMatchLocalDataSource
 
 object MatchRepositoryTestFactory {
     fun create(): MatchRepository {
