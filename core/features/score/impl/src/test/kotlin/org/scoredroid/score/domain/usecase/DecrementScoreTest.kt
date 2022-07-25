@@ -25,8 +25,7 @@ class DecrementScoreTest : UpdateScoreTest() {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = fixture.createEmptyMatch()
-            fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
+            match = fixture.createMatchWithTeams("team name")
             incrementScore(matchId = match.id, teamAt = 0, increment = 5)
         }
 

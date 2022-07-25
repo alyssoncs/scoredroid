@@ -21,9 +21,7 @@ class RemoveTeamTest {
 
     @BeforeEach
     fun setUp() = runTest {
-        match = fixture.createEmptyMatch()
-        fixture.repository.addTeam(match.id, AddTeamRepositoryRequest("team 1"))
-        fixture.repository.addTeam(match.id, AddTeamRepositoryRequest("team 2"))
+        match = fixture.createMatchWithTeams("team 1", "team 2")
     }
 
     @Nested

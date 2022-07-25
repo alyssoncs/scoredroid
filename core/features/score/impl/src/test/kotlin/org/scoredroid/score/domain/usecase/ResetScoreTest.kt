@@ -67,10 +67,7 @@ class ResetScoreTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = fixture.createEmptyMatch()
-            fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 1"))
-            fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 2"))
-            fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 3"))
+            match = fixture.createMatchWithTeams("team 1", "team 2", "team 3")
             incrementScore(matchId = match.id, teamAt = 0, increment = 5)
             incrementScore(matchId = match.id, teamAt = 1, increment = 4)
             incrementScore(matchId = match.id, teamAt = 2, increment = 7)
