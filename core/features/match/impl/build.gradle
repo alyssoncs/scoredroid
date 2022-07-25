@@ -14,7 +14,7 @@ dependencies {
     implementation project(':core:features:common:infra:public')
     implementation project(':core:features:common:utils')
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation libs.coroutines.core
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
