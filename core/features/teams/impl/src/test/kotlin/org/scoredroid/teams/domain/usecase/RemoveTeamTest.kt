@@ -11,12 +11,12 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryTestFactory
+import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
 @ExperimentalCoroutinesApi
 class RemoveTeamTest {
 
-    private val fixture = MatchRepositoryTestFactory.create()
+    private val fixture = MatchRepositoryFixtureFactory.create()
     private val removeTeam = RemoveTeam(fixture.repository)
     private lateinit var match: Match
 

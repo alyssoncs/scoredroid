@@ -7,14 +7,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryTestFactory
+import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import kotlin.properties.Delegates
 
 
 @ExperimentalCoroutinesApi
 class RenameMatchTest {
 
-    private val fixture = MatchRepositoryTestFactory.create()
+    private val fixture = MatchRepositoryFixtureFactory.create()
     private val renameMatch = RenameMatch(fixture.repository)
 
     @Nested

@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryTestFactory
+import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import org.scoredroid.teams.domain.request.AddTeamRequest
 
 @ExperimentalCoroutinesApi
 class AddTeamTest {
 
-    private val fixture = MatchRepositoryTestFactory.create()
+    private val fixture = MatchRepositoryFixtureFactory.create()
     private val addTeam = AddTeam(fixture.repository)
 
     @Nested

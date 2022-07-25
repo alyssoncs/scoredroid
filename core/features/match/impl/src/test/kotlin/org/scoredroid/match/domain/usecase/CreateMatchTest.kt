@@ -6,13 +6,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryTestFactory
+import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import org.scoredroid.match.domain.request.CreateMatchRequestOptions
 
 @ExperimentalCoroutinesApi
 class CreateMatchTest {
 
-    private val fixture = MatchRepositoryTestFactory.create()
+    private val fixture = MatchRepositoryFixtureFactory.create()
     private val createMatch = CreateMatch(fixture.repository)
 
     @Nested

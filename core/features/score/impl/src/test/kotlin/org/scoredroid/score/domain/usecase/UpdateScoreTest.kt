@@ -12,7 +12,7 @@ import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryTestFactory
+import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
 typealias UpdateScore = suspend (matchId: Long, teamAt: Int, updateAmount: Int) -> Result<MatchResponse>
 
@@ -23,7 +23,7 @@ abstract class UpdateScoreTest {
     abstract fun createUpdateScoreUseCase(repository: MatchRepository) : UpdateScore
 
     lateinit var updateScore: UpdateScore
-    protected val fixture = MatchRepositoryTestFactory.create()
+    protected val fixture = MatchRepositoryFixtureFactory.create()
     protected val incrementScore = IncrementScore(ScoreUpdater(fixture.repository))
 
 
