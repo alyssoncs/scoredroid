@@ -2,7 +2,7 @@ plugins {
     alias libs.plugins.android.application
     alias libs.plugins.kotlin.android
     id 'de.mannodermaus.android-junit5'
-    id 'io.gitlab.arturbosch.detekt'
+    alias libs.plugins.detekt
 }
 
 android {
