@@ -10,7 +10,6 @@ import org.junit.jupiter.api.assertThrows
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
-import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
 typealias UpdateScore = suspend (matchId: Long, teamAt: Int, updateAmount: Int) -> Result<MatchResponse>
