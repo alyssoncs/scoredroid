@@ -1,4 +1,5 @@
 [versions]
+agp = "7.2.1"
 androidx-appcompat = "1.4.2"
 androidx-core = "1.8.0"
 coroutines = "1.6.4"
@@ -20,3 +21,6 @@ test-truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 [bundles]
 unitTest = ["test-junit-api", "test-junit-params", "test-truth", "test-coroutines"]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
