@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import org.scoredroid.infra.test.doubles.factories.repository.MatchRepositoryTestFactory
+import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryTestFactory
 import kotlin.properties.Delegates
 
 

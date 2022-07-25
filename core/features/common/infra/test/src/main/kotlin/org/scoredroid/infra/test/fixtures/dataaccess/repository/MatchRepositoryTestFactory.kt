@@ -1,4 +1,4 @@
-package org.scoredroid.infra.test.doubles.factories.repository
+package org.scoredroid.infra.test.fixtures.dataaccess.repository
 
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakeMatchLocalDataSource
