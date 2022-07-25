@@ -42,7 +42,7 @@ class MoveTeamTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            matchId = fixture.repository.createMatch(CreateMatchRepositoryRequest()).id
+            matchId = fixture.createEmptyMatch().id
         }
 
         @Nested

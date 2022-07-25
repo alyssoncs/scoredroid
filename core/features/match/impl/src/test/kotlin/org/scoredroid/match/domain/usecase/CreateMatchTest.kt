@@ -21,7 +21,7 @@ class CreateMatchTest {
         @Test
         fun `id provided by local data source`() = runTest {
             repeat(2) {
-                fixture.repository.createMatch(CreateMatchRepositoryRequest("", emptyList()))
+                fixture.createEmptyMatch()
             }
 
             val match = createMatch()

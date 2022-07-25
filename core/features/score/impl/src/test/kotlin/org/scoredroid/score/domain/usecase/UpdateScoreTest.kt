@@ -47,7 +47,7 @@ abstract class UpdateScoreTest {
     inner class NonExistingMatch {
         @BeforeEach
         fun setUp() = runTest {
-            fixture.repository.createMatch(CreateMatchRepositoryRequest())
+            fixture.createEmptyMatch()
         }
 
         @Test
@@ -62,7 +62,7 @@ abstract class UpdateScoreTest {
     inner class NoTeamCreated {
         @BeforeEach
         fun setUp() = runTest {
-            fixture.repository.createMatch(CreateMatchRepositoryRequest())
+            fixture.createEmptyMatch()
         }
 
         @Test
@@ -79,7 +79,7 @@ abstract class UpdateScoreTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = fixture.repository.createMatch(CreateMatchRepositoryRequest())
+            match = fixture.createEmptyMatch()
             fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
         }
 
@@ -104,7 +104,7 @@ abstract class UpdateScoreTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = fixture.repository.createMatch(CreateMatchRepositoryRequest())
+            match = fixture.createEmptyMatch()
             fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
             incrementScore(matchId = match.id, teamAt = 0, increment = 5)
         }

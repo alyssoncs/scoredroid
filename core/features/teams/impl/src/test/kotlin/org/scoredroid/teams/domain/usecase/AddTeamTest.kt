@@ -42,7 +42,7 @@ class AddTeamTest {
         @BeforeEach
         internal fun setUp() = runTest {
             repeat(matchId.inc().toInt()) {
-                fixture.repository.createMatch(CreateMatchRepositoryRequest())
+                fixture.createEmptyMatch()
             }
         }
 
