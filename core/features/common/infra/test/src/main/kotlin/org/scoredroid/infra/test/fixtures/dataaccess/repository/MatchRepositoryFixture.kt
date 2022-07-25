@@ -21,4 +21,10 @@ class MatchRepositoryFixture(val repository: MatchRepository) {
             }
         }
     }
+
+    suspend fun addTeamsToExistingMatch(matchId: Long, vararg teamNames: String) {
+        teamNames.forEach { name ->
+            repository.addTeam(matchId = matchId, AddTeamRepositoryRequest(name))
+        }
+    }
 }

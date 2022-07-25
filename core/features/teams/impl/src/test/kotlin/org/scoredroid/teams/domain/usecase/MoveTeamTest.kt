@@ -58,12 +58,9 @@ class MoveTeamTest {
 
         @Nested
         inner class TeamExist {
-            private lateinit var match: Match
             @BeforeEach
             fun setUp() = runTest {
-                fixture.repository.addTeam(matchId, AddTeamRepositoryRequest("t0"))
-                fixture.repository.addTeam(matchId, AddTeamRepositoryRequest("t1"))
-                match = fixture.repository.addTeam(matchId, AddTeamRepositoryRequest("t2")).getOrThrow()
+                fixture.addTeamsToExistingMatch(matchId, "t0", "t1", "t2")
             }
 
             @ParameterizedTest
