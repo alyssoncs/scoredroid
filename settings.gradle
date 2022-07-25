@@ -16,6 +16,7 @@ rootProject.name = "Score Droid"
 include ':app'
 include ':core:features:common:data'
 include ':core:features:common:domain'
+include ':core:features:common:infra:commonmodels'
 include ':core:features:common:infra:dependencies'
 include ':core:features:common:infra:public'
 include ':core:features:common:infra:test'

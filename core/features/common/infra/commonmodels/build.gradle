@@ -10,6 +10,4 @@ java {
 }
 
 dependencies {
-    api project(':core:features:common:infra:public')
-    implementation project(':core:features:common:infra:dependencies')
 }
