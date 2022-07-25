@@ -6,7 +6,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import kotlin.properties.Delegates
 
@@ -37,7 +36,7 @@ class RenameMatchTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            matchId = fixture.repository.createMatch(CreateMatchRepositoryRequest(name = "generic name")).id
+            matchId = fixture.createNamedMatch(matchName = "generic name").id
         }
 
         @Test

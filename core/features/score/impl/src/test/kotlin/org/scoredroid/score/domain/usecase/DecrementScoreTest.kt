@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
-import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 @ExperimentalCoroutinesApi
 class DecrementScoreTest : UpdateScoreTest() {

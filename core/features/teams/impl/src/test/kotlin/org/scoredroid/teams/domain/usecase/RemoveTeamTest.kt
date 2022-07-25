@@ -10,7 +10,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
-import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
 @ExperimentalCoroutinesApi

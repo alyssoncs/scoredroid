@@ -8,4 +8,8 @@ class MatchRepositoryFixture(val repository: MatchRepository) {
     suspend fun createEmptyMatch(): Match {
         return repository.createMatch(CreateMatchRepositoryRequest())
     }
+
+    suspend fun createNamedMatch(matchName: String): Match {
+        return repository.createMatch(CreateMatchRepositoryRequest(name = matchName))
+    }
 }
