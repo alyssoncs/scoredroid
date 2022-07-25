@@ -11,7 +11,7 @@ java {
 
 dependencies {
     implementation project(':core:features:teams:public')
-    implementation project(':core:features:common:infra')
+    implementation project(':core:features:common:infra:public')
     implementation project(':core:features:common:utils')
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
