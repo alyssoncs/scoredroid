@@ -1,4 +1,6 @@
 package org.scoredroid.infra.test.fixtures.dataaccess.repository
 
-class MatchRepositoryFixture {
+import org.scoredroid.infra.dataaccess.repository.MatchRepository
+
+class MatchRepositoryFixture(val repository: MatchRepository) {
 }

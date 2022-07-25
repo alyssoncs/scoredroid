@@ -14,8 +14,8 @@ import kotlin.properties.Delegates
 @ExperimentalCoroutinesApi
 class RenameMatchTest {
 
-    private val repository = MatchRepositoryTestFactory.create()
-    private val renameMatch = RenameMatch(repository)
+    private val fixture = MatchRepositoryTestFactory.create()
+    private val renameMatch = RenameMatch(fixture.repository)
 
     @Nested
     inner class MatchNotFound {
@@ -37,7 +37,7 @@ class RenameMatchTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            matchId = repository.createMatch(CreateMatchRepositoryRequest(name = "generic name")).id
+            matchId = fixture.repository.createMatch(CreateMatchRepositoryRequest(name = "generic name")).id
         }
 
         @Test

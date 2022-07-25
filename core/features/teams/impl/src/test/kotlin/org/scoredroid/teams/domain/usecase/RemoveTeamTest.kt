@@ -16,15 +16,15 @@ import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryT
 @ExperimentalCoroutinesApi
 class RemoveTeamTest {
 
-    private val repository = MatchRepositoryTestFactory.create()
-    private val removeTeam = RemoveTeam(repository)
+    private val fixture = MatchRepositoryTestFactory.create()
+    private val removeTeam = RemoveTeam(fixture.repository)
     private lateinit var match: Match
 
     @BeforeEach
     fun setUp() = runTest {
-        match = repository.createMatch(CreateMatchRepositoryRequest())
-        repository.addTeam(match.id, AddTeamRepositoryRequest("team 1"))
-        repository.addTeam(match.id, AddTeamRepositoryRequest("team 2"))
+        match = fixture.repository.createMatch(CreateMatchRepositoryRequest())
+        fixture.repository.addTeam(match.id, AddTeamRepositoryRequest("team 1"))
+        fixture.repository.addTeam(match.id, AddTeamRepositoryRequest("team 2"))
     }
 
     @Nested

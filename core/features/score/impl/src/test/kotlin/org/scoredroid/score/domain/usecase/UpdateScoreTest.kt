@@ -23,13 +23,13 @@ abstract class UpdateScoreTest {
     abstract fun createUpdateScoreUseCase(repository: MatchRepository) : UpdateScore
 
     lateinit var updateScore: UpdateScore
-    protected val repository = MatchRepositoryTestFactory.create()
-    protected val incrementScore = IncrementScore(ScoreUpdater(repository))
+    protected val fixture = MatchRepositoryTestFactory.create()
+    protected val incrementScore = IncrementScore(ScoreUpdater(fixture.repository))
 
 
     @BeforeEach
     fun setUp() {
-        updateScore = createUpdateScoreUseCase(repository)
+        updateScore = createUpdateScoreUseCase(fixture.repository)
     }
 
 
@@ -47,7 +47,7 @@ abstract class UpdateScoreTest {
     inner class NonExistingMatch {
         @BeforeEach
         fun setUp() = runTest {
-            repository.createMatch(CreateMatchRepositoryRequest())
+            fixture.repository.createMatch(CreateMatchRepositoryRequest())
         }
 
         @Test
@@ -62,7 +62,7 @@ abstract class UpdateScoreTest {
     inner class NoTeamCreated {
         @BeforeEach
         fun setUp() = runTest {
-            repository.createMatch(CreateMatchRepositoryRequest())
+            fixture.repository.createMatch(CreateMatchRepositoryRequest())
         }
 
         @Test
@@ -79,8 +79,8 @@ abstract class UpdateScoreTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = repository.createMatch(CreateMatchRepositoryRequest())
-            repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
+            match = fixture.repository.createMatch(CreateMatchRepositoryRequest())
+            fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
         }
 
         @Test
@@ -104,8 +104,8 @@ abstract class UpdateScoreTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = repository.createMatch(CreateMatchRepositoryRequest())
-            repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
+            match = fixture.repository.createMatch(CreateMatchRepositoryRequest())
+            fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team name"))
             incrementScore(matchId = match.id, teamAt = 0, increment = 5)
         }
 

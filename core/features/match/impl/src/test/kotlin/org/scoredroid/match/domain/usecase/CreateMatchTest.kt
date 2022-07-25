@@ -12,8 +12,8 @@ import org.scoredroid.match.domain.request.CreateMatchRequestOptions
 @ExperimentalCoroutinesApi
 class CreateMatchTest {
 
-    private val repository = MatchRepositoryTestFactory.create()
-    private val createMatch = CreateMatch(repository)
+    private val fixture = MatchRepositoryTestFactory.create()
+    private val createMatch = CreateMatch(fixture.repository)
 
     @Nested
     inner class DefaultParam {
@@ -21,7 +21,7 @@ class CreateMatchTest {
         @Test
         fun `id provided by local data source`() = runTest {
             repeat(2) {
-                repository.createMatch(CreateMatchRepositoryRequest("", emptyList()))
+                fixture.repository.createMatch(CreateMatchRepositoryRequest("", emptyList()))
             }
 
             val match = createMatch()

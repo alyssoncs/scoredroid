@@ -15,8 +15,8 @@ import org.scoredroid.teams.domain.request.AddTeamRequest
 @ExperimentalCoroutinesApi
 class AddTeamTest {
 
-    private val repository = MatchRepositoryTestFactory.create()
-    private val addTeam = AddTeam(repository)
+    private val fixture = MatchRepositoryTestFactory.create()
+    private val addTeam = AddTeam(fixture.repository)
 
     @Nested
     inner class MatchNotFound {
@@ -42,7 +42,7 @@ class AddTeamTest {
         @BeforeEach
         internal fun setUp() = runTest {
             repeat(matchId.inc().toInt()) {
-                repository.createMatch(CreateMatchRepositoryRequest())
+                fixture.repository.createMatch(CreateMatchRepositoryRequest())
             }
         }
 

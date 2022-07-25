@@ -17,8 +17,8 @@ import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryT
 @ExperimentalCoroutinesApi
 class ResetScoreTest {
 
-    private val repository = MatchRepositoryTestFactory.create()
-    private val scoreUpdater = ScoreUpdater(repository)
+    private val fixture = MatchRepositoryTestFactory.create()
+    private val scoreUpdater = ScoreUpdater(fixture.repository)
     private val incrementScore = IncrementScore(scoreUpdater)
     private val resetScore = ResetScore(scoreUpdater)
 
@@ -36,7 +36,7 @@ class ResetScoreTest {
     inner class NonExistingMatch {
         @BeforeEach
         fun setUp() = runTest {
-            repository.createMatch(CreateMatchRepositoryRequest())
+            fixture.repository.createMatch(CreateMatchRepositoryRequest())
         }
 
         @Test
@@ -51,7 +51,7 @@ class ResetScoreTest {
     inner class NoTeamCreated {
         @BeforeEach
         fun setUp() = runTest {
-            repository.createMatch(CreateMatchRepositoryRequest())
+            fixture.repository.createMatch(CreateMatchRepositoryRequest())
         }
 
         @Test
@@ -68,10 +68,10 @@ class ResetScoreTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            match = repository.createMatch(CreateMatchRepositoryRequest())
-            repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 1"))
-            repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 2"))
-            repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 3"))
+            match = fixture.repository.createMatch(CreateMatchRepositoryRequest())
+            fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 1"))
+            fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 2"))
+            fixture.repository.addTeam(matchId = match.id, AddTeamRepositoryRequest("team 3"))
             incrementScore(matchId = match.id, teamAt = 0, increment = 5)
             incrementScore(matchId = match.id, teamAt = 1, increment = 4)
             incrementScore(matchId = match.id, teamAt = 2, increment = 7)

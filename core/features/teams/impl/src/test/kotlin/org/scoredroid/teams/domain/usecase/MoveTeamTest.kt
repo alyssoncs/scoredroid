@@ -19,8 +19,8 @@ import kotlin.properties.Delegates
 @ExperimentalCoroutinesApi
 class MoveTeamTest {
 
-    private val repository = MatchRepositoryTestFactory.create()
-    private val moveTeam = MoveTeam(repository)
+    private val fixture = MatchRepositoryTestFactory.create()
+    private val moveTeam = MoveTeam(fixture.repository)
 
     @Nested
     inner class NoMatch {
@@ -42,7 +42,7 @@ class MoveTeamTest {
 
         @BeforeEach
         fun setUp() = runTest {
-            matchId = repository.createMatch(CreateMatchRepositoryRequest()).id
+            matchId = fixture.repository.createMatch(CreateMatchRepositoryRequest()).id
         }
 
         @Nested
@@ -62,9 +62,9 @@ class MoveTeamTest {
             private lateinit var match: Match
             @BeforeEach
             fun setUp() = runTest {
-                repository.addTeam(matchId, AddTeamRepositoryRequest("t0"))
-                repository.addTeam(matchId, AddTeamRepositoryRequest("t1"))
-                match = repository.addTeam(matchId, AddTeamRepositoryRequest("t2")).getOrThrow()
+                fixture.repository.addTeam(matchId, AddTeamRepositoryRequest("t0"))
+                fixture.repository.addTeam(matchId, AddTeamRepositoryRequest("t1"))
+                match = fixture.repository.addTeam(matchId, AddTeamRepositoryRequest("t2")).getOrThrow()
             }
 
             @ParameterizedTest
