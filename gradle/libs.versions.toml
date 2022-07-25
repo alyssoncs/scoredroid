@@ -3,12 +3,14 @@ androidx-appcompat = "1.4.2"
 androidx-core = "1.8.0"
 coroutines = "1.6.4"
 junit = "5.8.2"
+material = "1.6.1"
 truth = "1.1.3"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
 
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 test-junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
