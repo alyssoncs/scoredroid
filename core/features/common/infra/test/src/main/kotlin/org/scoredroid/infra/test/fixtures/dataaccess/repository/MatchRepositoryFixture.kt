@@ -16,9 +16,7 @@ class MatchRepositoryFixture(val repository: MatchRepository) {
 
     suspend fun createMatchWithTeams(vararg teamNames: String): Match {
         return createEmptyMatch().also { match ->
-            teamNames.forEach { name ->
-                repository.addTeam(matchId = match.id, AddTeamRepositoryRequest(name))
-            }
+            addTeamsToExistingMatch(match.id, *teamNames)
         }
     }
 
