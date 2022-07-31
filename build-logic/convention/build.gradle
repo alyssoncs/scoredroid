@@ -28,5 +28,9 @@ gradlePlugin {
             id = "org.scoredroid.impl-feature"
             implementationClass = "org.scoredroid.conventionplugins.JavaImplFeatureModuleConventionPlugin"
         }
+        register("unitTest") {
+            id = "org.scoredroid.unit-test"
+            implementationClass = "org.scoredroid.conventionplugins.UnitTestConventionPlugin"
+        }
     }
 }

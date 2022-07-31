@@ -9,6 +9,7 @@ class JavaImplFeatureModuleConventionPlugin : Plugin<Project> {
         with(project.pluginManager) {
             apply("org.scoredroid.java-module")
             apply("org.scoredroid.java-module-junit5")
+            apply("org.scoredroid.unit-test")
         }
     }
 }
