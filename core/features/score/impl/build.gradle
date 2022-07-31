@@ -8,7 +8,6 @@ dependencies {
     implementation project(':core:features:common:utils')
 
     implementation libs.coroutines.core
-    testRuntimeOnly libs.test.junit.engine
-    testImplementation libs.bundles.unitTest
+
     testImplementation project(':core:features:common:infra:test')
 }
