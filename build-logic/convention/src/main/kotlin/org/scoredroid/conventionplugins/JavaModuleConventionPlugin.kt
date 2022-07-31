@@ -3,16 +3,16 @@ package org.scoredroid.conventionplugins
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.JavaPluginExtension
+import org.scoredroid.utils.versionCatalog
 
 class JavaModuleConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val libs = project.extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+        val catalog = project.versionCatalog
         with(project.pluginManager) {
             apply("java-library")
-            apply(libs.findPlugin("kotlin.jvm").get().get().pluginId)
-            apply(libs.findPlugin("detekt").get().get().pluginId)
+            apply(catalog.findPlugin("kotlin.jvm").get().get().pluginId)
+            apply(catalog.findPlugin("detekt").get().get().pluginId)
         }
 
         with(project.extensions.getByType(JavaPluginExtension::class.java)) {

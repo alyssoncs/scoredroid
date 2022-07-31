@@ -2,13 +2,13 @@ package org.scoredroid.conventionplugins
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.scoredroid.utils.versionCatalog
 
 class UnitTestConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val libs = project.extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+        val catalog = project.versionCatalog
 
-        project.dependencies.add("testRuntimeOnly", libs.findLibrary("test.junit.engine").get())
-        project.dependencies.add("testImplementation", libs.findBundle("unitTest").get())
+        project.dependencies.add("testRuntimeOnly", catalog.findLibrary("test.junit.engine").get())
+        project.dependencies.add("testImplementation", catalog.findBundle("unitTest").get())
     }
 }
