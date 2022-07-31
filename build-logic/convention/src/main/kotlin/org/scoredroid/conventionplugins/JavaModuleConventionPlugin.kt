@@ -15,7 +15,6 @@ class JavaModuleConventionPlugin : Plugin<Project> {
             apply("java-library")
             apply(libs.findPlugin("kotlin.jvm").get().get().pluginId)
             apply(libs.findPlugin("detekt").get().get().pluginId)
-            apply("org.scoredroid.java-module-junit5")
         }
 
         with(project.extensions.getByType(JavaPluginExtension::class.java)) {

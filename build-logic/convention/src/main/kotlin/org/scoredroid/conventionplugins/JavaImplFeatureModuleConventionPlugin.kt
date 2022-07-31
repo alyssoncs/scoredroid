@@ -6,6 +6,9 @@ import org.gradle.api.tasks.testing.Test
 
 class JavaImplFeatureModuleConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.pluginManager.apply("org.scoredroid.java-module")
+        with(project.pluginManager) {
+            apply("org.scoredroid.java-module")
+            apply("org.scoredroid.java-module-junit5")
+        }
     }
 }
