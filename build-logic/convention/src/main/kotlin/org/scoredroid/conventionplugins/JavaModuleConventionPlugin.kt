@@ -5,8 +5,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.plugins.internal.DefaultJavaPluginExtension
-import org.gradle.api.tasks.testing.Test
 
 class JavaModuleConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
