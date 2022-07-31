@@ -4,6 +4,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
+import org.scoredroid.utils.getPluginId
 import org.scoredroid.utils.versionCatalog
 
 class JavaModuleConventionPlugin : Plugin<Project> {
@@ -11,8 +12,8 @@ class JavaModuleConventionPlugin : Plugin<Project> {
         val catalog = project.versionCatalog
         with(project.pluginManager) {
             apply("java-library")
-            apply(catalog.findPlugin("kotlin.jvm").get().get().pluginId)
-            apply(catalog.findPlugin("detekt").get().get().pluginId)
+            apply(catalog.getPluginId("kotlin.jvm"))
+            apply(catalog.getPluginId("detekt"))
         }
 
         with(project.extensions.getByType(JavaPluginExtension::class.java)) {
