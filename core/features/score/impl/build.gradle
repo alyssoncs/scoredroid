@@ -1,12 +1,5 @@
 plugins {
-    id 'java-library'
-    alias libs.plugins.kotlin.jvm
-    alias libs.plugins.detekt
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    id 'org.scoredroid.impl-feature'
 }
 
 dependencies {
