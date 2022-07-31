@@ -6,8 +6,8 @@ import org.gradle.api.tasks.testing.Test
 
 class JavaModuleJunit5ConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.tasks.withType(Test::class.java) {
-            it.useJUnitPlatform()
+        project.tasks.withType(Test::class.java) { testTask ->
+            testTask.useJUnitPlatform()
         }
     }
 }
