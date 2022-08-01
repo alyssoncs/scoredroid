@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-    implementation project(':core:features:teams:public')
-    implementation project(':core:features:common:infra:public')
-    implementation project(':core:features:common:utils')
+    implementation projects.core.features.teams.public
+    implementation projects.core.features.common.infra.public
+    implementation projects.core.features.common.utils
 
     implementation libs.coroutines.core
 
-    testImplementation project(':core:features:common:infra:test')
+    testImplementation projects.core.features.common.infra.test
 }

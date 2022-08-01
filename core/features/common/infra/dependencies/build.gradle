@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api project(':core:features:common:domain')
-    api project(':core:features:common:infra:commonmodels')
+    api projects.core.features.common.domain
+    api projects.core.features.common.infra.commonmodels
 }

@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api project(':core:features:common:infra:public')
-    implementation project(':core:features:common:infra:dependencies')
+    api projects.core.features.common.infra.public
+    implementation projects.core.features.common.infra.dependencies
 }

@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api project(':core:features:common:data')
+    api projects.core.features.common.data
 }
