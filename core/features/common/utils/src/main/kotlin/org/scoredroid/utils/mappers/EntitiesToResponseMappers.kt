@@ -1,4 +1,4 @@
-package org.score.droid.utils.mappers
+package org.scoredroid.utils.mappers
 
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse

@@ -1,8 +1,8 @@
 package org.scoredroid.match.domain.usecase
 
-import org.score.droid.utils.mappers.toMatchResponse
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
+import org.scoredroid.utils.mappers.toMatchResponse
 
 class RenameMatch(private val repository: MatchRepository) : RenameMatchUseCase {
     override suspend fun invoke(matchId: Long, name: String): Result<MatchResponse> {

@@ -1,10 +1,10 @@
 package org.scoredroid.teams.domain.usecase
 
-import org.score.droid.utils.mappers.toMatchResponse
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.teams.domain.request.AddTeamRequest
+import org.scoredroid.utils.mappers.toMatchResponse
 
 class AddTeam(
     private val matchRepository: MatchRepository
