@@ -80,6 +80,7 @@ class ResetScoreTest {
         }
 
         private fun assertEmptyScore(result: Result<MatchResponse>) {
+            assertThat(result.getOrThrow().teams).hasSize(3)
             result.getOrThrow().teams.forEach {
                 assertThat(it.score).isEqualTo(0)
             }

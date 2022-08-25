@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
@@ -108,11 +110,12 @@ abstract class UpdateScoreTest {
         @Nested
         inner class UpdateCurrentScore {
 
-            @Test
-            fun `score is decremented by specific value`() = runTest {
-                val result = updateScore(match.id, 0, 5)
+            @ParameterizedTest
+            @ValueSource(ints = [1, 2, 3])
+            fun `score is updated by specific amount`(updateAmount: Int) = runTest {
+                val result = updateScore(match.id, 0, updateAmount)
 
-                assertScore(result = result, updateAmount = 5)
+                assertScore(result, updateAmount)
             }
 
             private fun assertScore(result: Result<MatchResponse>, updateAmount: Int) {
