@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
+import org.scoredroid.infra.test.assertions.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
 typealias UpdateScore = suspend (matchId: Long, teamAt: Int, updateAmount: Int) -> Result<MatchResponse>
@@ -20,7 +21,7 @@ typealias UpdateScore = suspend (matchId: Long, teamAt: Int, updateAmount: Int) 
 abstract class UpdateScoreTest {
 
     abstract fun updateStrategy(currentScore: Int, updateAmount: Int): Int
-    abstract fun createUpdateScoreUseCase(repository: MatchRepository) : UpdateScore
+    abstract fun createUpdateScoreUseCase(repository: MatchRepository): UpdateScore
 
     lateinit var updateScore: UpdateScore
     protected val fixture = MatchRepositoryFixtureFactory.create()
@@ -118,9 +119,11 @@ abstract class UpdateScoreTest {
                 assertScore(result, updateAmount)
             }
 
-            private fun assertScore(result: Result<MatchResponse>, updateAmount: Int) {
-                assertThat(result.getOrThrow().teams[0].score)
-                    .isEqualTo(updateStrategy(currentScore = 5, updateAmount = updateAmount))
+            private suspend fun assertScore(result: Result<MatchResponse>, updateAmount: Int) {
+                assertMatchResponse(fixture, result) { match ->
+                    assertThat(match.teams[0].score)
+                        .isEqualTo(updateStrategy(currentScore = 5, updateAmount = updateAmount))
+                }
             }
         }
     }

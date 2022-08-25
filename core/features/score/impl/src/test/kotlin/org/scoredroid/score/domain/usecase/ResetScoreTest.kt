@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
+import org.scoredroid.infra.test.assertions.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
 
@@ -56,7 +57,9 @@ class ResetScoreTest {
         fun `return empty response`() = runTest {
             val result = resetScore(0L)
 
-            assertThat(result.getOrThrow().teams).isEmpty()
+            assertMatchResponse(fixture, result) { match ->
+                assertThat(match.teams).isEmpty()
+            }
         }
     }
 
@@ -79,10 +82,12 @@ class ResetScoreTest {
             assertEmptyScore(result = result)
         }
 
-        private fun assertEmptyScore(result: Result<MatchResponse>) {
-            assertThat(result.getOrThrow().teams).hasSize(3)
-            result.getOrThrow().teams.forEach {
-                assertThat(it.score).isEqualTo(0)
+        private suspend fun assertEmptyScore(result: Result<MatchResponse>) {
+            assertMatchResponse(fixture, result) { match ->
+                assertThat(match.teams).hasSize(3)
+                match.teams.forEach {
+                    assertThat(it.score).isEqualTo(0)
+                }
             }
         }
     }

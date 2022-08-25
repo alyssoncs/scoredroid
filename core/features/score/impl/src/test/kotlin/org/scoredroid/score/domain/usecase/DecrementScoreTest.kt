@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
+import org.scoredroid.infra.test.assertions.assertMatchResponse
 
 @ExperimentalCoroutinesApi
 class DecrementScoreTest : UpdateScoreTest() {
@@ -32,7 +33,9 @@ class DecrementScoreTest : UpdateScoreTest() {
         fun `score is decremented down to zero`() = runTest {
             val result = updateScore(match.id, 0, 10)
 
-            assertThat(result.getOrThrow().teams[0].score).isEqualTo(0)
+            assertMatchResponse(fixture, result) { match ->
+                assertThat(match.teams[0].score).isEqualTo(0)
+            }
         }
     }
 }
