@@ -33,8 +33,12 @@ class MatchRepository(
         teamAt: Int,
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
-        val currentScore = matchLocalDataSource.getTeam(matchId, teamAt)?.score.orZero()
+        val currentScore = getCurrentScore(matchId, teamAt)
         return matchLocalDataSource.updateScoreTo(matchId, teamAt, update(currentScore))
+    }
+
+    private suspend fun getCurrentScore( matchId: Long, teamAt: Int ): Score {
+        return matchLocalDataSource.getTeam(matchId, teamAt)?.score.orZero()
     }
 
     suspend fun updateScoreForAllTeams(
@@ -55,8 +59,8 @@ class MatchRepository(
         update: (currentScore: Score) -> Score
     ): Result<Match> {
         var result: Result<Match> = Result.success(match)
-        match.teams.forEachIndexed { teamIdx, team ->
-            result = matchLocalDataSource.updateScoreTo(matchId, teamIdx, update(team.score))
+        match.teams.forEachIndexed { teamAt, _ ->
+            result = updateScore(matchId, teamAt, update)
         }
         return result
     }
