@@ -8,7 +8,6 @@ import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
-import java.util.LinkedList
 
 class FakeMatchLocalDataSource : MatchLocalDataSource {
     private var currentId = 0L
@@ -94,7 +93,7 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         teamAt: Int,
         moveTo: Int
     ): List<Team> {
-        val teams = LinkedList(teams)
+        val teams = teams.toMutableList()
         val indexToMove = moveTo.coerceIn(teams.indices)
         val removed = teams.removeAt(teamAt)
         teams.add(indexToMove, removed)
