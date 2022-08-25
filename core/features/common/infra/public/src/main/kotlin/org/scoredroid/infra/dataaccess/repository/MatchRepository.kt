@@ -37,7 +37,7 @@ class MatchRepository(
         return matchLocalDataSource.updateScoreTo(matchId, teamAt, update(currentScore))
     }
 
-    private suspend fun getCurrentScore( matchId: Long, teamAt: Int ): Score {
+    private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
         return matchLocalDataSource.getTeam(matchId, teamAt)?.score.orZero()
     }
 
