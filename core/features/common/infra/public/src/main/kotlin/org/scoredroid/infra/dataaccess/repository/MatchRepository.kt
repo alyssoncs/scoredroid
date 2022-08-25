@@ -43,11 +43,7 @@ class MatchRepository(
     ): Result<Match> {
         val match = matchLocalDataSource.getMatch(matchId)
         return if (match != null) {
-            if (match.teams.isEmpty())
-                Result.success(match)
-            else {
-                updateScoreForAllTeams(match, matchId, update)
-            }
+            updateScoreForAllTeams(match, matchId, update)
         } else {
             Result.failure(TeamOperationError.MatchNotFound)
         }
@@ -58,7 +54,7 @@ class MatchRepository(
         matchId: Long,
         update: (currentScore: Score) -> Score
     ): Result<Match> {
-        var result: Result<Match> = Result.failure(TeamOperationError.MatchNotFound)
+        var result: Result<Match> = Result.success(match)
         match.teams.forEachIndexed { teamIdx, team ->
             result = matchLocalDataSource.updateScoreTo(matchId, teamIdx, update(team.score))
         }
