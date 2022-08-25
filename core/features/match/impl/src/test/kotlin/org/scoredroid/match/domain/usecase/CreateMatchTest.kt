@@ -27,7 +27,7 @@ class CreateMatchTest {
             val match = createMatch()
 
             assertThat(match.id).isEqualTo(2)
-            assertThat(getPersistedMatch(match.id)).isNotNull()
+            assertThat(getPersistedMatch(match.id)!!.id).isEqualTo(2)
         }
 
         @Test
