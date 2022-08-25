@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import org.scoredroid.data.response.TeamResponse
+import org.scoredroid.data.response.MatchResponse
+import org.scoredroid.infra.test.assertions.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import kotlin.properties.Delegates
 
@@ -71,34 +72,36 @@ class MoveTeamTest {
 
             @Test
             fun `moveTo equals to teamAt, keep the teams in the same order`() = runTest {
-                val teams = moveTeam(matchId = matchId, teamAt = 1, moveTo = 1).getOrThrow().teams
+                val matchResult = moveTeam(matchId = matchId, teamAt = 1, moveTo = 1)
 
-                assertTeamOrder(teams, "t0, t1, t2")
+                assertTeamOrder(matchResult, "t0, t1, t2")
             }
 
             @Test
             fun `moveTo within bounds, move the team to the correct position`() = runTest {
-                val teams = moveTeam(matchId = matchId, teamAt = 0, moveTo = 1).getOrThrow().teams
+                val matchResult = moveTeam(matchId = matchId, teamAt = 0, moveTo = 1)
 
-                assertTeamOrder(teams, "t1, t0, t2")
+                assertTeamOrder(matchResult, "t1, t0, t2")
             }
 
             @Test
             fun `moveTo underflows, move the team to the initial position`() = runTest {
-                val teams = moveTeam(matchId = matchId, teamAt = 2, moveTo = -2).getOrThrow().teams
+                val matchResult = moveTeam(matchId = matchId, teamAt = 2, moveTo = -2)
 
-                assertTeamOrder(teams, "t2, t0, t1")
+                assertTeamOrder(matchResult, "t2, t0, t1")
             }
 
             @Test
             fun `moveTo overflows, move the team to the last position`() = runTest {
-                val teams = moveTeam(matchId = matchId, teamAt = 1, moveTo = 6).getOrThrow().teams
+                val matchResult = moveTeam(matchId = matchId, teamAt = 1, moveTo = 6)
 
-                assertTeamOrder(teams, "t0, t2, t1")
+                assertTeamOrder(matchResult, "t0, t2, t1")
             }
 
-            private fun assertTeamOrder(teams: List<TeamResponse>, order: String) {
-                assertThat(teams.joinToString { it.name }).isEqualTo(order)
+            private suspend fun assertTeamOrder(matchResult: Result<MatchResponse>, order: String) {
+                assertMatchResponse(fixture, matchResult) { match ->
+                    assertThat(match.teams.joinToString { it.name }).isEqualTo(order)
+                }
             }
         }
     }

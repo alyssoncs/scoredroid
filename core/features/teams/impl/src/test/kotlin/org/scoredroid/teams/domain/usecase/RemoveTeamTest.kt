@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.scoredroid.domain.entities.Match
+import org.scoredroid.infra.test.assertions.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
 @ExperimentalCoroutinesApi
@@ -27,27 +28,33 @@ class RemoveTeamTest {
     inner class ValidIndex {
         @Test
         fun `remove first team`() = runTest {
-            val teams = removeTeam(match.id, 0).getOrThrow().teams
+            val matchResult = removeTeam(match.id, 0)
 
-            assertThat(teams).hasSize(1)
-            assertThat(teams.first().name).isEqualTo("team 2")
+            assertMatchResponse(fixture, matchResult) { match ->
+                assertThat(match.teams).hasSize(1)
+                assertThat(match.teams.first().name).isEqualTo("team 2")
+            }
         }
 
         @Test
         fun `remove last team`() = runTest {
-            val teams = removeTeam(match.id, 1).getOrThrow().teams
+            val matchResult = removeTeam(match.id, 1)
 
-            assertThat(teams).hasSize(1)
-            assertThat(teams.first().name).isEqualTo("team 1")
+            assertMatchResponse(fixture, matchResult) { match ->
+                assertThat(match.teams).hasSize(1)
+                assertThat(match.teams.first().name).isEqualTo("team 1")
+            }
         }
 
         @Test
         fun `remove all teams`() = runTest {
-            removeTeam(match.id, 0).getOrThrow().teams
+            removeTeam(match.id, 0).getOrThrow()
 
-            val teams = removeTeam(match.id, 0).getOrThrow().teams
+            val matchResult = removeTeam(match.id, 0)
 
-            assertThat(teams).isEmpty()
+            assertMatchResponse(fixture, matchResult) { match ->
+                assertThat(match.teams).isEmpty()
+            }
         }
     }
 
@@ -56,9 +63,11 @@ class RemoveTeamTest {
         @ParameterizedTest
         @ValueSource(ints = [-1, 2, 3])
         fun `do nothing`(index: Int) = runTest {
-            val teams = removeTeam(match.id, index).getOrThrow().teams
+            val matchResult = removeTeam(match.id, index)
 
-            assertThat(teams).hasSize(2)
+            assertMatchResponse(fixture, matchResult) { match ->
+                assertThat(match.teams).hasSize(2)
+            }
         }
     }
 

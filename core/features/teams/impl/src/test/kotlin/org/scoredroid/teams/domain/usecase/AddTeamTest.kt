@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.data.response.MatchResponse
+import org.scoredroid.infra.test.assertions.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import org.scoredroid.teams.domain.request.AddTeamRequest
 
@@ -47,22 +48,17 @@ class AddTeamTest {
 
             val result = addTeam(matchId, addTeamRequest)
 
-            assertTeamWasAdded(matchId, result, addTeamRequest)
+            assertTeamWasAdded(result, addTeamRequest)
         }
 
         private suspend fun assertTeamWasAdded(
-            matchId: Long,
             result: Result<MatchResponse>,
             addTeamRequest: AddTeamRequest,
         ) {
             assertThat(result.isSuccess).isTrue()
-
-            val resultTeam = result.getOrThrow().teams.last()
-            val persistedMatch = fixture.repository.getMatch(matchId)
-
-            assertThat(persistedMatch).isNotNull()
-            assertThat(resultTeam.name).isEqualTo(addTeamRequest.name)
-            assertThat(resultTeam.name).isEqualTo(persistedMatch!!.teams.last().name)
+            assertMatchResponse(fixture, result) { match ->
+                assertThat(match.teams.last().name).isEqualTo(addTeamRequest.name)
+            }
         }
     }
 }
