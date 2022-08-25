@@ -17,6 +17,15 @@ suspend fun assertMatchResponse(
     assertion(match)
 }
 
+suspend fun assertMatchResponse(
+    fixture: MatchRepositoryFixture,
+    matchResult: Result<MatchResponse>,
+    assertion: (MatchResponse) -> Unit
+) {
+    assertMatchResponse(fixture, matchResult.getOrThrow(), assertion)
+}
+
+
 private suspend fun MatchRepositoryFixture.getPersistedMatch(matchId: Long): Match {
     val match = this.repository.getMatch(matchId)
     assertThat(match).isNotNull()

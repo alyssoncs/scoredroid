@@ -6,7 +6,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.scoredroid.data.response.MatchResponse
+import org.scoredroid.infra.test.assertions.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import kotlin.properties.Delegates
 
@@ -44,15 +44,9 @@ class RenameMatchTest {
         fun `return renamed match`() = runTest {
             val result = renameMatch(matchId, "specific name")
 
-            assertMatchWasRenamed(result, "specific name")
-        }
-
-        private suspend fun assertMatchWasRenamed(
-            result: Result<MatchResponse>,
-            matchName: String
-        ) {
-            assertThat(result.getOrThrow().name).isEqualTo(matchName)
-            assertThat(fixture.repository.getMatch(matchId)!!.name).isEqualTo(matchName)
+            assertMatchResponse(fixture, result) { match ->
+                assertThat(match.name).isEqualTo("specific name")
+            }
         }
     }
 }
