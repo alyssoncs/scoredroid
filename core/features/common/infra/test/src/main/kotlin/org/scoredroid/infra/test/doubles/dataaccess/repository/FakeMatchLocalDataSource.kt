@@ -22,8 +22,7 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
             teams = matchRequest.teams.map { Team(name = it.name, score = 0.toScore()) },
         )
 
-        matches[matchId] = match
-        return match
+        return saveMatch(match)
     }
 
     override suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
@@ -57,7 +56,7 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
     }
 
     override suspend fun getTeam(matchId: Long, teamAt: Int): Team? {
-        return matches[matchId]?.teams?.getOrNull(teamAt)
+        return getMatch(matchId)?.teams?.getOrNull(teamAt)
     }
 
     override suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
@@ -102,19 +101,23 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
         return teams.toList()
     }
 
-    private fun updateMatch(
+    private suspend fun updateMatch(
         matchId: Long,
         onUpdateError: Throwable = Throwable(),
         update: (Match) -> Match?,
     ): Result<Match> {
-        val match = matches[matchId] ?: return Result.failure(TeamOperationError.MatchNotFound)
+        val match = getMatch(matchId) ?: return Result.failure(TeamOperationError.MatchNotFound)
 
         val updatedMatch = update(match)
         return if (updatedMatch != null) {
-            matches[matchId] = updatedMatch
-            Result.success(updatedMatch)
+            Result.success(saveMatch(updatedMatch))
         } else {
             Result.failure(onUpdateError)
         }
+    }
+
+    private fun saveMatch(match: Match): Match {
+        matches[match.id] = match
+        return match
     }
 }
