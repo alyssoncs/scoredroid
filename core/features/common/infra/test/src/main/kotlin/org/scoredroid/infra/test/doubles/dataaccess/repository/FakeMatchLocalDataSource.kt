@@ -22,7 +22,6 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
             teams = matchRequest.teams.map { Team(name = it.name, score = 0.toScore()) },
         )
 
-        // TODO: introduce bug here and see most tests fail
         matches[matchId] = match
         return match
     }
