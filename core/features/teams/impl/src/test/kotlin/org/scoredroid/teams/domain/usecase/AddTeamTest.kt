@@ -26,10 +26,6 @@ class AddTeamTest {
 
             val result = addTeam(matchId, AddTeamRequest(name = "irrelevant"))
 
-            assertError(result)
-        }
-
-        private fun assertError(result: Result<MatchResponse>) {
             assertTrue(result.isFailure)
         }
     }
@@ -48,19 +44,25 @@ class AddTeamTest {
         @Test
         fun `team is added`() = runTest {
             val addTeamRequest = AddTeamRequest(name = "team name")
+
             val result = addTeam(matchId, addTeamRequest)
 
-
-            assertContainsTeamCorrespondingWith(result, addTeamRequest)
+            assertTeamWasAdded(matchId, result, addTeamRequest)
         }
 
-        private fun assertContainsTeamCorrespondingWith(
+        private suspend fun assertTeamWasAdded(
+            matchId: Long,
             result: Result<MatchResponse>,
             addTeamRequest: AddTeamRequest,
         ) {
-            val team = result.getOrThrow().teams.last()
+            assertThat(result.isSuccess).isTrue()
 
-            assertThat(team.name).isEqualTo(addTeamRequest.name)
+            val resultTeam = result.getOrThrow().teams.last()
+            val persistedMatch = fixture.repository.getMatch(matchId)
+
+            assertThat(persistedMatch).isNotNull()
+            assertThat(resultTeam.name).isEqualTo(addTeamRequest.name)
+            assertThat(resultTeam.name).isEqualTo(persistedMatch!!.teams.last().name)
         }
     }
 }

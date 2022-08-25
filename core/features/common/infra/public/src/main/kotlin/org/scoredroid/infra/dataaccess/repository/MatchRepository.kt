@@ -11,6 +11,11 @@ import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 class MatchRepository(
     private val matchLocalDataSource: MatchLocalDataSource
 ) {
+
+    suspend fun getMatch(matchId: Long): Match? {
+        return matchLocalDataSource.getMatch(matchId)
+    }
+
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
         return matchLocalDataSource.createMatch(createMatchRequest)
     }
@@ -61,12 +66,10 @@ class MatchRepository(
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-
         return matchLocalDataSource.renameMatch(matchId, name)
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
-
         return matchLocalDataSource.moveTeam(matchId, teamAt, moveTo)
     }
 }
