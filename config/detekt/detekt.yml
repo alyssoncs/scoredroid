@@ -640,7 +640,7 @@ style:
     max: 2
     excludeGuardClauses: false
   TrailingWhitespace:
-    active: false
+    active: true
   UnderscoresInNumericLiterals:
     active: false
     acceptableLength: 4
