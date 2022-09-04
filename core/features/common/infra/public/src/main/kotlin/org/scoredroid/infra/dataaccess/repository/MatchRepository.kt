@@ -29,11 +29,11 @@ class MatchRepository(
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        return matchLocalDataSource.addTeam(matchId, team).updateFlowOnSuccess()
+        return updateOnLocalDataSource { addTeam(matchId, team) }
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
-        return matchLocalDataSource.removeTeam(matchId, teamAt).updateFlowOnSuccess()
+        return updateOnLocalDataSource { removeTeam(matchId, teamAt) }
     }
 
     suspend fun updateScore(
@@ -42,8 +42,7 @@ class MatchRepository(
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
         val currentScore = getCurrentScore(matchId, teamAt)
-        return matchLocalDataSource.updateScoreTo(matchId, teamAt, update(currentScore))
-            .updateFlowOnSuccess()
+        return updateOnLocalDataSource { updateScoreTo(matchId, teamAt, update(currentScore)) }
     }
 
     suspend fun updateScoreForAllTeams(
@@ -59,12 +58,20 @@ class MatchRepository(
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        val renameMatch = matchLocalDataSource.renameMatch(matchId, name)
-        return renameMatch.updateFlowOnSuccess()
+        return updateOnLocalDataSource { renameMatch(matchId, name) }
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
-        return matchLocalDataSource.moveTeam(matchId, teamAt, moveTo).updateFlowOnSuccess()
+        return updateOnLocalDataSource { moveTeam(matchId, teamAt, moveTo) }
+
+    }
+
+    private suspend fun updateOnLocalDataSource(
+        update: suspend MatchLocalDataSource.() -> Result<Match>,
+    ): Result<Match> {
+        return matchLocalDataSource.update().onSuccess { newMatchValue ->
+            getMatchMutableFlow(newMatchValue.id)?.emit(newMatchValue)
+        }
     }
 
     private suspend fun updateScoreForAllTeams(
@@ -80,12 +87,6 @@ class MatchRepository(
 
     private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
         return matchLocalDataSource.getTeam(matchId, teamAt)?.score.orZero()
-    }
-
-    private suspend fun Result<Match>.updateFlowOnSuccess(): Result<Match> {
-        return this.onSuccess { newMatchValue ->
-            getMatchMutableFlow(newMatchValue.id)?.emit(newMatchValue)
-        }
     }
 
     private suspend fun getMatchMutableFlow(matchId: Long): MutableStateFlow<Match>? {
