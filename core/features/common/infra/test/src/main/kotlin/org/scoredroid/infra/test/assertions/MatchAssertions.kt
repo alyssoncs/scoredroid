@@ -12,7 +12,6 @@ suspend fun assertMatchResponse(
     assertion: (MatchResponse) -> Unit
 ) {
     val persistedMatch = fixture.getPersistedMatch(match.id).toMatchResponse()
-    println(persistedMatch)
     assertion(persistedMatch)
     assertion(match)
 }
