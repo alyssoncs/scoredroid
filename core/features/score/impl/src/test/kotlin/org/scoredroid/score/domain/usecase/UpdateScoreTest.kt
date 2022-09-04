@@ -1,5 +1,6 @@
 package org.scoredroid.score.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -119,11 +120,29 @@ abstract class UpdateScoreTest {
                 assertScore(result, updateAmount)
             }
 
+            @Test
+            fun `flow is updated`() = runTest {
+                fixture.getMatchFlow(match.id).test {
+                    updateScore(match.id, 0, 2)
+
+                    awaitItem()
+                    val newMatch = awaitItem()
+                    assertScore(newMatch, 2)
+                }
+            }
+
             private suspend fun assertScore(result: Result<MatchResponse>, updateAmount: Int) {
                 assertMatchResponse(fixture, result) { match ->
-                    assertThat(match.teams[0].score)
-                        .isEqualTo(updateStrategy(currentScore = 5, updateAmount = updateAmount))
+                    assertScore(match, updateAmount)
                 }
+            }
+
+            private fun assertScore(
+                match: MatchResponse,
+                updateAmount: Int
+            ) {
+                assertThat(match.teams[0].score)
+                    .isEqualTo(updateStrategy(currentScore = 5, updateAmount = updateAmount))
             }
         }
     }

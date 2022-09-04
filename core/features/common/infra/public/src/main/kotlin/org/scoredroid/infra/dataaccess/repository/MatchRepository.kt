@@ -43,6 +43,7 @@ class MatchRepository(
     ): Result<Match> {
         val currentScore = getCurrentScore(matchId, teamAt)
         return matchLocalDataSource.updateScoreTo(matchId, teamAt, update(currentScore))
+            .updateFlowOnSuccess()
     }
 
     private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
@@ -58,7 +59,7 @@ class MatchRepository(
             updateScoreForAllTeams(match, matchId, update)
         } else {
             Result.failure(TeamOperationError.MatchNotFound)
-        }.updateFlowOnSuccess()
+        }
     }
 
     private suspend fun updateScoreForAllTeams(
