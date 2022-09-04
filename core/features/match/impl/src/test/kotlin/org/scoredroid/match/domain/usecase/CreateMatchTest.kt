@@ -48,6 +48,15 @@ class CreateMatchTest {
                 assertThat(match.teams).isEmpty()
             }
         }
+
+        @Test
+        fun `can get a flow`() = runTest {
+            val matchResponse = createMatch()
+
+            val flow = fixture.getMatchFlow(matchResponse.id)
+
+            assertThat(flow).isNotNull()
+        }
     }
 
     @Nested
