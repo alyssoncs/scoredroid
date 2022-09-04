@@ -103,10 +103,12 @@ abstract class UpdateScoreTest {
     inner class ExistingTeam {
         private lateinit var match: Match
 
+        private val initialScore = 5
+
         @BeforeEach
         fun setUp() = runTest {
             match = fixture.createMatchWithTeams("team name")
-            incrementScore(matchId = match.id, teamAt = 0, increment = 5)
+            incrementScore(matchId = match.id, teamAt = 0, increment = initialScore)
         }
 
         @Nested
@@ -142,7 +144,7 @@ abstract class UpdateScoreTest {
                 updateAmount: Int
             ) {
                 assertThat(match.teams[0].score)
-                    .isEqualTo(updateStrategy(currentScore = 5, updateAmount = updateAmount))
+                    .isEqualTo(updateStrategy(currentScore = initialScore, updateAmount = updateAmount))
             }
         }
     }
