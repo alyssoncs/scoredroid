@@ -4,4 +4,6 @@ plugins {
 
 dependencies {
     api projects.core.features.common.data
+
+    implementation libs.coroutines.core
 }

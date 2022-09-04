@@ -1,5 +1,7 @@
 package org.scoredroid.infra.dataaccess.repository
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.orZero
@@ -11,6 +13,10 @@ import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 class MatchRepository(
     private val matchLocalDataSource: MatchLocalDataSource
 ) {
+    suspend fun getMatchFlow(matchId: Long): Flow<Match>? {
+        val match = getMatch(matchId)
+        return if (match != null) flow { emit(match) } else null
+    }
 
     suspend fun getMatch(matchId: Long): Match? {
         return matchLocalDataSource.getMatch(matchId)
