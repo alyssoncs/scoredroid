@@ -58,7 +58,7 @@ class MatchRepository(
             updateScoreForAllTeams(match, matchId, update)
         } else {
             Result.failure(TeamOperationError.MatchNotFound)
-        }
+        }.updateFlowOnSuccess()
     }
 
     private suspend fun updateScoreForAllTeams(

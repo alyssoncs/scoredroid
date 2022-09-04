@@ -1,5 +1,6 @@
 package org.scoredroid.score.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -82,6 +83,16 @@ class ResetScoreTest {
             assertEmptyScore(result = result)
         }
 
+        @Test
+        fun `flow is updated`() = runTest {
+            fixture.getMatchFlow(match.id).test {
+                resetScore(match.id)
+
+                assertThat(scoreSumOf(awaitItem())).isNotEqualTo(0)
+                assertThat(scoreSumOf(awaitItem())).isEqualTo(0)
+            }
+        }
+
         private suspend fun assertEmptyScore(result: Result<MatchResponse>) {
             assertMatchResponse(fixture, result) { match ->
                 assertThat(match.teams).hasSize(3)
@@ -89,6 +100,10 @@ class ResetScoreTest {
                     assertThat(it.score).isEqualTo(0)
                 }
             }
+        }
+
+        private fun scoreSumOf(match: MatchResponse): Int {
+            return match.teams.sumOf { it.score }
         }
     }
 }
