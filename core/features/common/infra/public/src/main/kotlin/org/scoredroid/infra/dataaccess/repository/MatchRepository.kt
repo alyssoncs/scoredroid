@@ -33,7 +33,7 @@ class MatchRepository(
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
-        return matchLocalDataSource.removeTeam(matchId, teamAt)
+        return matchLocalDataSource.removeTeam(matchId, teamAt).updateFlowOnSuccess()
     }
 
     suspend fun updateScore(

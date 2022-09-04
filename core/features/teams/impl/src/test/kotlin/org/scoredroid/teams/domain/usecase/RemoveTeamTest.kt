@@ -1,5 +1,6 @@
 package org.scoredroid.teams.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -54,6 +55,18 @@ class RemoveTeamTest {
 
             assertMatchResponse(fixture, matchResult) { match ->
                 assertThat(match.teams).isEmpty()
+            }
+        }
+
+        @Test
+        fun `flow is updated`() = runTest {
+            fixture.getMatchFlow(match.id).test {
+                removeTeam(match.id, 0)
+
+                val oldMatch = awaitItem()
+                val newMatch = awaitItem()
+
+                assertThat(newMatch.teams.size).isEqualTo(oldMatch.teams.size.dec())
             }
         }
     }
