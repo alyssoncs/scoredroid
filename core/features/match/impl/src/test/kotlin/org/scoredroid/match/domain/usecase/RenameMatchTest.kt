@@ -1,5 +1,6 @@
 package org.scoredroid.match.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -35,17 +36,30 @@ class RenameMatchTest {
 
         private var matchId by Delegates.notNull<Long>()
 
+        private val oldName = "old name"
+        private val newName = "new name"
+
         @BeforeEach
         fun setUp() = runTest {
-            matchId = fixture.createNamedMatch(matchName = "generic name").id
+            matchId = fixture.createNamedMatch(matchName = oldName).id
         }
 
         @Test
         fun `return renamed match`() = runTest {
-            val result = renameMatch(matchId, "specific name")
+            val result = renameMatch(matchId, newName)
 
             assertMatchResponse(fixture, result) { match ->
-                assertThat(match.name).isEqualTo("specific name")
+                assertThat(match.name).isEqualTo(newName)
+            }
+        }
+
+        @Test
+        fun `flow is updated`() = runTest {
+            fixture.getMatchFlow(matchId).test {
+                renameMatch(matchId, newName)
+
+                assertThat(awaitItem().name).isEqualTo(oldName)
+                assertThat(awaitItem().name).isEqualTo(newName)
             }
         }
     }

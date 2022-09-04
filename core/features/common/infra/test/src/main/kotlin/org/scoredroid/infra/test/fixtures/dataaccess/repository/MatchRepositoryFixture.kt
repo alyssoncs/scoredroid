@@ -30,8 +30,12 @@ class MatchRepositoryFixture(val repository: MatchRepository) {
         }
     }
 
-    suspend fun getMatchFlow(matchId: Long): Flow<MatchResponse>? {
+    suspend fun hasMatchFlow(matchId: Long): Boolean {
+        return repository.getMatchFlow(matchId) != null
+    }
+
+    suspend fun getMatchFlow(matchId: Long): Flow<MatchResponse> {
         return repository.getMatchFlow(matchId)
-            ?.map { it.toMatchResponse() }
+            ?.map { it.toMatchResponse() }!!
     }
 }

@@ -1,7 +1,7 @@
 package org.scoredroid.infra.dataaccess.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.orZero
@@ -13,9 +13,26 @@ import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 class MatchRepository(
     private val matchLocalDataSource: MatchLocalDataSource
 ) {
+
+    private val matchFlows = mutableMapOf<Long, MutableStateFlow<Match>>()
+
     suspend fun getMatchFlow(matchId: Long): Flow<Match>? {
-        val match = getMatch(matchId)
-        return if (match != null) flow { emit(match) } else null
+        return getMatchMutableFlow(matchId)
+    }
+
+    private suspend fun getMatchMutableFlow(matchId: Long): MutableStateFlow<Match>? {
+        val f = matchFlows[matchId]
+        return if (f != null) {
+            f
+        } else {
+            val match = getMatch(matchId)
+            if (match != null) {
+                matchFlows[matchId] = MutableStateFlow(match)
+                getMatchMutableFlow(matchId)
+            } else {
+                null
+            }
+        }
     }
 
     suspend fun getMatch(matchId: Long): Match? {
@@ -72,7 +89,9 @@ class MatchRepository(
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        return matchLocalDataSource.renameMatch(matchId, name)
+        return matchLocalDataSource.renameMatch(matchId, name).onSuccess {
+            getMatchMutableFlow(matchId)?.emit(it)
+        }
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {

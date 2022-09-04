@@ -3,6 +3,7 @@ package org.scoredroid.match.domain.usecase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.test.assertions.assertMatchResponse
@@ -53,9 +54,7 @@ class CreateMatchTest {
         fun `can get a flow`() = runTest {
             val matchResponse = createMatch()
 
-            val flow = fixture.getMatchFlow(matchResponse.id)
-
-            assertThat(flow).isNotNull()
+            assertTrue(fixture.hasMatchFlow(matchResponse.id))
         }
     }
 
