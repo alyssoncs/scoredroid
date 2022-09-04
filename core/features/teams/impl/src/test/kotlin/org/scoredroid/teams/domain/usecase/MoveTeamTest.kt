@@ -1,5 +1,6 @@
 package org.scoredroid.teams.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -98,10 +99,28 @@ class MoveTeamTest {
                 assertTeamOrder(matchResult, "t0, t2, t1")
             }
 
-            private suspend fun assertTeamOrder(matchResult: Result<MatchResponse>, order: String) {
-                assertMatchResponse(fixture, matchResult) { match ->
-                    assertThat(match.teams.joinToString { it.name }).isEqualTo(order)
+            @Test
+            fun `flow is updated`() = runTest {
+                fixture.getMatchFlow(matchId).test {
+                    moveTeam(matchId = matchId, teamAt = 1, moveTo = 0)
+
+                    val oldMatch = awaitItem()
+                    val newMatch = awaitItem()
+
+                    assertTeamOrder(oldMatch, "t0, t1, t2")
+                    assertTeamOrder(newMatch, "t1, t0, t2")
                 }
+            }
+
+
+            private suspend fun assertTeamOrder(matchResult: Result<MatchResponse>, expectedOrder: String) {
+                assertMatchResponse(fixture, matchResult) { match ->
+                    assertTeamOrder(match, expectedOrder)
+                }
+            }
+
+            private fun assertTeamOrder(match: MatchResponse, expectedOrder: String) {
+                assertThat(match.teams.joinToString { it.name }).isEqualTo(expectedOrder)
             }
         }
     }

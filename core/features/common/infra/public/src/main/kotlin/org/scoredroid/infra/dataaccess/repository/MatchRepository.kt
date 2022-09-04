@@ -64,7 +64,7 @@ class MatchRepository(
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
-        return matchLocalDataSource.moveTeam(matchId, teamAt, moveTo)
+        return matchLocalDataSource.moveTeam(matchId, teamAt, moveTo).updateFlowOnSuccess()
     }
 
     private suspend fun updateScoreForAllTeams(
