@@ -46,32 +46,16 @@ class MatchRepository(
             .updateFlowOnSuccess()
     }
 
-    private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
-        return matchLocalDataSource.getTeam(matchId, teamAt)?.score.orZero()
-    }
-
     suspend fun updateScoreForAllTeams(
         matchId: Long,
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
         val match = matchLocalDataSource.getMatch(matchId)
         return if (match != null) {
-            updateScoreForAllTeams(match, matchId, update)
+            updateScoreForAllTeams(match, update)
         } else {
             Result.failure(TeamOperationError.MatchNotFound)
         }
-    }
-
-    private suspend fun updateScoreForAllTeams(
-        match: Match,
-        matchId: Long,
-        update: (currentScore: Score) -> Score
-    ): Result<Match> {
-        var result: Result<Match> = Result.success(match)
-        match.teams.forEachIndexed { teamAt, _ ->
-            result = updateScore(matchId, teamAt, update)
-        }
-        return result
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
@@ -81,6 +65,21 @@ class MatchRepository(
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
         return matchLocalDataSource.moveTeam(matchId, teamAt, moveTo)
+    }
+
+    private suspend fun updateScoreForAllTeams(
+        match: Match,
+        update: (currentScore: Score) -> Score
+    ): Result<Match> {
+        var result: Result<Match> = Result.success(match)
+        match.teams.forEachIndexed { teamAt, _ ->
+            result = updateScore(match.id, teamAt, update)
+        }
+        return result
+    }
+
+    private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
+        return matchLocalDataSource.getTeam(matchId, teamAt)?.score.orZero()
     }
 
     private suspend fun Result<Match>.updateFlowOnSuccess(): Result<Match> {
