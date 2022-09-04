@@ -63,7 +63,6 @@ class MatchRepository(
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
         return updateOnLocalDataSource { moveTeam(matchId, teamAt, moveTo) }
-
     }
 
     private suspend fun updateOnLocalDataSource(
