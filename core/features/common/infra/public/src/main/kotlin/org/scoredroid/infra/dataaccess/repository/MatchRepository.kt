@@ -20,21 +20,6 @@ class MatchRepository(
         return getMatchMutableFlow(matchId)
     }
 
-    private suspend fun getMatchMutableFlow(matchId: Long): MutableStateFlow<Match>? {
-        val f = matchFlows[matchId]
-        return if (f != null) {
-            f
-        } else {
-            val match = getMatch(matchId)
-            if (match != null) {
-                matchFlows[matchId] = MutableStateFlow(match)
-                getMatchMutableFlow(matchId)
-            } else {
-                null
-            }
-        }
-    }
-
     suspend fun getMatch(matchId: Long): Match? {
         return matchLocalDataSource.getMatch(matchId)
     }
@@ -89,12 +74,33 @@ class MatchRepository(
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        return matchLocalDataSource.renameMatch(matchId, name).onSuccess {
-            getMatchMutableFlow(matchId)?.emit(it)
-        }
+        val renameMatch = matchLocalDataSource.renameMatch(matchId, name)
+        return renameMatch.updateFlowOnSuccess()
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
         return matchLocalDataSource.moveTeam(matchId, teamAt, moveTo)
+    }
+
+    private suspend fun Result<Match>.updateFlowOnSuccess(): Result<Match> {
+        return this.onSuccess { newMatchValue ->
+            getMatchMutableFlow(newMatchValue.id)?.emit(newMatchValue)
+        }
+    }
+
+    private suspend fun getMatchMutableFlow(matchId: Long): MutableStateFlow<Match>? {
+        val flow = matchFlows[matchId]
+
+        return if (flow != null) {
+            flow
+        } else {
+            val match = getMatch(matchId)
+            if (match != null) {
+                matchFlows[matchId] = MutableStateFlow(match)
+                getMatchMutableFlow(matchId)
+            } else {
+                null
+            }
+        }
     }
 }
