@@ -29,7 +29,7 @@ class MatchRepository(
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        return matchLocalDataSource.addTeam(matchId, team)
+        return matchLocalDataSource.addTeam(matchId, team).updateFlowOnSuccess()
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {

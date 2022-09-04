@@ -1,5 +1,6 @@
 package org.scoredroid.teams.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -50,6 +51,20 @@ class AddTeamTest {
 
             assertTeamWasAdded(result, addTeamRequest)
         }
+
+        @Test
+        fun `flow is updated`() = runTest {
+            fixture.getMatchFlow(matchId).test {
+                addTeam(matchId, AddTeamRequest(name = "team name"))
+
+                val oldMatch = awaitItem()
+                val newMatch = awaitItem()
+
+                assertThat(newMatch.teams.size).isEqualTo(oldMatch.teams.size.inc())
+                assertThat(newMatch.teams.last().name).isEqualTo("team name")
+            }
+        }
+
 
         private suspend fun assertTeamWasAdded(
             result: Result<MatchResponse>,
