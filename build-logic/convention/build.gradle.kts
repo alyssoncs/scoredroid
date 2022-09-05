@@ -1,6 +1,6 @@
 plugins {
-    alias libs.plugins.kotlin.jvm
-    id 'java-gradle-plugin'
+    alias(libs.plugins.kotlin.jvm)
+    id("java-gradle-plugin")
 }
 
 group = "org.scoredroid.buildlogic"
