@@ -1,7 +1,7 @@
 package org.scoredroid.infra.test.fixtures.dataaccess.repository
 
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
-import org.scoredroid.infra.test.doubles.dataaccess.repository.FakeMatchLocalDataSource
+import org.scoredroid.infra.test.doubles.dataaccess.repository.FakeInMemoryMatchDataSource
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 
 object MatchRepositoryFixtureFactory {
@@ -11,9 +11,9 @@ object MatchRepositoryFixtureFactory {
         initialMatchId: Long = 0L,
         matchIdStrategy: (currentId: Long) -> Long = autoIncrement,
     ): MatchRepositoryFixture {
-        val localDataSource = FakeMatchLocalDataSource()
+        val inMemoryDataSource = FakeInMemoryMatchDataSource()
         val persistentDataSource = FakePersistentMatchDataSource(initialMatchId, matchIdStrategy)
-        val repository = MatchRepository(localDataSource, persistentDataSource)
+        val repository = MatchRepository(inMemoryDataSource, persistentDataSource)
         return MatchRepositoryFixture(repository)
     }
 }

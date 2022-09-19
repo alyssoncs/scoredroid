@@ -5,7 +5,7 @@ import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.Team
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 
-interface MatchLocalDataSource {
+interface InMemoryMatchDataSource {
     suspend fun saveMatch(match: Match): Match
     suspend fun renameMatch(matchId: Long, name: String): Result<Match>
     suspend fun getMatch(matchId: Long): Match?

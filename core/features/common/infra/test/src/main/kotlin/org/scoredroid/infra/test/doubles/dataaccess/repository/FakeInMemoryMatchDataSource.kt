@@ -4,11 +4,11 @@ import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.Score.Companion.toScore
 import org.scoredroid.domain.entities.Team
-import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
+import org.scoredroid.infra.dataaccess.datasource.local.InMemoryMatchDataSource
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 
-class FakeMatchLocalDataSource : MatchLocalDataSource {
+class FakeInMemoryMatchDataSource : InMemoryMatchDataSource {
     private val matches = mutableMapOf<Long, Match>()
 
     override suspend fun saveMatch(match: Match): Match {

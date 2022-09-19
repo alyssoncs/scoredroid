@@ -5,14 +5,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.orZero
-import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
+import org.scoredroid.infra.dataaccess.datasource.local.InMemoryMatchDataSource
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class MatchRepository(
-    private val matchLocalDataSource: MatchLocalDataSource,
+    private val inMemoryDataSource: InMemoryMatchDataSource,
     private val persistentDataSource: PersistentMatchDataSource
 ) {
 
@@ -23,19 +23,19 @@ class MatchRepository(
     }
 
     suspend fun getMatch(matchId: Long): Match? {
-        return matchLocalDataSource.getMatch(matchId)
+        return inMemoryDataSource.getMatch(matchId)
     }
 
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
-        return matchLocalDataSource.saveMatch(persistentDataSource.createMatch(createMatchRequest))
+        return inMemoryDataSource.saveMatch(persistentDataSource.createMatch(createMatchRequest))
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        return updateOnLocalDataSource { addTeam(matchId, team) }
+        return updateInMemory { addTeam(matchId, team) }
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
-        return updateOnLocalDataSource { removeTeam(matchId, teamAt) }
+        return updateInMemory { removeTeam(matchId, teamAt) }
     }
 
     suspend fun updateScore(
@@ -44,14 +44,14 @@ class MatchRepository(
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
         val currentScore = getCurrentScore(matchId, teamAt)
-        return updateOnLocalDataSource { updateScoreTo(matchId, teamAt, update(currentScore)) }
+        return updateInMemory { updateScoreTo(matchId, teamAt, update(currentScore)) }
     }
 
     suspend fun updateScoreForAllTeams(
         matchId: Long,
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
-        val match = matchLocalDataSource.getMatch(matchId)
+        val match = inMemoryDataSource.getMatch(matchId)
         return if (match != null) {
             updateScoreForAllTeams(match, update)
         } else {
@@ -60,17 +60,17 @@ class MatchRepository(
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        return updateOnLocalDataSource { renameMatch(matchId, name) }
+        return updateInMemory { renameMatch(matchId, name) }
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
-        return updateOnLocalDataSource { moveTeam(matchId, teamAt, moveTo) }
+        return updateInMemory { moveTeam(matchId, teamAt, moveTo) }
     }
 
-    private suspend fun updateOnLocalDataSource(
-        update: suspend MatchLocalDataSource.() -> Result<Match>,
+    private suspend fun updateInMemory(
+        update: suspend InMemoryMatchDataSource.() -> Result<Match>,
     ): Result<Match> {
-        return matchLocalDataSource.update().onSuccess { newMatchValue ->
+        return inMemoryDataSource.update().onSuccess { newMatchValue ->
             getMatchMutableFlow(newMatchValue.id)?.emit(newMatchValue)
         }
     }
@@ -87,7 +87,7 @@ class MatchRepository(
     }
 
     private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
-        return matchLocalDataSource.getTeam(matchId, teamAt)?.score.orZero()
+        return inMemoryDataSource.getTeam(matchId, teamAt)?.score.orZero()
     }
 
     private suspend fun getMatchMutableFlow(matchId: Long): MutableStateFlow<Match>? {
