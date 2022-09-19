@@ -1,4 +1,4 @@
 - [x] expose a match flow
 - [x] gradle kotlin dsl
-- [ ] add id strategy
+- [x] add id strategy
 - [ ] add persistence layer
