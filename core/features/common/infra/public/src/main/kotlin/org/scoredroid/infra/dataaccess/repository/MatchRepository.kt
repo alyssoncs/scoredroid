@@ -5,14 +5,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.orZero
-import org.scoredroid.infra.dataaccess.datasource.local.InMemoryMatchDataSource
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
+import org.scoredroid.infra.dataaccess.datasource.local.TransientMatchDataSource
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class MatchRepository(
-    private val inMemoryDataSource: InMemoryMatchDataSource,
+    private val transientDataSource: TransientMatchDataSource,
     private val persistentDataSource: PersistentMatchDataSource
 ) {
 
@@ -23,20 +23,20 @@ class MatchRepository(
     }
 
     suspend fun getMatch(matchId: Long): Match? {
-        return inMemoryDataSource.getMatch(matchId)
-            ?: cachePersistenceInMemory(matchId)
+        return transientDataSource.getMatch(matchId)
+            ?: cachePersistenceIntoTransient(matchId)
     }
 
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
-        return inMemoryDataSource.saveMatch(persistentDataSource.createMatch(createMatchRequest))
+        return transientDataSource.saveMatch(persistentDataSource.createMatch(createMatchRequest))
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        return updateInMemory(matchId) { addTeam(matchId, team) }
+        return updateTransientDataSource(matchId) { addTeam(matchId, team) }
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
-        return updateInMemory(matchId) { removeTeam(matchId, teamAt) }
+        return updateTransientDataSource(matchId) { removeTeam(matchId, teamAt) }
     }
 
     suspend fun updateScore(
@@ -45,7 +45,7 @@ class MatchRepository(
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
         val currentScore = getCurrentScore(matchId, teamAt)
-        return updateInMemory(matchId) { updateScoreTo(matchId, teamAt, update(currentScore)) }
+        return updateTransientDataSource(matchId) { updateScoreTo(matchId, teamAt, update(currentScore)) }
     }
 
     suspend fun updateScoreForAllTeams(
@@ -61,11 +61,11 @@ class MatchRepository(
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        return updateInMemory(matchId) { renameMatch(matchId, name) }
+        return updateTransientDataSource(matchId) { renameMatch(matchId, name) }
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
-        return updateInMemory(matchId) { moveTeam(matchId, teamAt, moveTo) }
+        return updateTransientDataSource(matchId) { moveTeam(matchId, teamAt, moveTo) }
     }
 
     suspend fun persist(matchId: Long): Result<Unit> {
@@ -78,19 +78,19 @@ class MatchRepository(
     }
 
     suspend fun removeMatch(matchId: Long): Result<Unit> {
-        inMemoryDataSource.removeMatch(matchId)
+        transientDataSource.removeMatch(matchId)
         return persistentDataSource.removeMatch(matchId)
     }
 
-    private suspend fun updateInMemory(
+    private suspend fun updateTransientDataSource(
         matchId: Long,
-        update: suspend InMemoryMatchDataSource.(matchId: Long) -> Result<Match>,
+        update: suspend TransientMatchDataSource.(matchId: Long) -> Result<Match>,
     ): Result<Match> {
-        val updateResult = inMemoryDataSource.update(matchId)
+        val updateResult = transientDataSource.update(matchId)
 
         return if (updateResult.exceptionOrNull() is TeamOperationError.MatchNotFound) {
-            cachePersistenceInMemory(matchId)
-            inMemoryDataSource.update(matchId)
+            cachePersistenceIntoTransient(matchId)
+            transientDataSource.update(matchId)
         } else {
             updateResult
         }.onSuccess { newMatch ->
@@ -98,8 +98,8 @@ class MatchRepository(
         }
     }
 
-    private suspend fun cachePersistenceInMemory(matchId: Long): Match? {
-        return persistentDataSource.getMatch(matchId)?.also { inMemoryDataSource.saveMatch(it) }
+    private suspend fun cachePersistenceIntoTransient(matchId: Long): Match? {
+        return persistentDataSource.getMatch(matchId)?.also { transientDataSource.saveMatch(it) }
     }
 
     private suspend fun updateScoreForAllTeams(
