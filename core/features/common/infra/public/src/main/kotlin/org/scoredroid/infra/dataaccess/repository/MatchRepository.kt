@@ -6,12 +6,14 @@ import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.orZero
 import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
+import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class MatchRepository(
-    private val matchLocalDataSource: MatchLocalDataSource
+    private val matchLocalDataSource: MatchLocalDataSource,
+    private val persistentDataSource: PersistentMatchDataSource
 ) {
 
     private val matchFlows = mutableMapOf<Long, MutableStateFlow<Match>>()
@@ -25,7 +27,7 @@ class MatchRepository(
     }
 
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
-        return matchLocalDataSource.createMatch(createMatchRequest)
+        return matchLocalDataSource.saveMatch(persistentDataSource.createMatch(createMatchRequest))
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {

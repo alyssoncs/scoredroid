@@ -7,21 +7,12 @@ import org.scoredroid.domain.entities.Team
 import org.scoredroid.infra.dataaccess.datasource.local.MatchLocalDataSource
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
-import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class FakeMatchLocalDataSource : MatchLocalDataSource {
-    private var currentId = 0L
     private val matches = mutableMapOf<Long, Match>()
 
-    override suspend fun createMatch(matchRequest: CreateMatchRepositoryRequest): Match {
-        val matchId = currentId++
-        val match = Match(
-            id = matchId,
-            name = matchRequest.name,
-            teams = matchRequest.teams.map { Team(name = it.name, score = 0.toScore()) },
-        )
-
-        return saveMatch(match)
+    override suspend fun saveMatch(match: Match): Match {
+        return saveOnCache(match)
     }
 
     override suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
@@ -41,6 +32,7 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
     }
 
     override suspend fun getMatch(matchId: Long): Match? {
+        println(matches[matchId])
         return matches[matchId]
     }
 
@@ -109,13 +101,13 @@ class FakeMatchLocalDataSource : MatchLocalDataSource {
 
         val updatedMatch = update(match)
         return if (updatedMatch != null) {
-            Result.success(saveMatch(updatedMatch))
+            Result.success(saveOnCache(updatedMatch))
         } else {
             Result.failure(onUpdateError)
         }
     }
 
-    private fun saveMatch(match: Match): Match {
+    private fun saveOnCache(match: Match): Match {
         matches[match.id] = match
         return match
     }

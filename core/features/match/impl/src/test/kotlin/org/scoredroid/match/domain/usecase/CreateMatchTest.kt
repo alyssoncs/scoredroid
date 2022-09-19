@@ -13,14 +13,18 @@ import org.scoredroid.match.domain.request.CreateMatchRequestOptions
 @ExperimentalCoroutinesApi
 class CreateMatchTest {
 
-    private val fixture = MatchRepositoryFixtureFactory.create()
+    private val oddIds: (currentId: Long) -> Long = { currentId -> currentId + 2 }
+    private val fixture = MatchRepositoryFixtureFactory.create(
+        initialMatchId = 1L,
+        matchIdStrategy = oddIds,
+    )
     private val createMatch = CreateMatch(fixture.repository)
 
     @Nested
     inner class DefaultParam {
 
         @Test
-        fun `id provided by local data source`() = runTest {
+        fun `id provided by persistent local data source`() = runTest {
             repeat(2) {
                 fixture.createEmptyMatch()
             }
@@ -28,7 +32,7 @@ class CreateMatchTest {
             val matchResponse = createMatch()
 
             assertMatchResponse(fixture, matchResponse) { match ->
-                assertThat(match.id).isEqualTo(2)
+                assertThat(match.id).isEqualTo(5)
             }
         }
 
