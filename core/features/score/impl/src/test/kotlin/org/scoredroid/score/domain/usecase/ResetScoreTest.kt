@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.test.assertions.assertMatchResponse
@@ -76,8 +78,11 @@ class ResetScoreTest {
             incrementScore(matchId = match.id, teamAt = 2, increment = 7)
         }
 
-        @Test
-        fun `all team scores are reseted`() = runTest {
+        @ParameterizedTest
+        @ValueSource(booleans = [true, false])
+        fun `all teams scores are reseted`(rebootApplication: Boolean) = runTest {
+            if (rebootApplication) fixture.rebootApplication()
+
             val result = resetScore(match.id)
 
             assertEmptyScore(result = result)

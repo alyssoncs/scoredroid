@@ -59,6 +59,14 @@ class FakeInMemoryMatchDataSource : InMemoryMatchDataSource {
         }
     }
 
+    override suspend fun getAllMatches(): List<Match> {
+        return matches.values.toList()
+    }
+
+    override suspend fun clear() {
+        matches.clear()
+    }
+
     override suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
         return updateMatch(matchId) { match ->
             match.copy(name = name)

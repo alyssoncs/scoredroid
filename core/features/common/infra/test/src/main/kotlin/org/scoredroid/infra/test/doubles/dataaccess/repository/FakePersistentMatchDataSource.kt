@@ -11,16 +11,29 @@ class FakePersistentMatchDataSource(
     private val matchIdStrategy: (currentId: Long) -> Long,
 ) : PersistentMatchDataSource {
     private var nextId = initialMatchId
+    private val matches = mutableMapOf<Long, Match>()
 
     override suspend fun createMatch(matchRequest: CreateMatchRepositoryRequest): Match {
         return Match(
             id = nextId,
             name = matchRequest.name,
             teams = matchRequest.teams.map { Team(name = it.name, score = 0.toScore()) },
-        ).also { updateNextId() }
+        ).also { updateNextId(); saveOnCache(it) }
+    }
+
+    override suspend fun getMatch(matchId: Long): Match? {
+        return matches[matchId]
+    }
+
+    override suspend fun save(match: Match) {
+        saveOnCache(match)
     }
 
     private fun updateNextId() {
         nextId = matchIdStrategy.invoke(nextId)
+    }
+
+    private fun saveOnCache(match: Match) {
+        matches[match.id] = match
     }
 }

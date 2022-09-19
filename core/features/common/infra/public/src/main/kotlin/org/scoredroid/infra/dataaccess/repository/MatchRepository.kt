@@ -24,6 +24,7 @@ class MatchRepository(
 
     suspend fun getMatch(matchId: Long): Match? {
         return inMemoryDataSource.getMatch(matchId)
+            ?: cachePersistenceInMemory(matchId)
     }
 
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
@@ -31,11 +32,11 @@ class MatchRepository(
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        return updateInMemory { addTeam(matchId, team) }
+        return updateInMemory(matchId) { addTeam(matchId, team) }
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
-        return updateInMemory { removeTeam(matchId, teamAt) }
+        return updateInMemory(matchId) { removeTeam(matchId, teamAt) }
     }
 
     suspend fun updateScore(
@@ -44,7 +45,7 @@ class MatchRepository(
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
         val currentScore = getCurrentScore(matchId, teamAt)
-        return updateInMemory { updateScoreTo(matchId, teamAt, update(currentScore)) }
+        return updateInMemory(matchId) { updateScoreTo(matchId, teamAt, update(currentScore)) }
     }
 
     suspend fun updateScoreForAllTeams(
@@ -60,19 +61,35 @@ class MatchRepository(
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        return updateInMemory { renameMatch(matchId, name) }
+        return updateInMemory(matchId) { renameMatch(matchId, name) }
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
-        return updateInMemory { moveTeam(matchId, teamAt, moveTo) }
+        return updateInMemory(matchId) { moveTeam(matchId, teamAt, moveTo) }
+    }
+
+    suspend fun persist(matchId: Long) {
+        getMatch(matchId)?.let { match -> persistentDataSource.save(match) }
     }
 
     private suspend fun updateInMemory(
-        update: suspend InMemoryMatchDataSource.() -> Result<Match>,
+        matchId: Long,
+        update: suspend InMemoryMatchDataSource.(matchId: Long) -> Result<Match>,
     ): Result<Match> {
-        return inMemoryDataSource.update().onSuccess { newMatchValue ->
-            getMatchMutableFlow(newMatchValue.id)?.emit(newMatchValue)
+        val updateResult = inMemoryDataSource.update(matchId)
+
+        return if (updateResult.exceptionOrNull() is TeamOperationError.MatchNotFound) {
+            cachePersistenceInMemory(matchId)
+            inMemoryDataSource.update(matchId)
+        } else {
+            updateResult
+        }.onSuccess { newMatch ->
+            getMatchMutableFlow(newMatch.id)?.emit(newMatch)
         }
+    }
+
+    private suspend fun cachePersistenceInMemory(matchId: Long): Match? {
+        return persistentDataSource.getMatch(matchId)?.also { inMemoryDataSource.saveMatch(it) }
     }
 
     private suspend fun updateScoreForAllTeams(
@@ -87,7 +104,7 @@ class MatchRepository(
     }
 
     private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
-        return inMemoryDataSource.getTeam(matchId, teamAt)?.score.orZero()
+        return getMatch(matchId)?.teams?.getOrNull(teamAt)?.score.orZero()
     }
 
     private suspend fun getMatchMutableFlow(matchId: Long): MutableStateFlow<Match>? {

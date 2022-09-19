@@ -111,41 +111,52 @@ abstract class UpdateScoreTest {
             incrementScore(matchId = match.id, teamAt = 0, increment = initialScore)
         }
 
+        @ParameterizedTest
+        @ValueSource(ints = [1, 2, 3])
+        fun `score is updated by specific amount`(updateAmount: Int) = runTest {
+            val result = updateScore(match.id, 0, updateAmount)
+
+            assertScore(result, updateAmount)
+        }
+
+        @Test
+        fun `flow is updated`() = runTest {
+            fixture.getMatchFlow(match.id).test {
+                updateScore(match.id, 0, 2)
+
+                awaitItem()
+                val newMatch = awaitItem()
+                assertScore(newMatch, 2)
+            }
+        }
+
         @Nested
-        inner class UpdateCurrentScore {
-
-            @ParameterizedTest
-            @ValueSource(ints = [1, 2, 3])
-            fun `score is updated by specific amount`(updateAmount: Int) = runTest {
-                val result = updateScore(match.id, 0, updateAmount)
-
-                assertScore(result, updateAmount)
+        inner class ApplicationRebooted {
+            @BeforeEach
+            fun setUp() = runTest {
+                fixture.rebootApplication()
             }
 
             @Test
-            fun `flow is updated`() = runTest {
-                fixture.getMatchFlow(match.id).test {
-                    updateScore(match.id, 0, 2)
+            fun `score is updated by specific amount`() = runTest {
+                val result = updateScore(match.id, 0, 2)
 
-                    awaitItem()
-                    val newMatch = awaitItem()
-                    assertScore(newMatch, 2)
-                }
+                assertScore(result, 2)
             }
+        }
 
-            private suspend fun assertScore(result: Result<MatchResponse>, updateAmount: Int) {
-                assertMatchResponse(fixture, result) { match ->
-                    assertScore(match, updateAmount)
-                }
+        private suspend fun assertScore(result: Result<MatchResponse>, updateAmount: Int) {
+            assertMatchResponse(fixture, result) { match ->
+                assertScore(match, updateAmount)
             }
+        }
 
-            private fun assertScore(
-                match: MatchResponse,
-                updateAmount: Int
-            ) {
-                assertThat(match.teams[0].score)
-                    .isEqualTo(updateStrategy(currentScore = initialScore, updateAmount = updateAmount))
-            }
+        private fun assertScore(
+            match: MatchResponse,
+            updateAmount: Int
+        ) {
+            assertThat(match.teams[0].score)
+                .isEqualTo(updateStrategy(currentScore = initialScore, updateAmount = updateAmount))
         }
     }
 }

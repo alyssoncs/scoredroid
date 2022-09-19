@@ -14,6 +14,6 @@ object MatchRepositoryFixtureFactory {
         val inMemoryDataSource = FakeInMemoryMatchDataSource()
         val persistentDataSource = FakePersistentMatchDataSource(initialMatchId, matchIdStrategy)
         val repository = MatchRepository(inMemoryDataSource, persistentDataSource)
-        return MatchRepositoryFixture(repository)
+        return MatchRepositoryFixture(repository, inMemoryDataSource)
     }
 }

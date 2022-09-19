@@ -71,29 +71,33 @@ class MoveTeamTest {
                 assertThrows<UpdateTeamError.TeamNotFound> { result.getOrThrow() }
             }
 
-            @Test
-            fun `moveTo equals to teamAt, keep the teams in the same order`() = runTest {
+            @ParameterizedTest
+            @ValueSource(booleans = [true, false])
+            fun `moveTo equals to teamAt, keep the teams in the same order`(rebootApplication: Boolean) = runTest {
                 val matchResult = moveTeam(matchId = matchId, teamAt = 1, moveTo = 1)
 
                 assertTeamOrder(matchResult, "t0, t1, t2")
             }
 
-            @Test
-            fun `moveTo within bounds, move the team to the correct position`() = runTest {
+            @ParameterizedTest
+            @ValueSource(booleans = [true, false])
+            fun `moveTo within bounds, move the team to the correct position`(rebootApplication: Boolean) = runTest {
                 val matchResult = moveTeam(matchId = matchId, teamAt = 0, moveTo = 1)
 
                 assertTeamOrder(matchResult, "t1, t0, t2")
             }
 
-            @Test
-            fun `moveTo underflows, move the team to the initial position`() = runTest {
+            @ParameterizedTest
+            @ValueSource(booleans = [true, false])
+            fun `moveTo underflows, move the team to the initial position`(rebootApplication: Boolean) = runTest {
                 val matchResult = moveTeam(matchId = matchId, teamAt = 2, moveTo = -2)
 
                 assertTeamOrder(matchResult, "t2, t0, t1")
             }
 
-            @Test
-            fun `moveTo overflows, move the team to the last position`() = runTest {
+            @ParameterizedTest
+            @ValueSource(booleans = [true, false])
+            fun `moveTo overflows, move the team to the last position`(rebootApplication: Boolean) = runTest {
                 val matchResult = moveTeam(matchId = matchId, teamAt = 1, moveTo = 6)
 
                 assertTeamOrder(matchResult, "t0, t2, t1")
@@ -111,7 +115,6 @@ class MoveTeamTest {
                     assertTeamOrder(newMatch, "t1, t0, t2")
                 }
             }
-
 
             private suspend fun assertTeamOrder(matchResult: Result<MatchResponse>, expectedOrder: String) {
                 assertMatchResponse(fixture, matchResult) { match ->

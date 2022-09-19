@@ -4,12 +4,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
+import org.scoredroid.infra.dataaccess.datasource.local.InMemoryMatchDataSource
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.utils.mappers.toMatchResponse
 
-class MatchRepositoryFixture(val repository: MatchRepository) {
+class MatchRepositoryFixture(
+    val repository: MatchRepository,
+    private val inMemoryMatchDataSource: InMemoryMatchDataSource,
+) {
     suspend fun createEmptyMatch(): Match {
         return repository.createMatch(CreateMatchRepositoryRequest())
     }
@@ -37,5 +41,13 @@ class MatchRepositoryFixture(val repository: MatchRepository) {
     suspend fun getMatchFlow(matchId: Long): Flow<MatchResponse> {
         return repository.getMatchFlow(matchId)
             ?.map { it.toMatchResponse() }!!
+    }
+
+    suspend fun rebootApplication() {
+        inMemoryMatchDataSource.getAllMatches()
+            .map { match -> match.id }
+            .forEach { matchId -> repository.persist(matchId) }
+
+        inMemoryMatchDataSource.clear()
     }
 }

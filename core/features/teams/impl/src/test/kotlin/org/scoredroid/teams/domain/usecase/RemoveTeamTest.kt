@@ -27,8 +27,11 @@ class RemoveTeamTest {
 
     @Nested
     inner class ValidIndex {
-        @Test
-        fun `remove first team`() = runTest {
+        @ParameterizedTest
+        @ValueSource(booleans = [true, false])
+        fun `remove first team`(rebootApplication: Boolean) = runTest {
+            if (rebootApplication) fixture.rebootApplication()
+
             val matchResult = removeTeam(match.id, 0)
 
             assertMatchResponse(fixture, matchResult) { match ->
@@ -37,8 +40,11 @@ class RemoveTeamTest {
             }
         }
 
-        @Test
-        fun `remove last team`() = runTest {
+        @ParameterizedTest
+        @ValueSource(booleans = [true, false])
+        fun `remove last team`(rebootApplication: Boolean) = runTest {
+            if (rebootApplication) fixture.rebootApplication()
+
             val matchResult = removeTeam(match.id, 1)
 
             assertMatchResponse(fixture, matchResult) { match ->
@@ -47,8 +53,11 @@ class RemoveTeamTest {
             }
         }
 
-        @Test
-        fun `remove all teams`() = runTest {
+        @ParameterizedTest
+        @ValueSource(booleans = [true, false])
+        fun `remove all teams`(rebootApplication: Boolean) = runTest {
+            if (rebootApplication) fixture.rebootApplication()
+
             removeTeam(match.id, 0).getOrThrow()
 
             val matchResult = removeTeam(match.id, 0)

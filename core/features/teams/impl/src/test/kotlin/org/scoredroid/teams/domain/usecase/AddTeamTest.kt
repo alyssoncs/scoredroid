@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.infra.test.assertions.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
@@ -43,8 +45,10 @@ class AddTeamTest {
             }
         }
 
-        @Test
-        fun `team is added`() = runTest {
+        @ParameterizedTest
+        @ValueSource(booleans = [true, false])
+        fun `team is added`(rebootApplication: Boolean) = runTest {
+            if (rebootApplication) fixture.rebootApplication()
             val addTeamRequest = AddTeamRequest(name = "team name")
 
             val result = addTeam(matchId, addTeamRequest)
@@ -64,7 +68,6 @@ class AddTeamTest {
                 assertThat(newMatch.teams.last().name).isEqualTo("team name")
             }
         }
-
 
         private suspend fun assertTeamWasAdded(
             result: Result<MatchResponse>,
