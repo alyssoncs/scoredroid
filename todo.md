@@ -2,3 +2,4 @@
 - [x] gradle kotlin dsl
 - [x] add id strategy
 - [x] add persistence layer
+- [ ] delete a match
