@@ -45,10 +45,6 @@ class FakeInMemoryMatchDataSource : InMemoryMatchDataSource {
         }
     }
 
-    override suspend fun getTeam(matchId: Long, teamAt: Int): Team? {
-        return getMatch(matchId)?.teams?.getOrNull(teamAt)
-    }
-
     override suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
         return updateMatch(matchId, onUpdateError = TeamOperationError.TeamNotFound) { match ->
             if (teamAt in match.teams.indices) {
