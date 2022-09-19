@@ -25,8 +25,9 @@ class FakePersistentMatchDataSource(
         return matches[matchId]
     }
 
-    override suspend fun save(match: Match) {
+    override suspend fun save(match: Match): Result<Unit> {
         saveOnCache(match)
+        return Result.success(Unit)
     }
 
     override suspend fun removeMatch(matchId: Long): Result<Unit> {

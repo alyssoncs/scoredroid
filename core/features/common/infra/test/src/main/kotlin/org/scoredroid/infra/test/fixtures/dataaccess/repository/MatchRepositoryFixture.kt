@@ -48,6 +48,10 @@ class MatchRepositoryFixture(
             .map { match -> match.id }
             .forEach { matchId -> repository.persist(matchId) }
 
+        clearInMemoryData()
+    }
+
+    suspend fun clearInMemoryData() {
         inMemoryMatchDataSource.clear()
     }
 }

@@ -68,8 +68,13 @@ class MatchRepository(
         return updateInMemory(matchId) { moveTeam(matchId, teamAt, moveTo) }
     }
 
-    suspend fun persist(matchId: Long) {
-        getMatch(matchId)?.let { match -> persistentDataSource.save(match) }
+    suspend fun persist(matchId: Long): Result<Unit> {
+        val match = getMatch(matchId)
+        return if (match != null) {
+            persistentDataSource.save(match)
+        } else {
+            Result.failure(Throwable())
+        }
     }
 
     suspend fun removeMatch(matchId: Long): Result<Unit> {
