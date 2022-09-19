@@ -51,7 +51,7 @@ class MatchRepository(
         matchId: Long,
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
-        val match = inMemoryDataSource.getMatch(matchId)
+        val match = getMatch(matchId)
         return if (match != null) {
             updateScoreForAllTeams(match, update)
         } else {
