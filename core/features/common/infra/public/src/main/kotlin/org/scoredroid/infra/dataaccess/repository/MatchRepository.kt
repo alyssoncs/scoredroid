@@ -72,6 +72,11 @@ class MatchRepository(
         getMatch(matchId)?.let { match -> persistentDataSource.save(match) }
     }
 
+    suspend fun removeMatch(matchId: Long): Result<Unit> {
+        inMemoryDataSource.removeMatch(matchId)
+        return persistentDataSource.removeMatch(matchId)
+    }
+
     private suspend fun updateInMemory(
         matchId: Long,
         update: suspend InMemoryMatchDataSource.(matchId: Long) -> Result<Match>,

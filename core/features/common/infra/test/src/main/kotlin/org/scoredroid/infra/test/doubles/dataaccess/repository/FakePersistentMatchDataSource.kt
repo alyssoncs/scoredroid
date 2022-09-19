@@ -29,6 +29,16 @@ class FakePersistentMatchDataSource(
         saveOnCache(match)
     }
 
+    override suspend fun removeMatch(matchId: Long): Result<Unit> {
+        return matches.remove(matchId).let {
+            if (it == null) {
+                Result.failure(Throwable())
+            } else {
+                Result.success(Unit)
+            }
+        }
+    }
+
     private fun updateNextId() {
         nextId = matchIdStrategy.invoke(nextId)
     }

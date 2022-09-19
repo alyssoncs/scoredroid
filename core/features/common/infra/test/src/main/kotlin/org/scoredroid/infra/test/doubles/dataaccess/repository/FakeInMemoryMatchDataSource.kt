@@ -63,6 +63,16 @@ class FakeInMemoryMatchDataSource : InMemoryMatchDataSource {
         matches.clear()
     }
 
+    override suspend fun removeMatch(matchId: Long): Result<Unit> {
+        return matches.remove(matchId).let {
+            if (it == null) {
+                Result.failure(Throwable())
+            } else {
+                Result.success(Unit)
+            }
+        }
+    }
+
     override suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
         return updateMatch(matchId) { match ->
             match.copy(name = name)
