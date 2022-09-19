@@ -74,6 +74,8 @@ class MoveTeamTest {
             @ParameterizedTest
             @ValueSource(booleans = [true, false])
             fun `moveTo equals to teamAt, keep the teams in the same order`(rebootApplication: Boolean) = runTest {
+                if (rebootApplication) fixture.rebootApplication()
+
                 val matchResult = moveTeam(matchId = matchId, teamAt = 1, moveTo = 1)
 
                 assertTeamOrder(matchResult, "t0, t1, t2")
@@ -82,6 +84,8 @@ class MoveTeamTest {
             @ParameterizedTest
             @ValueSource(booleans = [true, false])
             fun `moveTo within bounds, move the team to the correct position`(rebootApplication: Boolean) = runTest {
+                if (rebootApplication) fixture.rebootApplication()
+
                 val matchResult = moveTeam(matchId = matchId, teamAt = 0, moveTo = 1)
 
                 assertTeamOrder(matchResult, "t1, t0, t2")
@@ -90,6 +94,8 @@ class MoveTeamTest {
             @ParameterizedTest
             @ValueSource(booleans = [true, false])
             fun `moveTo underflows, move the team to the initial position`(rebootApplication: Boolean) = runTest {
+                if (rebootApplication) fixture.rebootApplication()
+
                 val matchResult = moveTeam(matchId = matchId, teamAt = 2, moveTo = -2)
 
                 assertTeamOrder(matchResult, "t2, t0, t1")
@@ -98,6 +104,8 @@ class MoveTeamTest {
             @ParameterizedTest
             @ValueSource(booleans = [true, false])
             fun `moveTo overflows, move the team to the last position`(rebootApplication: Boolean) = runTest {
+                if (rebootApplication) fixture.rebootApplication()
+
                 val matchResult = moveTeam(matchId = matchId, teamAt = 1, moveTo = 6)
 
                 assertTeamOrder(matchResult, "t0, t2, t1")
