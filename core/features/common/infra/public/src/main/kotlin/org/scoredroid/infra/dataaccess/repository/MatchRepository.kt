@@ -32,11 +32,11 @@ class MatchRepository(
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        return updateTransientDataSource(matchId) { addTeam(matchId, team) }
+        return updateMatch(matchId) { addTeam(matchId, team) }
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
-        return updateTransientDataSource(matchId) { removeTeam(matchId, teamAt) }
+        return updateMatch(matchId) { removeTeam(matchId, teamAt) }
     }
 
     suspend fun updateScore(
@@ -45,7 +45,7 @@ class MatchRepository(
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
         val currentScore = getCurrentScore(matchId, teamAt)
-        return updateTransientDataSource(matchId) { updateScoreTo(matchId, teamAt, update(currentScore)) }
+        return updateMatch(matchId) { updateScoreTo(matchId, teamAt, update(currentScore)) }
     }
 
     suspend fun updateScoreForAllTeams(
@@ -61,11 +61,11 @@ class MatchRepository(
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        return updateTransientDataSource(matchId) { renameMatch(matchId, name) }
+        return updateMatch(matchId) { renameMatch(matchId, name) }
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
-        return updateTransientDataSource(matchId) { moveTeam(matchId, teamAt, moveTo) }
+        return updateMatch(matchId) { moveTeam(matchId, teamAt, moveTo) }
     }
 
     suspend fun persist(matchId: Long): Result<Unit> {
@@ -82,7 +82,7 @@ class MatchRepository(
         return persistentDataSource.removeMatch(matchId)
     }
 
-    private suspend fun updateTransientDataSource(
+    private suspend fun updateMatch(
         matchId: Long,
         update: suspend TransientMatchDataSource.(matchId: Long) -> Result<Match>,
     ): Result<Match> {
