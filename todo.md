@@ -3,4 +3,4 @@
 - [x] add id strategy
 - [x] add persistence layer
 - [x] delete a match
-- [ ] save a match
+- [x] save a match
