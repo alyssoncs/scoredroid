@@ -32,7 +32,6 @@ class FakeInMemoryMatchDataSource : InMemoryMatchDataSource {
     }
 
     override suspend fun getMatch(matchId: Long): Match? {
-        println(matches[matchId])
         return matches[matchId]
     }
 
