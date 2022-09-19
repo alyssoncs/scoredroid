@@ -24,7 +24,6 @@ test-junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version
 test-truth = { module = "com.google.truth:truth", version.ref = "truth" }
 test-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
-
 [bundles]
 unitTest = ["test-junit-api", "test-junit-params", "test-truth", "test-coroutines", "test-turbine"]
 
