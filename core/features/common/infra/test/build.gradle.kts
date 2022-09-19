@@ -8,5 +8,5 @@ dependencies {
     implementation(projects.core.features.common.utils)
 
     implementation(libs.coroutines.core)
-    implementation(libs.test.truth)
+    implementation(libs.test.junit.api)
 }
