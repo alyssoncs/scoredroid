@@ -13,6 +13,8 @@ class FakePersistentMatchDataSource(
     private var nextId = initialMatchId
     private val matches = mutableMapOf<Long, Match>()
 
+    private var exceptionToFail: Throwable? = null
+
     override suspend fun createMatch(matchRequest: CreateMatchRepositoryRequest): Match {
         return Match(
             id = nextId,
@@ -26,8 +28,14 @@ class FakePersistentMatchDataSource(
     }
 
     override suspend fun save(match: Match): Result<Unit> {
-        saveOnCache(match)
-        return Result.success(Unit)
+        val exception = exceptionToFail
+
+        return if (exception != null) {
+            Result.failure(exception)
+        } else {
+            saveOnCache(match)
+            Result.success(Unit)
+        }
     }
 
     override suspend fun removeMatch(matchId: Long): Result<Unit> {
@@ -46,5 +54,9 @@ class FakePersistentMatchDataSource(
 
     private fun saveOnCache(match: Match) {
         matches[match.id] = match
+    }
+
+    fun failWith(exception: Throwable) {
+        exceptionToFail = exception
     }
 }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import kotlin.properties.Delegates
 
@@ -26,11 +27,23 @@ class SaveMatchTest {
 
     @Nested
     inner class MatchExists {
+
         private var matchId by Delegates.notNull<Long>()
 
         @BeforeEach
         internal fun setUp() = runTest {
             matchId = fixture.createEmptyMatch().id
+        }
+
+        inner class CustomException : RuntimeException()
+
+        @Test
+        fun `given persistence failure, return failure`() = runTest {
+            fixture.persistenceFailsWith(CustomException())
+
+            val result = saveMatch(0L)
+
+            assertThrows<CustomException> { result.getOrThrow() }
         }
 
         @Test

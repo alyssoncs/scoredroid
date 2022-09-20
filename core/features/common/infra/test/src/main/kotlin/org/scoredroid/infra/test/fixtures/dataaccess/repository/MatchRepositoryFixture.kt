@@ -8,11 +8,13 @@ import org.scoredroid.infra.dataaccess.datasource.local.TransientMatchDataSource
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
+import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 import org.scoredroid.utils.mappers.toMatchResponse
 
 class MatchRepositoryFixture(
     val repository: MatchRepository,
     private val transientMatchDataSource: TransientMatchDataSource,
+    private val persistentMatchDataSource: FakePersistentMatchDataSource,
 ) {
     suspend fun createEmptyMatch(): Match {
         return repository.createMatch(CreateMatchRepositoryRequest())
@@ -53,5 +55,9 @@ class MatchRepositoryFixture(
 
     suspend fun clearInMemoryData() {
         transientMatchDataSource.clear()
+    }
+
+    fun persistenceFailsWith(exception: Throwable) {
+        persistentMatchDataSource.failWith(exception)
     }
 }
