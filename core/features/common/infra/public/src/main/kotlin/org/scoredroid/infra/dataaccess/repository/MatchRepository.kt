@@ -12,9 +12,14 @@ import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class MatchRepository(
-    private val transientDataSource: TransientMatchDataSource,
-    private val persistentDataSource: PersistentMatchDataSource
+    transientDataSource: TransientMatchDataSource,
+    persistentDataSource: PersistentMatchDataSource
 ) {
+
+    private val dataSourceAggregator = DataSourceAggregator(
+        transientDataSource,
+        persistentDataSource,
+    )
 
     private val matchFlows = mutableMapOf<Long, MutableStateFlow<Match>>()
 
@@ -23,12 +28,11 @@ class MatchRepository(
     }
 
     suspend fun getMatch(matchId: Long): Match? {
-        return transientDataSource.getMatch(matchId)
-            ?: cachePersistenceIntoTransient(matchId)
+        return dataSourceAggregator.getMatch(matchId)
     }
 
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
-        return transientDataSource.saveMatch(persistentDataSource.createMatch(createMatchRequest))
+        return dataSourceAggregator.createMatch(createMatchRequest)
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
@@ -69,37 +73,23 @@ class MatchRepository(
     }
 
     suspend fun persist(matchId: Long): Result<Unit> {
-        val match = getMatch(matchId)
-        return if (match != null) {
-            persistentDataSource.save(match)
-        } else {
-            Result.failure(Throwable())
-        }
+        return dataSourceAggregator.persist(matchId)
     }
 
     suspend fun removeMatch(matchId: Long): Result<Unit> {
-        transientDataSource.removeMatch(matchId)
-        return persistentDataSource.removeMatch(matchId)
+        return dataSourceAggregator.removeMatch(matchId)
     }
 
     private suspend fun updateMatch(
         matchId: Long,
         update: suspend TransientMatchDataSource.(matchId: Long) -> Result<Match>,
     ): Result<Match> {
-        val updateResult = transientDataSource.update(matchId)
-
-        return if (updateResult.exceptionOrNull() is TeamOperationError.MatchNotFound) {
-            cachePersistenceIntoTransient(matchId)
-            transientDataSource.update(matchId)
-        } else {
-            updateResult
-        }.onSuccess { newMatch ->
-            getMatchMutableFlow(newMatch.id)?.emit(newMatch)
-        }
+        return dataSourceAggregator.updateMatch(matchId, update)
+            .onSuccess { newMatch -> emitMatch(newMatch) }
     }
 
-    private suspend fun cachePersistenceIntoTransient(matchId: Long): Match? {
-        return persistentDataSource.getMatch(matchId)?.also { transientDataSource.saveMatch(it) }
+    private suspend fun emitMatch(newMatch: Match) {
+        getMatchMutableFlow(newMatch.id)?.emit(newMatch)
     }
 
     private suspend fun updateScoreForAllTeams(
@@ -129,6 +119,54 @@ class MatchRepository(
                 getMatchMutableFlow(matchId)
             } else {
                 null
+            }
+        }
+    }
+
+    private class DataSourceAggregator(
+        private val transientDataSource: TransientMatchDataSource,
+        private val persistentDataSource: PersistentMatchDataSource
+    ) {
+        suspend fun getMatch(matchId: Long): Match? {
+            return transientDataSource.getMatch(matchId)
+                ?: updateTransient(matchId)
+        }
+
+        suspend fun updateMatch(
+            matchId: Long,
+            update: suspend TransientMatchDataSource.(matchId: Long) -> Result<Match>,
+        ): Result<Match> {
+            val updateResult = transientDataSource.update(matchId)
+
+            return if (updateResult.isFailure) {
+                updateTransient(matchId)
+                transientDataSource.update(matchId)
+            } else {
+                updateResult
+            }
+        }
+
+        suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
+            return transientDataSource.saveMatch(persistentDataSource.createMatch(createMatchRequest))
+        }
+
+        suspend fun removeMatch(matchId: Long): Result<Unit> {
+            transientDataSource.removeMatch(matchId)
+            return persistentDataSource.removeMatch(matchId)
+        }
+
+        suspend fun persist(matchId: Long): Result<Unit> {
+            val match = getMatch(matchId)
+            return if (match != null) {
+                persistentDataSource.save(match)
+            } else {
+                Result.failure(Throwable())
+            }
+        }
+
+        private suspend fun updateTransient(matchId: Long): Match? {
+            return persistentDataSource.getMatch(matchId)?.also {
+                transientDataSource.saveMatch(it)
             }
         }
     }
