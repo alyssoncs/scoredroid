@@ -4,11 +4,12 @@ import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSourc
 import org.scoredroid.infra.dataaccess.di.DaggerInfraComponent
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 
-class InfraEntrypoint private constructor(val matchRepository: MatchRepository) {
+interface InfraEntrypoint {
     companion object {
         fun create(persistentMatchDataSource: PersistentMatchDataSource): InfraEntrypoint {
-            val component = DaggerInfraComponent.factory().create(persistentMatchDataSource)
-            return InfraEntrypoint(component.matchRepository())
+            return DaggerInfraComponent.factory().create(persistentMatchDataSource)
         }
     }
+
+    val matchRepository: MatchRepository
 }
