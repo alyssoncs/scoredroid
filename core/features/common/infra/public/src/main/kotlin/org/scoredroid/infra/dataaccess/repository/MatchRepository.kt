@@ -160,7 +160,7 @@ class MatchRepository(
             return if (match != null) {
                 persistentDataSource.save(match)
             } else {
-                Result.failure(Throwable())
+                Result.failure(Throwable("match not found"))
             }
         }
 

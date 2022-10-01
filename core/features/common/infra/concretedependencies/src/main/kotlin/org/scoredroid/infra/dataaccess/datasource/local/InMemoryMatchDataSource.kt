@@ -70,7 +70,7 @@ class InMemoryMatchDataSource private constructor(): TransientMatchDataSource {
     override suspend fun removeMatch(matchId: Long): Result<Unit> {
         return matches.remove(matchId).let {
             if (it == null) {
-                Result.failure(Throwable())
+                Result.failure(Throwable("match not found"))
             } else {
                 Result.success(Unit)
             }
@@ -111,7 +111,7 @@ class InMemoryMatchDataSource private constructor(): TransientMatchDataSource {
 
     private suspend fun updateMatch(
         matchId: Long,
-        onUpdateError: Throwable = Throwable(),
+        onUpdateError: Throwable = Throwable("an error occurred while updating the match"),
         update: (Match) -> Match?,
     ): Result<Match> {
         val match = getMatch(matchId) ?: return Result.failure(TeamOperationError.MatchNotFound)
