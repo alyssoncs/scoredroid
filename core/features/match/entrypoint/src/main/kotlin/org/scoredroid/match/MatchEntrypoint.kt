@@ -18,7 +18,7 @@ interface MatchEntrypoint {
     }
 
     val createMatchUseCase: CreateMatchUseCase
-    val matchFlowUseCase: GetMatchFlowUseCase
+    val getMatchFlowUseCase: GetMatchFlowUseCase
     val removeMatchUseCase: RemoveMatchUseCase
     val renameMatchUseCase: RenameMatchUseCase
     val saveMatchUseCase: SaveMatchUseCase
