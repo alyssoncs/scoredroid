@@ -7,7 +7,11 @@ import org.scoredroid.domain.entities.Team
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 
-class InMemoryMatchDataSource : TransientMatchDataSource {
+class InMemoryMatchDataSource private constructor(): TransientMatchDataSource {
+    companion object {
+        fun newInstance(): TransientMatchDataSource = InMemoryMatchDataSource()
+    }
+
     private val matches = mutableMapOf<Long, Match>()
 
     override suspend fun saveMatch(match: Match): Match {
