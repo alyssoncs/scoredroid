@@ -32,5 +32,9 @@ gradlePlugin {
             id = "org.scoredroid.unit-test"
             implementationClass = "org.scoredroid.conventionplugins.UnitTestConventionPlugin"
         }
+        register("featureEntryPoint") {
+            id = "org.scoredroid.feature-entry-point"
+            implementationClass = "org.scoredroid.conventionplugins.FeatureEntryPointConventionPlugin"
+        }
     }
 }
