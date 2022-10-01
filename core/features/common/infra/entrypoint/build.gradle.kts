@@ -1,7 +1,5 @@
 plugins {
     id("org.scoredroid.feature-entrypoint")
-    id("org.scoredroid.java-module-junit5")
-    id("org.scoredroid.unit-test")
 }
 
 dependencies {

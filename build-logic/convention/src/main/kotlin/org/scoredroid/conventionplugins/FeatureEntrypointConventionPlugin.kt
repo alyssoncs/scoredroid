@@ -10,6 +10,8 @@ class FeatureEntrypointConventionPlugin : Plugin<Project> {
         with(project.pluginManager) {
             apply("org.scoredroid.java-module")
             apply("kotlin-kapt")
+            apply("org.scoredroid.java-module-junit5")
+            apply("org.scoredroid.unit-test")
         }
 
         val catalog = project.versionCatalog
