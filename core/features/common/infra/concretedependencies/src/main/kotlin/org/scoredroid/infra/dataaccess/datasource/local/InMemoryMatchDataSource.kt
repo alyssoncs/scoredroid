@@ -9,6 +9,7 @@ import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 
 class InMemoryMatchDataSource private constructor(): TransientMatchDataSource {
     companion object {
+        val instance by lazy { newInstance() }
         fun newInstance(): TransientMatchDataSource = InMemoryMatchDataSource()
     }
 
