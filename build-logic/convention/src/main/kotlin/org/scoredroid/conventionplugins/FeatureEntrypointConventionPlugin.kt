@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.scoredroid.utils.getLibrary
 import org.scoredroid.utils.versionCatalog
 
-class FeatureEntryPointConventionPlugin : Plugin<Project> {
+class FeatureEntrypointConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project.pluginManager) {
             apply("org.scoredroid.java-module")
