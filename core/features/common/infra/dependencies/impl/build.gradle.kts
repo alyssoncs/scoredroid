@@ -5,5 +5,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.features.common.infra.dependencies)
+    api(projects.core.features.common.infra.dependencies.public)
 }
