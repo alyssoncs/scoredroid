@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     api(projects.core.features.common.infra.public)
-    api(projects.core.features.common.infra.dependencies)
-    implementation(projects.core.features.common.infra.concretedependencies)
+    api(projects.core.features.common.infra.dependencies.public)
+    implementation(projects.core.features.common.infra.dependencies.impl)
     testImplementation(projects.core.features.common.infra.test)
 }
