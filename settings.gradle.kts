@@ -20,6 +20,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "scoredroid"
 include(":app")
+include(":apps:android:vanilla:app")
 include(":core:features:common:data")
 include(":core:features:common:domain")
 include(":core:features:common:infra:commonmodels")
