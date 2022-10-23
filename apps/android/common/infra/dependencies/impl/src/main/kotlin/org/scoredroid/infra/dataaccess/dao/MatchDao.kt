@@ -11,13 +11,13 @@ import org.scoredroid.infra.dataaccess.entities.TeamEntity
 @Dao
 interface MatchDao {
     @Insert
-    fun insertMatch(match: MatchEntity, teams: List<TeamEntity>)
+    suspend fun insertMatch(match: MatchEntity, teams: List<TeamEntity>)
 
     @Update
-    fun updateMatch(match: MatchEntity)
+    suspend fun updateMatch(match: MatchEntity)
 
     @Delete
-    fun deleteMatch(match: MatchEntity)
+    suspend fun deleteMatch(match: MatchEntity)
 
     @Query(
         """

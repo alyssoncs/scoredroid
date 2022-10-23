@@ -21,8 +21,9 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room"}
-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room"}
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 test-junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
@@ -33,6 +34,7 @@ test-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 [bundles]
 unitTest = ["test-junit-api", "test-junit-params", "test-truth", "test-coroutines", "test-turbine"]
+room = ["room-ktx", "room-runtime"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

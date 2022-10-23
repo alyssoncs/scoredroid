@@ -37,6 +37,6 @@ android {
 dependencies {
     api(projects.core.features.common.infra.dependencies.public)
 
-    implementation(libs.room.runtime)
+    implementation(libs.bundles.room)
     ksp(libs.room.compiler)
 }
