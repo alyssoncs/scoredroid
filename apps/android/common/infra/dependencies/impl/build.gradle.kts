@@ -1,11 +1,12 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "org.scoredroid.infra"
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 25
@@ -34,6 +35,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation("androidx.appcompat:appcompat:1.5.1")
+    api(projects.core.features.common.infra.dependencies.public)
+
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
 }
