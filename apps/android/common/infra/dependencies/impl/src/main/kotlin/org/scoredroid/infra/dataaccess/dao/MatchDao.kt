@@ -1,5 +1,6 @@
 package org.scoredroid.infra.dataaccess.dao
 
+import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -8,10 +9,18 @@ import androidx.room.Update
 import org.scoredroid.infra.dataaccess.entities.MatchEntity
 import org.scoredroid.infra.dataaccess.entities.TeamEntity
 
+data class InsertMatchDaoRequestModel(
+    @ColumnInfo(name = MatchEntity.ColumnsName.name)
+    val name: String,
+)
+
 @Dao
 interface MatchDao {
+    @Insert(entity = MatchEntity::class)
+    suspend fun insertMatch(match: InsertMatchDaoRequestModel): Long
+
     @Insert
-    suspend fun insertMatch(match: MatchEntity, teams: List<TeamEntity>)
+    suspend fun insertTeams(teams: List<TeamEntity>)
 
     @Update
     suspend fun updateMatch(match: MatchEntity)
@@ -21,11 +30,13 @@ interface MatchDao {
 
     @Query(
         """
-        SELECT * 
-        FROM `match` JOIN team 
-        ON `match`.id = match_id
-        WHERE `match`.id = :matchId
+        SELECT 
+            * 
+        FROM 
+            match LEFT JOIN team ON id = match_id
+        WHERE 
+            id = :matchId
         """
     )
-    fun getMatch(matchId: Long): Map<MatchEntity, List<TeamEntity>>
+    suspend fun getMatchById(matchId: Long): Map<MatchEntity, List<TeamEntity>>
 }

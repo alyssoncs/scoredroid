@@ -7,12 +7,12 @@ import androidx.room.ForeignKey.CASCADE
 
 @Entity(
     tableName = "team",
-    primaryKeys = [TeamEntity.matchId, TeamEntity.position],
+    primaryKeys = [TeamEntity.ColumnsName.matchId, TeamEntity.ColumnsName.position],
     foreignKeys = [
         ForeignKey(
             entity = MatchEntity::class,
-            parentColumns = [MatchEntity.id],
-            childColumns = [TeamEntity.matchId],
+            parentColumns = [MatchEntity.ColumnsName.id],
+            childColumns = [TeamEntity.ColumnsName.matchId],
             onDelete = CASCADE,
         )
     ],
@@ -23,8 +23,8 @@ data class TeamEntity(
     @ColumnInfo(name = ColumnsName.matchId) val matchId: Long,
     @ColumnInfo(name = ColumnsName.position) val position: Int,
 ) {
-    companion object ColumnsName {
-        const val name = "name"
+    object ColumnsName {
+        const val name = "team_name"
         const val score = "score"
         const val matchId = "match_id"
         const val position = "position"

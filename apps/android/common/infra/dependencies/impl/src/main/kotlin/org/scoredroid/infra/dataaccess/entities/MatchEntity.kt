@@ -10,8 +10,8 @@ data class MatchEntity(
     @ColumnInfo(name = ColumnsName.id) val id: Long,
     @ColumnInfo(name = ColumnsName.name) val name: String,
 ) {
-    companion object ColumnsName {
+    object ColumnsName {
         const val id = "id"
-        const val name = "name"
+        const val name = "match_name"
     }
 }
