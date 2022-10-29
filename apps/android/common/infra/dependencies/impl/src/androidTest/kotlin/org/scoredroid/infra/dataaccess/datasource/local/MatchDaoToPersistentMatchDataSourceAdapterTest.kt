@@ -9,6 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.scoredroid.domain.entities.Match
@@ -93,11 +94,134 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
         val result = dataSourceAdapter.save(oldMatch.copy())
 
-        val newMatch = dataSourceAdapter.getMatch(oldMatch.id)
-        assertThat(result.isSuccess).isTrue()
-        assertThat(newMatch).isEqualTo(oldMatch)
+        assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
+            assertThat(newMatch).isEqualTo(oldMatch)
+        }
     }
 
+    @Test
+    fun save_updateMatchName() = runBlocking {
+        val request = createMatchRequest()
+            .withMatchName("old match name")
+            .build()
+        val oldMatch = dataSourceAdapter.createMatch(request)
+
+        val result = dataSourceAdapter.save(oldMatch.copy(name = "new match name"))
+
+        assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
+            assertThat(newMatch.name).isNotEqualTo(oldMatch.name)
+        }
+    }
+
+    @Test
+    fun save_updateTeamNames() = runBlocking {
+        val request = createMatchRequest()
+            .withTeams("team a", "team b")
+            .build()
+        val oldMatch = dataSourceAdapter.createMatch(request)
+
+        val result = dataSourceAdapter.save(
+            oldMatch.copy(
+                teams = oldMatch.teams.mapIndexed { idx, team ->
+                    team.copy(name = "team $idx")
+                }
+            )
+        )
+
+        assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
+            assertThat(newMatch.teams).hasSize(oldMatch.teams.size)
+            assertThat(newMatch.teams[0].name).isEqualTo("team 0")
+            assertThat(newMatch.teams[1].name).isEqualTo("team 1")
+        }
+    }
+
+    @Test
+    fun save_updateTeamScore() = runBlocking {
+        val request = createMatchRequest()
+            .withTeams("team a", "team b")
+            .build()
+        val oldMatch = dataSourceAdapter.createMatch(request)
+
+        val result = dataSourceAdapter.save(
+            oldMatch.copy(
+                teams = oldMatch.teams.mapIndexed { idx, team ->
+                    team.copy(score = idx.inc().toScore())
+                }
+            )
+        )
+
+        assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
+            assertThat(newMatch.teams).hasSize(oldMatch.teams.size)
+            assertThat(newMatch.teams[0].score).isEqualTo(1.toScore())
+            assertThat(newMatch.teams[1].score).isEqualTo(2.toScore())
+        }
+    }
+
+    @Test
+    fun save_updateTeamOrder() = runBlocking {
+        val request = createMatchRequest()
+            .withTeams("team a", "team b")
+            .build()
+        val oldMatch = dataSourceAdapter.createMatch(request)
+
+        val result = dataSourceAdapter.save(
+            oldMatch.copy(
+                teams = oldMatch.teams.reversed()
+            )
+        )
+
+        assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
+            assertThat(newMatch.teams).hasSize(oldMatch.teams.size)
+            assertThat(newMatch.teams[0]).isEqualTo(oldMatch.teams[1])
+            assertThat(newMatch.teams[1]).isEqualTo(oldMatch.teams[0])
+        }
+    }
+
+    @Test
+    fun save_additionalTeams() = runBlocking {
+        val request = createMatchRequest()
+            .withTeams("team 1", "team 2")
+            .build()
+        val oldMatch = dataSourceAdapter.createMatch(request)
+
+        val additionalTeam = Team(name = "team 1.5", score = 2.toScore())
+        val result = dataSourceAdapter.save(
+            oldMatch.copy(
+                teams = listOf(
+                    oldMatch.teams.first() ,
+                    additionalTeam,
+                    oldMatch.teams.last(),
+                )
+            )
+        )
+
+        assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
+            assertThat(newMatch.teams).hasSize(oldMatch.teams.size.inc())
+            assertThat(newMatch.teams[0]).isEqualTo(oldMatch.teams[0])
+            assertThat(newMatch.teams[1]).isEqualTo(additionalTeam)
+            assertThat(newMatch.teams[2]).isEqualTo(oldMatch.teams[1])
+        }
+    }
+
+    @Test
+    fun save_missingTeams() = runBlocking {
+        val request = createMatchRequest()
+            .withTeams("team 1", "team to be deleted", "team 2")
+            .build()
+        val oldMatch = dataSourceAdapter.createMatch(request)
+
+        val result = dataSourceAdapter.save(
+            oldMatch.copy(
+                teams = listOf(oldMatch.teams.first(), oldMatch.teams.last())
+            )
+        )
+
+        assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
+            assertThat(newMatch.teams).hasSize(oldMatch.teams.size.dec())
+            assertThat(newMatch.teams[0]).isEqualTo(oldMatch.teams[0])
+            assertThat(newMatch.teams[1]).isEqualTo(oldMatch.teams[2])
+        }
+    }
 
     private fun assertMatchWasMappedCorrectly(
         match: Match,
@@ -112,9 +236,19 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         }
     }
 
+    private suspend fun assertMatchWasUpdatedCorrectly(
+        oldMatch: Match,
+        result: Result<Unit>,
+        assert: (Match) -> Unit
+    ) {
+        val newMatch = dataSourceAdapter.getMatch(oldMatch.id)!!
+        assertThat(result.isSuccess).isTrue()
+        assert(newMatch)
+    }
+
     class CreateMatchRepositoryRequestBuilder() {
         private var matchName = "match name"
-        private var teams = listOf<String>("team 01, team 02")
+        private var teams = listOf("team 01, team 02")
 
         fun withMatchName(name: String): CreateMatchRepositoryRequestBuilder {
             matchName = name

@@ -14,6 +14,14 @@ data class InsertMatchDaoRequestModel(
     val name: String,
 )
 
+data class DeleteTeamDaoRequestModel(
+    @ColumnInfo(name = TeamEntity.ColumnsName.matchId)
+    val matchId: Long,
+    @ColumnInfo(name = TeamEntity.ColumnsName.position)
+    val position: Long,
+)
+
+
 @Dao
 interface MatchDao {
     @Insert(entity = MatchEntity::class)
@@ -24,6 +32,12 @@ interface MatchDao {
 
     @Update
     suspend fun updateMatch(match: MatchEntity)
+
+    @Update
+    suspend fun updateTeams(teams: List<TeamEntity>)
+
+    @Delete(entity = TeamEntity::class)
+    suspend fun deleteTeams(teams: List<DeleteTeamDaoRequestModel>)
 
     @Delete
     suspend fun deleteMatch(match: MatchEntity)
