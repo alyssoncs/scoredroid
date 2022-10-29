@@ -35,7 +35,7 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
 
     override suspend fun save(match: Match): Result<Unit> {
         val currentMatch = getMatch(match.id)
-            ?: return Result.failure(Throwable("Match with id = ${match.id} not found"))
+            ?: return Result.failure(matchNotFound(match.id))
 
         updateMatch(match)
         updateTeams(match, currentMatch)
@@ -47,7 +47,7 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
         val matches = matchDao.getMatchById(matchId)
 
         if (matches.isEmpty())
-            return Result.failure(Exception("Match with id $matchId was not found"))
+            return Result.failure(matchNotFound(matchId))
 
         matchDao.deleteMatch(matches.keys.first())
         return Result.success(Unit)
@@ -149,5 +149,9 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
             this.subList(fromIndex, toIndex)
         else
             emptyList()
+    }
+
+    private fun matchNotFound(matchId: Long): Throwable {
+        return Throwable("Match with id = $matchId was not found")
     }
 }
