@@ -46,9 +46,9 @@ dependencies {
     api(libs.bundles.room)
 
     implementation(libs.coroutines.core)
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.test.junit4)
     androidTestImplementation(libs.test.coroutines)
     androidTestImplementation(libs.test.truth)
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation(libs.test.androidx.junit)
+    androidTestImplementation(libs.test.espresso.core)
 }
