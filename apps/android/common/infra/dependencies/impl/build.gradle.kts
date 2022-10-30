@@ -45,15 +45,10 @@ dependencies {
     ksp(libs.room.compiler)
     api(libs.bundles.room)
 
-    testRuntimeOnly(libs.test.junit.engine)
-    //testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.1")
     implementation(libs.coroutines.core)
-    testImplementation(libs.bundles.unitTest)
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation(libs.test.coroutines)
     androidTestImplementation(libs.test.truth)
-    //testImplementation("androidx.room:room-testing:2.4.3")
-    //androidTestImplementation(libs.bundles.unitTest)
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
