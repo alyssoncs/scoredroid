@@ -14,7 +14,6 @@ import org.junit.runner.RunWith
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score.Companion.toScore
 import org.scoredroid.domain.entities.Team
-import org.scoredroid.infra.dataaccess.dao.MatchDao
 import org.scoredroid.infra.dataaccess.database.MatchDatabase
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.TeamRequest
@@ -22,16 +21,15 @@ import org.scoredroid.infra.dataaccess.requestmodel.TeamRequest
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class MatchDaoToPersistentMatchDataSourceAdapterTest {
-    private lateinit var dao: MatchDao
     private lateinit var db: MatchDatabase
     private lateinit var dataSourceAdapter: MatchDaoToPersistentMatchDataSourceAdapter
 
     @Before
     fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, MatchDatabase::class.java).build()
-        dao = db.matchDao()
-        dataSourceAdapter = MatchDaoToPersistentMatchDataSourceAdapter(dao)
+        fun getContext() = ApplicationProvider.getApplicationContext<Context>()
+
+        db = Room.inMemoryDatabaseBuilder(getContext(), MatchDatabase::class.java).build()
+        dataSourceAdapter = MatchDaoToPersistentMatchDataSourceAdapter(db.matchDao())
     }
 
     @After
@@ -41,10 +39,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
     @Test
     fun createMatch_createsMatchCorrectly() = runTest {
-        val request = createMatchRequest()
-            .withMatchName("match name")
-            .withTeams("team a", "team b")
-            .build()
+        val request = createMatchRequest().build()
 
 
         val match = dataSourceAdapter.createMatch(request)
@@ -88,8 +83,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
     @Test
     fun save_noRealUpdate() = runTest {
-        val request = createMatchRequest().build()
-        val oldMatch = dataSourceAdapter.createMatch(request)
+        val oldMatch = dataSourceAdapter.createMatch(createMatchRequest().build())
 
         val result = dataSourceAdapter.save(oldMatch.copy())
 
