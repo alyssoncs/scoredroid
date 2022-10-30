@@ -9,7 +9,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.scoredroid.domain.entities.Match
@@ -188,7 +187,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val result = dataSourceAdapter.save(
             oldMatch.copy(
                 teams = listOf(
-                    oldMatch.teams.first() ,
+                    oldMatch.teams.first(),
                     additionalTeam,
                     oldMatch.teams.last(),
                 )
@@ -221,6 +220,24 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
             assertThat(newMatch.teams[0]).isEqualTo(oldMatch.teams[0])
             assertThat(newMatch.teams[1]).isEqualTo(oldMatch.teams[2])
         }
+    }
+
+    @Test
+    fun removeMatch_matchNotFound() = runBlocking {
+        val match = dataSourceAdapter.createMatch(createMatchRequest().build())
+
+        val result = dataSourceAdapter.removeMatch(match.id)
+
+        assertThat(result.isSuccess).isTrue()
+        assertThat(dataSourceAdapter.getMatch(match.id)).isNull()
+    }
+
+    @Test
+    fun removeMatch_existingMatch() = runBlocking {
+        val result = dataSourceAdapter.removeMatch(1)
+
+        assertThat(result.isFailure).isTrue()
+        assertThat(result.exceptionOrNull()!!.message).isNotEmpty()
     }
 
     private fun assertMatchWasMappedCorrectly(
