@@ -218,20 +218,20 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
     @Test
     fun removeMatch_matchNotFound() = runTest {
+        val result = dataSourceAdapter.removeMatch(1)
+
+        assertThat(result.isFailure).isTrue()
+        assertThat(result.exceptionOrNull()!!.message).isNotEmpty()
+    }
+
+    @Test
+    fun removeMatch_existingMatch() = runTest {
         val match = dataSourceAdapter.createMatch(createMatchRequest().build())
 
         val result = dataSourceAdapter.removeMatch(match.id)
 
         assertThat(result.isSuccess).isTrue()
         assertThat(dataSourceAdapter.getMatch(match.id)).isNull()
-    }
-
-    @Test
-    fun removeMatch_existingMatch() = runTest {
-        val result = dataSourceAdapter.removeMatch(1)
-
-        assertThat(result.isFailure).isTrue()
-        assertThat(result.exceptionOrNull()!!.message).isNotEmpty()
     }
 
     private fun assertMatchWasMappedCorrectly(
