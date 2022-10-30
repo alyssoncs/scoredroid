@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -40,7 +40,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun createMatch_createsMatchCorrectly() = runBlocking {
+    fun createMatch_createsMatchCorrectly() = runTest {
         val request = createMatchRequest()
             .withMatchName("match name")
             .withTeams("team a", "team b")
@@ -53,14 +53,14 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun getMatch_matchNotFound() = runBlocking {
+    fun getMatch_matchNotFound() = runTest {
         val match = dataSourceAdapter.getMatch(1)
 
         assertThat(match).isNull()
     }
 
     @Test
-    fun getMatch_matchFound() = runBlocking {
+    fun getMatch_matchFound() = runTest {
         val request = createMatchRequest().build()
         dataSourceAdapter.createMatch(request)
 
@@ -71,7 +71,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun save_updateNonExistingMatch() = runBlocking {
+    fun save_updateNonExistingMatch() = runTest {
         val match = Match(
             id = 5,
             name = "a brand new match",
@@ -87,7 +87,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun save_noRealUpdate() = runBlocking {
+    fun save_noRealUpdate() = runTest {
         val request = createMatchRequest().build()
         val oldMatch = dataSourceAdapter.createMatch(request)
 
@@ -99,7 +99,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun save_updateMatchName() = runBlocking {
+    fun save_updateMatchName() = runTest {
         val request = createMatchRequest()
             .withMatchName("old match name")
             .build()
@@ -113,7 +113,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun save_updateTeamNames() = runBlocking {
+    fun save_updateTeamNames() = runTest {
         val request = createMatchRequest()
             .withTeams("team a", "team b")
             .build()
@@ -135,7 +135,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun save_updateTeamScore() = runBlocking {
+    fun save_updateTeamScore() = runTest {
         val request = createMatchRequest()
             .withTeams("team a", "team b")
             .build()
@@ -157,7 +157,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun save_updateTeamOrder() = runBlocking {
+    fun save_updateTeamOrder() = runTest {
         val request = createMatchRequest()
             .withTeams("team a", "team b")
             .build()
@@ -177,7 +177,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun save_additionalTeams() = runBlocking {
+    fun save_additionalTeams() = runTest {
         val request = createMatchRequest()
             .withTeams("team 1", "team 2")
             .build()
@@ -203,7 +203,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun save_missingTeams() = runBlocking {
+    fun save_missingTeams() = runTest {
         val request = createMatchRequest()
             .withTeams("team 1", "team to be deleted", "team 2")
             .build()
@@ -223,7 +223,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun removeMatch_matchNotFound() = runBlocking {
+    fun removeMatch_matchNotFound() = runTest {
         val match = dataSourceAdapter.createMatch(createMatchRequest().build())
 
         val result = dataSourceAdapter.removeMatch(match.id)
@@ -233,7 +233,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
-    fun removeMatch_existingMatch() = runBlocking {
+    fun removeMatch_existingMatch() = runTest {
         val result = dataSourceAdapter.removeMatch(1)
 
         assertThat(result.isFailure).isTrue()
