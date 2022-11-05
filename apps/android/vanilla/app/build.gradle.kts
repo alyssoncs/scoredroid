@@ -50,13 +50,9 @@ android {
 }
 
 dependencies {
-
-    val composeVersion = "1.3.0"
-
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.compose.material3:material3:1.1.0-alpha01")
-    implementation("androidx.fragment:fragment-ktx:1.5.4")
-    implementation ("com.google.android.material:material:1.8.0-alpha02")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.compose.material3)
+    implementation(libs.fragment.ktx)
+    implementation (libs.material)
+    debugImplementation(libs.compose.ui.tooling)
 }
