@@ -36,10 +36,10 @@ android {
 
 dependencies {
     api(projects.core.features.common.infra.dependencies.public)
-    api(projects.apps.android.common.infra.dependencies.database)
+    implementation(projects.apps.android.common.infra.dependencies.database)
 
     implementation(libs.coroutines.core)
-    api(libs.bundles.room)
+    implementation(libs.bundles.room)
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.test.coroutines)
     androidTestImplementation(libs.test.truth)
