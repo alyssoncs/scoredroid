@@ -1,5 +1,5 @@
 plugins {
-    id("org.scoredroid.public-feature")
+    id("org.scoredroid.feature-public")
 }
 
 dependencies {

@@ -36,9 +36,9 @@ gradlePlugin {
             id = "org.scoredroid.feature-impl"
             implementationClass = "org.scoredroid.conventionplugins.kotlin.moduletypes.FeatureImplConventionPlugin"
         }
-        register("publicFeature") {
-            id = "org.scoredroid.public-feature"
-            implementationClass = "org.scoredroid.conventionplugins.JavaPublicFeatureModuleConventionPlugin"
+        register("featurePublic") {
+            id = "org.scoredroid.feature-public"
+            implementationClass = "org.scoredroid.conventionplugins.kotlin.moduletypes.FeaturePublicConventionPlugin"
         }
     }
 }
