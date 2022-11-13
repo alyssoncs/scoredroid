@@ -1,4 +1,4 @@
-package org.scoredroid.conventionplugins
+package org.scoredroid.conventionplugins.kotlin.basic
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

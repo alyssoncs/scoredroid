@@ -20,6 +20,10 @@ gradlePlugin {
             id = "org.scoredroid.kotlin-module-junit5"
             implementationClass = "org.scoredroid.conventionplugins.kotlin.basic.KotlinModuleJunit5ConventionPlugin"
         }
+        register("unitTest") {
+            id = "org.scoredroid.unit-test"
+            implementationClass = "org.scoredroid.conventionplugins.kotlin.basic.UnitTestConventionPlugin"
+        }
         register("javaModule") {
             id = "org.scoredroid.java-module"
             implementationClass = "org.scoredroid.conventionplugins.JavaModuleConventionPlugin"
@@ -31,10 +35,6 @@ gradlePlugin {
         register("implFeature") {
             id = "org.scoredroid.impl-feature"
             implementationClass = "org.scoredroid.conventionplugins.JavaImplFeatureModuleConventionPlugin"
-        }
-        register("unitTest") {
-            id = "org.scoredroid.unit-test"
-            implementationClass = "org.scoredroid.conventionplugins.UnitTestConventionPlugin"
         }
         register("featureEntryPoint") {
             id = "org.scoredroid.feature-entrypoint"
