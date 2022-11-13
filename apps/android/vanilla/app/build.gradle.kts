@@ -52,6 +52,9 @@ android {
 
 dependencies {
     implementation(projects.apps.android.common.infra.dependencies.impl)
+    implementation(projects.core.features.match.entrypoint)
+    implementation(projects.core.features.teams.entrypoint)
+    implementation(projects.core.features.score.entrypoint)
 
     kapt(libs.dagger.compiler)
     implementation(libs.dagger)
