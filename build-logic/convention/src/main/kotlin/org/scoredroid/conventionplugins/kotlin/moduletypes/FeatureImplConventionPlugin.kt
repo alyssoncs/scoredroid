@@ -1,9 +1,9 @@
-package org.scoredroid.conventionplugins
+package org.scoredroid.conventionplugins.kotlin.moduletypes
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class JavaImplFeatureModuleConventionPlugin : Plugin<Project> {
+class FeatureImplConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project.pluginManager) {
             apply("org.scoredroid.kotlin-module")

@@ -32,13 +32,13 @@ gradlePlugin {
             id = "org.scoredroid.feature-entrypoint"
             implementationClass = "org.scoredroid.conventionplugins.kotlin.moduletypes.FeatureEntrypointConventionPlugin"
         }
+        register("featureImpl") {
+            id = "org.scoredroid.feature-impl"
+            implementationClass = "org.scoredroid.conventionplugins.kotlin.moduletypes.FeatureImplConventionPlugin"
+        }
         register("publicFeature") {
             id = "org.scoredroid.public-feature"
             implementationClass = "org.scoredroid.conventionplugins.JavaPublicFeatureModuleConventionPlugin"
-        }
-        register("implFeature") {
-            id = "org.scoredroid.impl-feature"
-            implementationClass = "org.scoredroid.conventionplugins.JavaImplFeatureModuleConventionPlugin"
         }
     }
 }
