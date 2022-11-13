@@ -7,15 +7,16 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+import org.gradle.kotlin.dsl.withType
 
 class KotlinModuleJunit5SetupConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.tasks.withType(Test::class.java) { testTask ->
-            testTask.useJUnitPlatform()
-            testTask.testLogging {
-                it.exceptionFormat = FULL
-                it.events = setOf(SKIPPED, PASSED, FAILED)
-                it.showStandardStreams = true
+        project.tasks.withType<Test>().configureEach {
+            useJUnitPlatform()
+            testLogging {
+                exceptionFormat = FULL
+                events = setOf(SKIPPED, PASSED, FAILED)
+                showStandardStreams = true
             }
         }
     }

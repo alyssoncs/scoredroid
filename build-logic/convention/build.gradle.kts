@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    id("java-gradle-plugin")
+    `kotlin-dsl`
 }
 
 group = "org.scoredroid.buildlogic"
@@ -8,6 +7,11 @@ group = "org.scoredroid.buildlogic"
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    compileOnly(libs.android.gradle)
+    compileOnly(libs.kotlin.gradle)
 }
 
 gradlePlugin {
@@ -39,6 +43,10 @@ gradlePlugin {
         register("featurePublic") {
             id = "org.scoredroid.feature-public"
             implementationClass = "org.scoredroid.conventionplugins.kotlin.moduletypes.FeaturePublicConventionPlugin"
+        }
+        register("androidLib") {
+            id = "org.scoredroid.android-lib"
+            implementationClass = "org.scoredroid.conventionplugins.android.moduletypes.AndroidLibraryConventionPlugin"
         }
     }
 }
