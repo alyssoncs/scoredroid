@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.scoredroid.kotlin-module-junit5-setup")
     id("org.scoredroid.dagger")
 }
 
