@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("org.scoredroid.dagger")
 }
 
 android {
@@ -56,8 +56,6 @@ dependencies {
     implementation(projects.core.features.teams.entrypoint)
     implementation(projects.core.features.score.entrypoint)
 
-    kapt(libs.dagger.compiler)
-    implementation(libs.dagger)
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.material3)
     implementation(libs.fragment.ktx)

@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.scoredroid.java-module-junit5")
-    id("kotlin-kapt")
+    id("org.scoredroid.dagger")
 }
 
 android {
@@ -39,8 +39,6 @@ dependencies {
     api(projects.core.features.common.infra.dependencies.public)
     api(projects.apps.android.common.infra.dependencies.database)
 
-    kapt(libs.dagger.compiler)
-    implementation(libs.dagger)
     implementation(libs.coroutines.core)
     implementation(libs.bundles.room)
     testImplementation(libs.test.junit4)

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("org.scoredroid.dagger")
     alias(libs.plugins.ksp)
 }
 
@@ -41,8 +41,6 @@ android {
 
 dependencies {
     ksp(libs.room.compiler)
-    kapt(libs.dagger.compiler)
-    implementation(libs.dagger)
     implementation(libs.bundles.room)
 
     implementation(libs.coroutines.core)

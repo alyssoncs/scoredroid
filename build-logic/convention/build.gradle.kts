@@ -12,6 +12,10 @@ java {
 
 gradlePlugin {
     plugins {
+        register("dagger") {
+            id = "org.scoredroid.dagger"
+            implementationClass = "org.scoredroid.conventionplugins.DaggerConventionPlugin"
+        }
         register("javaModuleJunit5") {
             id = "org.scoredroid.java-module-junit5"
             implementationClass = "org.scoredroid.conventionplugins.JavaModuleJunit5ConventionPlugin"
