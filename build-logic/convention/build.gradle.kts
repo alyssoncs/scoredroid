@@ -16,6 +16,10 @@ gradlePlugin {
             id = "org.scoredroid.dagger"
             implementationClass = "org.scoredroid.conventionplugins.DaggerConventionPlugin"
         }
+        register("kotlinModule") {
+            id = "org.scoredroid.kotlin-module"
+            implementationClass = "org.scoredroid.conventionplugins.kotlin.basic.KotlinModuleConventionPlugin"
+        }
         register("kotlinModuleJunit5") {
             id = "org.scoredroid.kotlin-module-junit5-setup"
             implementationClass = "org.scoredroid.conventionplugins.kotlin.basic.KotlinModuleJunit5SetupConventionPlugin"
@@ -23,10 +27,6 @@ gradlePlugin {
         register("unitTest") {
             id = "org.scoredroid.unit-test"
             implementationClass = "org.scoredroid.conventionplugins.kotlin.basic.UnitTestConventionPlugin"
-        }
-        register("javaModule") {
-            id = "org.scoredroid.java-module"
-            implementationClass = "org.scoredroid.conventionplugins.JavaModuleConventionPlugin"
         }
         register("publicFeature") {
             id = "org.scoredroid.public-feature"

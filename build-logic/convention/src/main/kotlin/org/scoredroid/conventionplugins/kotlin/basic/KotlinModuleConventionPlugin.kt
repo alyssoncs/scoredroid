@@ -1,4 +1,4 @@
-package org.scoredroid.conventionplugins
+package org.scoredroid.conventionplugins.kotlin.basic
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -7,7 +7,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.scoredroid.utils.getPluginId
 import org.scoredroid.utils.versionCatalog
 
-class JavaModuleConventionPlugin : Plugin<Project> {
+class KotlinModuleConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val catalog = project.versionCatalog
         with(project.pluginManager) {

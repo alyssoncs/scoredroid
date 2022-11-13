@@ -6,7 +6,7 @@ import org.gradle.api.Project
 class JavaImplFeatureModuleConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project.pluginManager) {
-            apply("org.scoredroid.java-module")
+            apply("org.scoredroid.kotlin-module")
             apply("org.scoredroid.kotlin-module-junit5-setup")
             apply("org.scoredroid.unit-test")
         }

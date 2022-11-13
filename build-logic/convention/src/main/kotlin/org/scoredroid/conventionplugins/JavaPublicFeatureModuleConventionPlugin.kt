@@ -5,6 +5,6 @@ import org.gradle.api.Project
 
 class JavaPublicFeatureModuleConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.pluginManager.apply("org.scoredroid.java-module")
+        project.pluginManager.apply("org.scoredroid.kotlin-module")
     }
 }

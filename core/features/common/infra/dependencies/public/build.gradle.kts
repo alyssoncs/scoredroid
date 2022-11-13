@@ -1,5 +1,5 @@
 plugins {
-    id("org.scoredroid.java-module")
+    id("org.scoredroid.kotlin-module")
 }
 
 dependencies {
