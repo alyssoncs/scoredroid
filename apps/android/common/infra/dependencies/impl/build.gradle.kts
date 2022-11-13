@@ -37,7 +37,7 @@ android {
 
 dependencies {
     api(projects.core.features.common.infra.dependencies.public)
-    implementation(projects.apps.android.common.infra.dependencies.database)
+    api(projects.apps.android.common.infra.dependencies.database)
 
     kapt(libs.dagger.compiler)
     implementation(libs.dagger)

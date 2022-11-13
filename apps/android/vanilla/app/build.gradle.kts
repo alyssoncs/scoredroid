@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -50,6 +51,10 @@ android {
 }
 
 dependencies {
+    implementation(projects.apps.android.common.infra.dependencies.impl)
+
+    kapt(libs.dagger.compiler)
+    implementation(libs.dagger)
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.material3)
     implementation(libs.fragment.ktx)
