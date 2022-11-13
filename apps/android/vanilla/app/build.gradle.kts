@@ -51,10 +51,13 @@ android {
 }
 
 dependencies {
-    implementation(projects.apps.android.common.infra.dependencies.impl)
     implementation(projects.core.features.match.entrypoint)
     implementation(projects.core.features.teams.entrypoint)
     implementation(projects.core.features.score.entrypoint)
+
+    implementation(projects.apps.android.common.infra.dependencies.impl)
+    implementation(projects.apps.android.common.utils.fragments.fragmentfactory)
+    implementation(projects.apps.android.common.utils.fragments.factoryannotation)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.material3)
