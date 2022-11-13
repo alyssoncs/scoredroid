@@ -17,8 +17,8 @@ gradlePlugin {
             implementationClass = "org.scoredroid.conventionplugins.DaggerConventionPlugin"
         }
         register("kotlinModuleJunit5") {
-            id = "org.scoredroid.kotlin-module-junit5"
-            implementationClass = "org.scoredroid.conventionplugins.kotlin.basic.KotlinModuleJunit5ConventionPlugin"
+            id = "org.scoredroid.kotlin-module-junit5-setup"
+            implementationClass = "org.scoredroid.conventionplugins.kotlin.basic.KotlinModuleJunit5SetupConventionPlugin"
         }
         register("unitTest") {
             id = "org.scoredroid.unit-test"

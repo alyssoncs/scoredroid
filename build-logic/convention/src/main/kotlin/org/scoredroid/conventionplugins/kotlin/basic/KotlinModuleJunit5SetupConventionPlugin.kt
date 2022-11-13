@@ -8,7 +8,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 
-class KotlinModuleJunit5ConventionPlugin : Plugin<Project> {
+class KotlinModuleJunit5SetupConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.tasks.withType(Test::class.java) { testTask ->
             testTask.useJUnitPlatform()
