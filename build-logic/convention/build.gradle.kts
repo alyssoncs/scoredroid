@@ -14,7 +14,7 @@ gradlePlugin {
     plugins {
         register("dagger") {
             id = "org.scoredroid.dagger"
-            implementationClass = "org.scoredroid.conventionplugins.DaggerConventionPlugin"
+            implementationClass = "org.scoredroid.conventionplugins.kotlin.basic.DaggerConventionPlugin"
         }
         register("kotlinModule") {
             id = "org.scoredroid.kotlin-module"
