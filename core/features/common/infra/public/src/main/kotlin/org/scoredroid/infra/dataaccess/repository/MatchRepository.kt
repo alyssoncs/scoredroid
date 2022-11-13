@@ -16,6 +16,22 @@ class MatchRepository(
     persistentDataSource: PersistentMatchDataSource
 ) {
 
+    companion object {
+        private var instance: MatchRepository? = null
+
+        fun getInstance(
+            transientDataSource: TransientMatchDataSource,
+            persistentDataSource: PersistentMatchDataSource
+        ): MatchRepository {
+
+            val anInstance = instance
+            if (anInstance != null)
+                return anInstance
+            instance = MatchRepository(transientDataSource, persistentDataSource)
+            return getInstance(transientDataSource, persistentDataSource)
+        }
+    }
+
     private val dataSourceAggregator = DataSourceAggregator(
         transientDataSource,
         persistentDataSource,

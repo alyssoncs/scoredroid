@@ -12,6 +12,14 @@ class InfraEntrypointTest {
     private val persistentDataSource = FakePersistentMatchDataSource()
 
     @Test
+    fun `repository instance is always the same`() = runTest {
+        val firstInstance = InfraEntrypoint.create(persistentDataSource).matchRepository
+        val secondInstance = InfraEntrypoint.create(persistentDataSource).matchRepository
+
+        assertThat(firstInstance).isSameInstanceAs(secondInstance)
+    }
+
+    @Test
     fun `repository is created with the given persistent data source`() = runTest {
         val matchName = "match name"
         persistentDataSource.createMatch(CreateMatchRepositoryRequest(name = matchName))

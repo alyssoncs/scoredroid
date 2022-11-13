@@ -13,6 +13,6 @@ internal object RepositoryModule {
         transientDataSource: TransientMatchDataSource,
         persistentDataSource: PersistentMatchDataSource,
     ): MatchRepository {
-        return MatchRepository(transientDataSource, persistentDataSource)
+        return MatchRepository.getInstance(transientDataSource, persistentDataSource)
     }
 }
