@@ -1,11 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.scoredroid.java-module-junit5")
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "org.scoredroid.infra.impl"
+    namespace = "org.scoredroid.infra.db"
     compileSdk = 33
 
     defaultConfig {
@@ -14,6 +14,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     buildTypes {
@@ -35,14 +39,8 @@ android {
 }
 
 dependencies {
-    api(projects.core.features.common.infra.dependencies.public)
-    api(projects.apps.android.common.infra.dependencies.database)
+    ksp(libs.room.compiler)
+    implementation(libs.bundles.room)
 
     implementation(libs.coroutines.core)
-    api(libs.bundles.room)
-    testImplementation(libs.test.junit4)
-    androidTestImplementation(libs.test.coroutines)
-    androidTestImplementation(libs.test.truth)
-    androidTestImplementation(libs.test.androidx.junit)
-    androidTestImplementation(libs.test.espresso.core)
 }
