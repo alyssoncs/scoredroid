@@ -8,5 +8,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.viewmodel.ktx)
+    api(libs.viewmodel.ktx)
 }
