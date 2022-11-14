@@ -6,3 +6,4 @@
 - [x] save a match
 - [ ] bump kotlin
 - [x] extract dagger convention plugin
+- [ ] support rounds
