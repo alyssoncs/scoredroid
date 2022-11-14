@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "org.scoredroid.fragment.factory.annotation"
+    namespace = "org.scoredroid.viewmodels.factory.annotation"
 }
 
 dependencies {

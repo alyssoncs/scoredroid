@@ -4,15 +4,19 @@ import android.content.Context
 import androidx.fragment.app.FragmentFactory
 import dagger.BindsInstance
 import dagger.Component
-import org.scoredroid.di.modules.FragmentsModule
+import org.scoredroid.di.modules.FeaturesModule
 import org.scoredroid.di.modules.UseCasesModule
+import org.scoredroid.fragment.di.FragmentFactoryModule
 import org.scoredroid.infra.dataaccess.di.InfraImplModule
+import org.scoredroid.viewmodel.di.ViewModelFactoryModule
 
 @Component(
     modules = [
         InfraImplModule::class,
-        FragmentsModule::class,
+        FragmentFactoryModule::class,
+        ViewModelFactoryModule::class,
         UseCasesModule::class,
+        FeaturesModule::class,
     ]
 )
 interface ApplicationComponent {
