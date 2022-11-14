@@ -5,4 +5,4 @@
 - [x] delete a match
 - [x] save a match
 - [ ] bump kotlin
-- [ ] extract dagger convention plugin
+- [x] extract dagger convention plugin
