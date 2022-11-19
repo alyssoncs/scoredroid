@@ -6,6 +6,7 @@ import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSourc
 import org.scoredroid.match.MatchEntrypoint
 import org.scoredroid.match.domain.usecase.CreateMatchUseCase
 import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
+import org.scoredroid.match.domain.usecase.GetMatchesUseCase
 import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.match.domain.usecase.RenameMatchUseCase
 import org.scoredroid.match.domain.usecase.SaveMatchUseCase
@@ -26,6 +27,11 @@ object MatchUseCasesModule {
     @Provides
     fun provideGetMatchFlowUseCase(entrypoint: MatchEntrypoint): GetMatchFlowUseCase {
         return entrypoint.getMatchFlowUseCase
+    }
+
+    @Provides
+    fun provideGetMatchesUseCase(entrypoint: MatchEntrypoint): GetMatchesUseCase {
+        return entrypoint.getMatchesUseCase
     }
 
     @Provides
