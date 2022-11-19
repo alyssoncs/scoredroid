@@ -1,5 +1,7 @@
 package org.scoredroid.infra.dataaccess.datasource.local
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score.Companion.toScore
 import org.scoredroid.domain.entities.Team
@@ -14,48 +16,49 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
     private val matchDao: MatchDao,
 ) : PersistentMatchDataSource {
 
-    override suspend fun createMatch(matchRequest: CreateMatchRepositoryRequest): Match {
-        val matchId = matchDao.insertMatch(InsertMatchDaoRequestModel(matchRequest.name))
-        val teams = matchRequest.teams.mapIndexed { index, team ->
-            TeamEntity(name = team.name, score = 0, matchId = matchId, position = index)
+    override suspend fun createMatch(matchRequest: CreateMatchRepositoryRequest): Match =
+        withContext(Dispatchers.IO) {
+            val matchId = matchDao.insertMatch(InsertMatchDaoRequestModel(matchRequest.name))
+            val teams = matchRequest.teams.mapIndexed { index, team ->
+                TeamEntity(name = team.name, score = 0, matchId = matchId, position = index)
+            }
+            matchDao.insertTeams(teams)
+
+            return@withContext matchDao.getMatchById(matchId).toDomain().first()
         }
-        matchDao.insertTeams(teams)
 
-        return matchDao.getMatchById(matchId).toDomain().first()
-    }
-
-    override suspend fun getMatch(matchId: Long): Match? {
+    override suspend fun getMatch(matchId: Long): Match? = withContext(Dispatchers.IO) {
         val matches = matchDao.getMatchById(matchId).toDomain()
 
-        return if (matches.isEmpty())
+        return@withContext if (matches.isEmpty())
             null
         else
             matches.first()
     }
 
-    override suspend fun getAllMatches(): List<Match> {
+    override suspend fun getAllMatches(): List<Match> = withContext(Dispatchers.IO) {
         val map: Map<MatchEntity, List<TeamEntity>> = matchDao.getAllMatches()
-        return map.toDomain()
+        return@withContext map.toDomain()
     }
 
-    override suspend fun save(match: Match): Result<Unit> {
+    override suspend fun save(match: Match): Result<Unit> = withContext(Dispatchers.IO) {
         val currentMatch = getMatch(match.id)
-            ?: return Result.failure(matchNotFound(match.id))
+            ?: return@withContext Result.failure(matchNotFound(match.id))
 
         updateMatch(match)
         updateTeams(match, currentMatch)
 
-        return Result.success(Unit)
+        return@withContext Result.success(Unit)
     }
 
-    override suspend fun removeMatch(matchId: Long): Result<Unit> {
+    override suspend fun removeMatch(matchId: Long): Result<Unit> = withContext(Dispatchers.IO) {
         val matches = matchDao.getMatchById(matchId)
 
         if (matches.isEmpty())
-            return Result.failure(matchNotFound(matchId))
+            return@withContext Result.failure(matchNotFound(matchId))
 
         matchDao.deleteMatch(matches.keys.first())
-        return Result.success(Unit)
+        return@withContext Result.success(Unit)
     }
 
 
