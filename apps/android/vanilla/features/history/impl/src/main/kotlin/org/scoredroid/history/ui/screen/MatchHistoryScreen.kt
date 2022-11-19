@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.scoredroid.history.impl.R
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
+import org.scoredroid.ui.theme.ScoredroidTheme
 
 @Composable
 fun MatchHistoryScreen(viewModel: MatchHistoryViewModel) {
@@ -34,7 +35,7 @@ fun MatchHistoryScreen(viewModel: MatchHistoryViewModel) {
 private fun MatchHistoryScreenContent(
     matches: List<MatchHistoryViewModel.UiModel>
 ) {
-    MaterialTheme {
+    ScoredroidTheme {
         LazyColumn(
             contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),

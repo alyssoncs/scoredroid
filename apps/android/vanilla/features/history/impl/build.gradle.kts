@@ -22,6 +22,7 @@ dependencies {
     api(projects.apps.android.common.utils.viewmodels.factoryannotation)
 
     implementation(projects.core.features.match.public)
+    implementation(projects.apps.android.vanilla.common.ui.theme)
 
     implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling.preview)
