@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="number_of_teams">
+        <item quantity="one">%d team</item>
+        <item quantity="other">%d teams</item>
+    </plurals>
+</resources>

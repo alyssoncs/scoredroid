@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import org.scoredroid.fragment.annotation.FragmentKey
 import org.scoredroid.history.ui.controller.MatchHistoryFragment
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
+import org.scoredroid.match.domain.usecase.GetMatchesUseCase
 import org.scoredroid.viewmodel.annotation.ViewModelKey
 
 @Module(
@@ -22,8 +23,10 @@ object HistoryFeatureModule {
     @Module
     object ViewModelModule {
         @[Provides IntoMap ViewModelKey(MatchHistoryViewModel::class)]
-        fun provideMatchHistoryViewModel(): ViewModel {
-            return MatchHistoryViewModel()
+        fun provideMatchHistoryViewModel(
+            getMatches: GetMatchesUseCase,
+        ): ViewModel {
+            return MatchHistoryViewModel(getMatches)
         }
     }
 

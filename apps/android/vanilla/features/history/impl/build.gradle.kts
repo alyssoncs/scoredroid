@@ -1,6 +1,8 @@
 plugins {
     id("org.scoredroid.android-lib")
     id("org.scoredroid.dagger")
+    id("org.scoredroid.kotlin-module-junit5-setup")
+    id("org.scoredroid.unit-test")
 }
 
 android {
