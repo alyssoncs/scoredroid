@@ -27,6 +27,10 @@ class FakePersistentMatchDataSource(
         return matches[matchId]
     }
 
+    override suspend fun getAllMatches(): List<Match> {
+        return matches.values.toList()
+    }
+
     override suspend fun save(match: Match): Result<Unit> {
         val exception = exceptionToFail
 

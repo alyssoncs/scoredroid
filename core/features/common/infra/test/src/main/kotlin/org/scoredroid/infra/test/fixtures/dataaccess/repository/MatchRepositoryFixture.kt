@@ -16,6 +16,10 @@ class MatchRepositoryFixture(
     private val transientMatchDataSource: TransientMatchDataSource,
     private val persistentMatchDataSource: FakePersistentMatchDataSource,
 ) {
+    suspend fun createMatch(request: CreateMatchRepositoryRequest): Match {
+        return repository.createMatch(request)
+    }
+
     suspend fun createEmptyMatch(): Match {
         return repository.createMatch(CreateMatchRepositoryRequest())
     }

@@ -66,6 +66,31 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     }
 
     @Test
+    fun getAllMatches_noMatches() = runTest {
+        val matches = dataSourceAdapter.getAllMatches()
+
+        assertThat(matches).isEmpty()
+    }
+
+    @Test
+    fun getAllMatches_returnAllMatches() = runTest {
+        val match01Request = createMatchRequest()
+            .withMatchName("match 01")
+            .build()
+        dataSourceAdapter.createMatch(match01Request)
+        val match02Request = createMatchRequest()
+            .withMatchName("match 02")
+            .build()
+        dataSourceAdapter.createMatch(match02Request)
+
+        val matches = dataSourceAdapter.getAllMatches()
+
+        assertThat(matches).hasSize(2)
+        assertThat(matches.find { it.name == "match 01" }).isNotNull()
+        assertThat(matches.find { it.name == "match 02" }).isNotNull()
+    }
+
+    @Test
     fun save_updateNonExistingMatch() = runTest {
         val match = Match(
             id = 5,

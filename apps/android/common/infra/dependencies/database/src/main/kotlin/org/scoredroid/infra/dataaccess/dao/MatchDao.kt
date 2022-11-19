@@ -53,4 +53,14 @@ interface MatchDao {
         """
     )
     suspend fun getMatchById(matchId: Long): Map<MatchEntity, List<TeamEntity>>
+
+    @Query(
+        """
+        SELECT 
+            * 
+        FROM 
+            match LEFT JOIN team ON id = match_id
+        """
+    )
+    suspend fun getAllMatches(): Map<MatchEntity, List<TeamEntity>>
 }

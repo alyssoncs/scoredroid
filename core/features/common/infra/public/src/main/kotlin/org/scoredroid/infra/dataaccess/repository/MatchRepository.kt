@@ -47,6 +47,10 @@ class MatchRepository(
         return dataSourceAggregator.getMatch(matchId)
     }
 
+    suspend fun getMatches(): List<Match> {
+        return dataSourceAggregator.getMatches()
+    }
+
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
         return dataSourceAggregator.createMatch(createMatchRequest)
     }
@@ -146,6 +150,24 @@ class MatchRepository(
         suspend fun getMatch(matchId: Long): Match? {
             return transientDataSource.getMatch(matchId)
                 ?: updateTransient(matchId)
+        }
+
+        suspend fun getMatches(): List<Match> {
+            val persistedMatches = persistentDataSource.getAllMatches()
+            val transientOnlyMatches = getTransientOnlyMatches(persistedMatches)
+
+            return persistedMatches + transientOnlyMatches
+        }
+
+        private suspend fun getTransientOnlyMatches(persistedMatches: List<Match>): List<Match> {
+            val transientMatches = transientDataSource.getAllMatches()
+
+            if (transientMatches.isEmpty())
+                return transientMatches
+
+            val indexedPersistedMatches = persistedMatches.associateBy(Match::id)
+            return transientMatches
+                .filterNot { indexedPersistedMatches.contains(it.id) }
         }
 
         suspend fun updateMatch(

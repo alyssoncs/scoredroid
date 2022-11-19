@@ -21,16 +21,21 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
         }
         matchDao.insertTeams(teams)
 
-        return matchDao.getMatchById(matchId).toDomain()
+        return matchDao.getMatchById(matchId).toDomain().first()
     }
 
     override suspend fun getMatch(matchId: Long): Match? {
-        val matches = matchDao.getMatchById(matchId)
+        val matches = matchDao.getMatchById(matchId).toDomain()
 
-        if (matches.isEmpty())
-            return null
+        return if (matches.isEmpty())
+            null
+        else
+            matches.first()
+    }
 
-        return matches.toDomain()
+    override suspend fun getAllMatches(): List<Match> {
+        val map: Map<MatchEntity, List<TeamEntity>> = matchDao.getAllMatches()
+        return map.toDomain()
     }
 
     override suspend fun save(match: Match): Result<Unit> {
@@ -124,14 +129,14 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
         }
     }
 
-    private fun Map<MatchEntity, List<TeamEntity>>.toDomain(): Match {
-        val matchEntity = keys.first()
-        val teamsEntities = this[matchEntity].orEmpty()
-        return Match(
-            id = matchEntity.id,
-            name = matchEntity.name,
-            teams = teamsEntities.toDomain(),
-        )
+    private fun Map<MatchEntity, List<TeamEntity>>.toDomain(): List<Match> {
+        return map { mapEntry ->
+            Match(
+                id = mapEntry.key.id,
+                name = mapEntry.key.name,
+                teams = mapEntry.value.toDomain(),
+            )
+        }
     }
 
     private fun List<TeamEntity>.toDomain(): List<Team> {
