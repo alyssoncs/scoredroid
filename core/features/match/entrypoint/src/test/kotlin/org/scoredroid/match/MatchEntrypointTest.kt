@@ -4,7 +4,8 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 import org.scoredroid.match.domain.usecase.CreateMatch
-import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
+import org.scoredroid.match.domain.usecase.GetMatchFlow
+import org.scoredroid.match.domain.usecase.GetMatches
 import org.scoredroid.match.domain.usecase.RemoveMatch
 import org.scoredroid.match.domain.usecase.RenameMatch
 import org.scoredroid.match.domain.usecase.SaveMatch
@@ -20,7 +21,12 @@ class MatchEntrypointTest {
 
     @Test
     fun `getMatchFlowUseCase has the correct instance`() {
-        assertCorrectInstance<GetMatchFlowUseCase> { getMatchFlowUseCase }
+        assertCorrectInstance<GetMatchFlow> { getMatchFlowUseCase }
+    }
+
+    @Test
+    fun `getMatchesCase has the correct instance`() {
+        assertCorrectInstance<GetMatches> { getMatchesUseCase }
     }
 
     @Test

@@ -7,6 +7,8 @@ import org.scoredroid.match.domain.usecase.CreateMatch
 import org.scoredroid.match.domain.usecase.CreateMatchUseCase
 import org.scoredroid.match.domain.usecase.GetMatchFlow
 import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
+import org.scoredroid.match.domain.usecase.GetMatches
+import org.scoredroid.match.domain.usecase.GetMatchesUseCase
 import org.scoredroid.match.domain.usecase.RemoveMatch
 import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.match.domain.usecase.RenameMatch
@@ -24,6 +26,11 @@ internal object MatchUseCasesModule {
     @Provides
     fun provideGetMatchFlow(repository: MatchRepository): GetMatchFlowUseCase {
         return GetMatchFlow(repository)
+    }
+
+    @Provides
+    fun provideGetMatches(repository: MatchRepository): GetMatchesUseCase {
+        return GetMatches(repository)
     }
 
     @Provides
