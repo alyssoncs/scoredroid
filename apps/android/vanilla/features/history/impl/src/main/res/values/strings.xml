@@ -4,4 +4,5 @@
         <item quantity="one">%d team</item>
         <item quantity="other">%d teams</item>
     </plurals>
+    <string name="no_matches">There are no matches so far.</string>
 </resources>
