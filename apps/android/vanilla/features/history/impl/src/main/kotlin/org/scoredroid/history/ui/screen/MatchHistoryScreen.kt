@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.scoredroid.history.impl.R
+import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 import org.scoredroid.ui.theme.ScoredroidTheme
 
@@ -37,12 +38,12 @@ fun MatchHistoryScreen(viewModel: MatchHistoryViewModel) {
 
 @Composable
 private fun MatchHistoryScreenContent(
-    uiModel: MatchHistoryViewModel.UiModel,
+    uiModel: MatchHistoryUiModel,
 ) {
     ScoredroidTheme {
         when (uiModel) {
-            is MatchHistoryViewModel.UiModel.Content -> MatchHistory(uiModel)
-            MatchHistoryViewModel.UiModel.Loading -> Loading()
+            is MatchHistoryUiModel.Content -> MatchHistory(uiModel)
+            MatchHistoryUiModel.Loading -> Loading()
         }
     }
 }
@@ -59,7 +60,7 @@ private fun Loading() {
 }
 
 @Composable
-private fun MatchHistory(uiModel: MatchHistoryViewModel.UiModel.Content) {
+private fun MatchHistory(uiModel: MatchHistoryUiModel.Content) {
     if (uiModel.matches.isEmpty())
         EmptyState()
     else
@@ -67,7 +68,7 @@ private fun MatchHistory(uiModel: MatchHistoryViewModel.UiModel.Content) {
 }
 
 @Composable
-private fun Matches(matches: List<MatchHistoryViewModel.UiModel.Content.Match>) {
+private fun Matches(matches: List<MatchHistoryUiModel.Content.Match>) {
     LazyColumn(
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -94,7 +95,7 @@ private fun EmptyState() {
 }
 
 @Composable
-private fun MatchItem(match: MatchHistoryViewModel.UiModel.Content.Match) {
+private fun MatchItem(match: MatchHistoryUiModel.Content.Match) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -129,21 +130,21 @@ private fun formatNumberOfTeams(numberOfTeams: Int): String {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun MatchHistoryScreenPreview() {
     MatchHistoryScreenContent(
-        uiModel = MatchHistoryViewModel.UiModel.Content(
+        uiModel = MatchHistoryUiModel.Content(
             listOf(
-                MatchHistoryViewModel.UiModel.Content.Match(
+                MatchHistoryUiModel.Content.Match(
                     matchName = "first match",
                     numberOfTeams = 3,
                 ),
-                MatchHistoryViewModel.UiModel.Content.Match(
+                MatchHistoryUiModel.Content.Match(
                     matchName = "second match",
                     numberOfTeams = 1,
                 ),
-                MatchHistoryViewModel.UiModel.Content.Match(
+                MatchHistoryUiModel.Content.Match(
                     matchName = "third match",
                     numberOfTeams = 0,
                 ),
-                MatchHistoryViewModel.UiModel.Content.Match(
+                MatchHistoryUiModel.Content.Match(
                     matchName = "I hope you don't mind, but this is a very long named match",
                     numberOfTeams = 0,
                 ),
@@ -157,7 +158,7 @@ private fun MatchHistoryScreenPreview() {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun MatchHistoryScreenEmptyStatePreview() {
     MatchHistoryScreenContent(
-        uiModel = MatchHistoryViewModel.UiModel.Content(emptyList())
+        uiModel = MatchHistoryUiModel.Content(emptyList())
     )
 }
 
@@ -166,7 +167,7 @@ private fun MatchHistoryScreenEmptyStatePreview() {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun MatchHistoryScreenLoadingPreview() {
     MatchHistoryScreenContent(
-        uiModel = MatchHistoryViewModel.UiModel.Loading
+        uiModel = MatchHistoryUiModel.Loading
     )
 }
 

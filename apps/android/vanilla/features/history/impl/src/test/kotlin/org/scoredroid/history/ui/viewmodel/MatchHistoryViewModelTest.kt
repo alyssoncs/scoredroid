@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
+import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.match.domain.usecase.GetMatchesUseCase
 
 @ExtendWith(CoroutineTestExtension::class)
@@ -23,9 +24,9 @@ class MatchHistoryViewModelTest {
         )
     )
 
-    private val expectedUiModel = MatchHistoryViewModel.UiModel.Content(
+    private val expectedUiModel = MatchHistoryUiModel.Content(
         matches = listOf(
-            MatchHistoryViewModel.UiModel.Content.Match(
+            MatchHistoryUiModel.Content.Match(
                 matchName = "match name",
                 numberOfTeams = 1,
             )
@@ -42,10 +43,10 @@ class MatchHistoryViewModelTest {
     fun `should fetch matches from use case`() = runTest {
         matchHistoryViewModel.uiModel.test {
             val loading = awaitItem()
-            assertThat(loading).isInstanceOf(MatchHistoryViewModel.UiModel.Loading::class.java)
+            assertThat(loading).isInstanceOf(MatchHistoryUiModel.Loading::class.java)
 
             val content = awaitItem()
-            val value = content as MatchHistoryViewModel.UiModel.Content
+            val value = content as MatchHistoryUiModel.Content
             assertThat(value.matches).containsExactlyElementsIn(expectedUiModel.matches)
         }
     }
