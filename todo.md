@@ -7,4 +7,4 @@
 - [ ] bump kotlin
 - [x] extract dagger convention plugin
 - [ ] support rounds
-- [ ] support getting a list of all matches (probably paginated)
+- [x] support getting a list of all matches (probably paginated)
