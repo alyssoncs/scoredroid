@@ -165,9 +165,14 @@ class MatchRepository(
             if (transientMatches.isEmpty())
                 return transientMatches
 
+            return transientMatches.notIn(persistedMatches)
+        }
+
+        private fun List<Match>.notIn(
+            persistedMatches: List<Match>
+        ): List<Match> {
             val indexedPersistedMatches = persistedMatches.associateBy(Match::id)
-            return transientMatches
-                .filterNot { indexedPersistedMatches.contains(it.id) }
+            return filterNot { indexedPersistedMatches.contains(it.id) }
         }
 
         suspend fun updateMatch(
