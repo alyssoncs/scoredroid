@@ -92,6 +92,12 @@ class MatchRepository(
         return updateMatch(matchId) { moveTeam(matchId, teamAt, moveTo) }
     }
 
+    suspend fun renameTeam(matchId: Long, teamAt: Int, newName: String): Result<Match> {
+        return updateMatch(matchId) {
+            renameTeam(matchId, teamAt, newName)
+        }
+    }
+
     suspend fun persist(matchId: Long): Result<Unit> {
         return dataSourceAggregator.persist(matchId)
     }

@@ -7,6 +7,7 @@ import org.scoredroid.teams.TeamsEntrypoint
 import org.scoredroid.teams.domain.usecase.AddTeamUseCase
 import org.scoredroid.teams.domain.usecase.MoveTeamUseCase
 import org.scoredroid.teams.domain.usecase.RemoveTeamUseCase
+import org.scoredroid.teams.domain.usecase.RenameTeamUseCase
 
 @Module
 object TeamsUseCasesModule {
@@ -29,5 +30,10 @@ object TeamsUseCasesModule {
     @Provides
     fun provideRemoveTeamUseCase(entrypoint: TeamsEntrypoint): RemoveTeamUseCase {
         return entrypoint.removeTeamUseCase
+    }
+
+    @Provides
+    fun provideRenameTeamUseCase(entrypoint: TeamsEntrypoint): RenameTeamUseCase {
+        return entrypoint.renameTeamUseCase
     }
 }

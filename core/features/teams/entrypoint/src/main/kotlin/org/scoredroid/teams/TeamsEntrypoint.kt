@@ -6,6 +6,7 @@ import org.scoredroid.teams.di.DaggerTeamsComponent
 import org.scoredroid.teams.domain.usecase.AddTeamUseCase
 import org.scoredroid.teams.domain.usecase.MoveTeamUseCase
 import org.scoredroid.teams.domain.usecase.RemoveTeamUseCase
+import org.scoredroid.teams.domain.usecase.RenameTeamUseCase
 
 interface TeamsEntrypoint {
     companion object {
@@ -18,4 +19,5 @@ interface TeamsEntrypoint {
     val addTeamUseCase: AddTeamUseCase
     val moveTeamUseCase: MoveTeamUseCase
     val removeTeamUseCase: RemoveTeamUseCase
+    val renameTeamUseCase: RenameTeamUseCase
 }

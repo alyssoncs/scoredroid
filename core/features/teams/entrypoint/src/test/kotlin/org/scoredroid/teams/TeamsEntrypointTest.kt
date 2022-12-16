@@ -6,6 +6,7 @@ import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMat
 import org.scoredroid.teams.domain.usecase.AddTeam
 import org.scoredroid.teams.domain.usecase.MoveTeam
 import org.scoredroid.teams.domain.usecase.RemoveTeam
+import org.scoredroid.teams.domain.usecase.RenameTeam
 
 class TeamsEntrypointTest {
     private val persistentMatchDataSource = FakePersistentMatchDataSource()
@@ -24,6 +25,11 @@ class TeamsEntrypointTest {
     @Test
     fun `removeMatchUseCase has the correct instance`() {
         assertCorrectInstance<RemoveTeam> { removeTeamUseCase }
+    }
+
+    @Test
+    fun `renameMatchUseCase has the correct instance`() {
+        assertCorrectInstance<RenameTeam> { renameTeamUseCase }
     }
 
     private inline fun <reified T>assertCorrectInstance(
