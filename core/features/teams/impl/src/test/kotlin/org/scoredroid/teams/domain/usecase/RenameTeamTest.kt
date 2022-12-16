@@ -89,7 +89,6 @@ class RenameTeamTest {
             expectedName: String,
         ) {
             assertThat(result.isSuccess).isTrue()
-            println("assert: ----> $result")
             assertMatchResponse(fixture, result) { match ->
                 assertThat(match.teams[teamAt].name).isEqualTo(expectedName)
             }
