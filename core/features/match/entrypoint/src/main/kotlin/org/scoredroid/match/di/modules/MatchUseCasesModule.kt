@@ -3,6 +3,8 @@ package org.scoredroid.match.di.modules
 import dagger.Module
 import dagger.Provides
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
+import org.scoredroid.match.domain.usecase.ClearTransientMatchData
+import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.match.domain.usecase.CreateMatch
 import org.scoredroid.match.domain.usecase.CreateMatchUseCase
 import org.scoredroid.match.domain.usecase.GetMatchFlow
@@ -46,5 +48,10 @@ internal object MatchUseCasesModule {
     @Provides
     fun provideSaveMatch(repository: MatchRepository): SaveMatchUseCase {
         return SaveMatch(repository)
+    }
+
+    @Provides
+    fun provideClearTransientMatchData(repository: MatchRepository): ClearTransientMatchDataUseCase {
+        return ClearTransientMatchData(repository)
     }
 }

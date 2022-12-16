@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.match.MatchEntrypoint
+import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.match.domain.usecase.CreateMatchUseCase
 import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
 import org.scoredroid.match.domain.usecase.GetMatchesUseCase
@@ -47,5 +48,10 @@ object MatchUseCasesModule {
     @Provides
     fun provideSaveMatchUseCase(entrypoint: MatchEntrypoint): SaveMatchUseCase {
         return entrypoint.saveMatchUseCase
+    }
+
+    @Provides
+    fun provideClearTransientMatchData(entrypoint: MatchEntrypoint): ClearTransientMatchDataUseCase {
+        return entrypoint.clearTransientMatchDataUseCase
     }
 }
