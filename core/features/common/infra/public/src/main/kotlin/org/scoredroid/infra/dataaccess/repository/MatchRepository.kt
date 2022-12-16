@@ -106,8 +106,8 @@ class MatchRepository(
         return dataSourceAggregator.removeMatch(matchId)
     }
 
-    suspend fun clearTransientData() {
-        return dataSourceAggregator.clearTransientData()
+    suspend fun clearTransientData(matchId: Long): Result<Unit> {
+        return dataSourceAggregator.clearTransientData(matchId)
     }
 
     private suspend fun updateMatch(
@@ -217,8 +217,8 @@ class MatchRepository(
             }
         }
 
-        suspend fun clearTransientData() {
-            return transientDataSource.clear()
+        suspend fun clearTransientData(matchId: Long): Result<Unit> {
+            return transientDataSource.clear(matchId)
         }
 
         private suspend fun updateTransient(matchId: Long): Match? {
