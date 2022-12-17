@@ -56,6 +56,7 @@ dependencies {
     implementation(projects.core.features.score.entrypoint)
 
     implementation(projects.apps.android.vanilla.features.history.impl)
+    implementation(projects.apps.android.vanilla.features.editmatch.impl)
 
     implementation(projects.apps.android.common.infra.dependencies.impl)
     implementation(projects.apps.android.common.utils.fragments.fragmentfactory)

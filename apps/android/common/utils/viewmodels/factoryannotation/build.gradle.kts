@@ -9,4 +9,5 @@ android {
 
 dependencies {
     api(libs.viewmodel.ktx)
+    api(libs.viewmodel.savedstate)
 }

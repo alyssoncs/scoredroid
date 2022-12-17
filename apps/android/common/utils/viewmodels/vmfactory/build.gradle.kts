@@ -8,5 +8,5 @@ android {
 }
 
 dependencies {
-    api(libs.viewmodel.ktx)
+    api(projects.scoredroid.apps.android.common.utils.viewmodels.factoryannotation)
 }
