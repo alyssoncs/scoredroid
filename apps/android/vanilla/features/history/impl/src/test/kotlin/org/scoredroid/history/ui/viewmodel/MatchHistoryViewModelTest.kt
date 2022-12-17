@@ -11,6 +11,7 @@ import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.match.domain.usecase.GetMatchesUseCase
+import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)
 @OptIn(ExperimentalCoroutinesApi::class)

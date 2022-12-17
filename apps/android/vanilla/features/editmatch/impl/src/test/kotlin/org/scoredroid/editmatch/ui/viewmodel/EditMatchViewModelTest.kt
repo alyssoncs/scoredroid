@@ -1,9 +1,6 @@
 package org.scoredroid.editmatch.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,6 +25,8 @@ import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 import org.scoredroid.teams.domain.request.AddTeamRequest
 import org.scoredroid.teams.domain.usecase.AddTeamUseCase
 import org.scoredroid.teams.domain.usecase.RenameTeamUseCase
+import org.scoredroid.viewmodel.CoroutineTestExtension
+import org.scoredroid.viewmodel.callOnCleared
 import kotlin.random.Random
 
 @ExtendWith(CoroutineTestExtension::class)
@@ -352,17 +351,4 @@ class EditMatchViewModelTest {
             fun wasCleared(): Boolean
         }
     }
-}
-
-fun ViewModel.callOnCleared() {
-    val viewModelStore = ViewModelStore()
-    val viewModelProvider = ViewModelProvider(
-        viewModelStore,
-        object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T = this@callOnCleared as T
-        }
-    )
-    viewModelProvider[this@callOnCleared::class.java]
-    viewModelStore.clear()
 }

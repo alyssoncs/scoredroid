@@ -1,4 +1,4 @@
-package org.scoredroid.editmatch.ui.viewmodel
+package org.scoredroid.viewmodel
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
