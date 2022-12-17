@@ -1,6 +1,7 @@
 package org.scoredroid.history.ui.screen
 
 import android.content.res.Configuration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,16 +34,17 @@ import org.scoredroid.ui.theme.ScoredroidTheme
 fun MatchHistoryScreen(viewModel: MatchHistoryViewModel) {
     val uiModel by viewModel.uiModel.collectAsState()
 
-    MatchHistoryScreenContent(uiModel)
+    MatchHistoryScreenContent(uiModel, viewModel::onClick)
 }
 
 @Composable
 private fun MatchHistoryScreenContent(
     uiModel: MatchHistoryUiModel,
+    onClick: (Long) -> Unit,
 ) {
     ScoredroidTheme {
         when (uiModel) {
-            is MatchHistoryUiModel.Content -> MatchHistory(uiModel)
+            is MatchHistoryUiModel.Content -> MatchHistory(uiModel, onClick)
             MatchHistoryUiModel.Loading -> Loading()
         }
     }
@@ -60,21 +62,27 @@ private fun Loading() {
 }
 
 @Composable
-private fun MatchHistory(uiModel: MatchHistoryUiModel.Content) {
+private fun MatchHistory(
+    uiModel: MatchHistoryUiModel.Content,
+    onClick: (Long) -> Unit,
+) {
     if (uiModel.matches.isEmpty())
         EmptyState()
     else
-        Matches(uiModel.matches)
+        Matches(uiModel.matches, onClick)
 }
 
 @Composable
-private fun Matches(matches: List<MatchHistoryUiModel.Content.Match>) {
+private fun Matches(
+    matches: List<MatchHistoryUiModel.Content.Match>,
+    onClick: (Long) -> Unit,
+) {
     LazyColumn(
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         items(matches) { match ->
-            MatchItem(match)
+            MatchItem(match, onClick)
         }
     }
 }
@@ -95,10 +103,14 @@ private fun EmptyState() {
 }
 
 @Composable
-private fun MatchItem(match: MatchHistoryUiModel.Content.Match) {
+private fun MatchItem(
+    match: MatchHistoryUiModel.Content.Match,
+    onClick: (Long) -> Unit,
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick(match.id) }
     ) {
         Column(
             modifier = Modifier
@@ -135,21 +147,26 @@ private fun MatchHistoryScreenPreview() {
                 MatchHistoryUiModel.Content.Match(
                     matchName = "first match",
                     numberOfTeams = 3,
+                    id = 1,
                 ),
                 MatchHistoryUiModel.Content.Match(
                     matchName = "second match",
                     numberOfTeams = 1,
+                    id = 2,
                 ),
                 MatchHistoryUiModel.Content.Match(
                     matchName = "third match",
                     numberOfTeams = 0,
+                    id = 3,
                 ),
                 MatchHistoryUiModel.Content.Match(
                     matchName = "I hope you don't mind, but this is a very long named match",
                     numberOfTeams = 0,
+                    id = 4,
                 ),
             )
-        )
+        ),
+        onClick = {},
     )
 }
 
@@ -158,7 +175,8 @@ private fun MatchHistoryScreenPreview() {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun MatchHistoryScreenEmptyStatePreview() {
     MatchHistoryScreenContent(
-        uiModel = MatchHistoryUiModel.Content(emptyList())
+        uiModel = MatchHistoryUiModel.Content(emptyList()),
+        onClick = {},
     )
 }
 
@@ -167,7 +185,8 @@ private fun MatchHistoryScreenEmptyStatePreview() {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun MatchHistoryScreenLoadingPreview() {
     MatchHistoryScreenContent(
-        uiModel = MatchHistoryUiModel.Loading
+        uiModel = MatchHistoryUiModel.Loading,
+        onClick = {},
     )
 }
 
