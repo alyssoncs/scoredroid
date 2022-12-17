@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.scoredroid.editmatch.impl.R
-import org.scoredroid.editmatch.ui.model.EditMatchUiModel
+import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.editmatch.ui.viewmodel.EditMatchViewModel
 import org.scoredroid.ui.theme.ScoredroidTheme
 
@@ -47,21 +47,21 @@ fun EditMatchScreen(
 
 @Composable
 private fun EditMatchScreenContent(
-    uiState: EditMatchUiModel,
+    uiState: EditMatchUiState,
     onMatchNameChange: (String) -> Unit,
     onTeamNameChange: (idx: Int, name: String) -> Unit,
     onAddTeamClick: () -> Unit,
 ) {
     ScoredroidTheme {
         when (uiState) {
-            is EditMatchUiModel.Content -> EditMatch(
+            is EditMatchUiState.Content -> EditMatch(
                 uiState,
                 onMatchNameChange,
                 onTeamNameChange,
                 onAddTeamClick,
             )
-            EditMatchUiModel.Loading -> Loading()
-            EditMatchUiModel.MatchNotFound -> MatchNotFound()
+            EditMatchUiState.Loading -> Loading()
+            EditMatchUiState.MatchNotFound -> MatchNotFound()
         }
     }
 }
@@ -94,7 +94,7 @@ fun MatchNotFound() {
 
 @Composable
 private fun EditMatch(
-    uiModel: EditMatchUiModel.Content,
+    uiModel: EditMatchUiState.Content,
     onMatchNameChange: (String) -> Unit,
     onTeamNameChange: (idx: Int, name: String) -> Unit,
     onAddTeamClick: () -> Unit,
@@ -138,7 +138,7 @@ private fun MatchName(
 
 @Composable
 private fun Teams(
-    teams: List<EditMatchUiModel.Content.Team>,
+    teams: List<EditMatchUiState.Content.Team>,
     onTeamNameChange: (idx: Int, name: String) -> Unit,
 ) {
     LazyColumn(
@@ -176,7 +176,7 @@ private fun AddTeamButton(modifier: Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 private fun TeamItem(
     modifier: Modifier,
-    team: EditMatchUiModel.Content.Team,
+    team: EditMatchUiState.Content.Team,
     onTeamNameChange: (String) -> Unit,
 ) {
     OutlinedTextField(
@@ -192,14 +192,14 @@ private fun TeamItem(
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun EditMatchScreenPreview() {
     EditMatchScreenContent(
-        uiState = EditMatchUiModel.Content(
+        uiState = EditMatchUiState.Content(
             matchName = "Ultimate match",
             teams = listOf(
-                EditMatchUiModel.Content.Team(
+                EditMatchUiState.Content.Team(
                     name = "Champions",
                     score = 4,
                 ),
-                EditMatchUiModel.Content.Team(
+                EditMatchUiState.Content.Team(
                     name = "Losers",
                     score = 2,
                 )
@@ -216,7 +216,7 @@ private fun EditMatchScreenPreview() {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun EditMatchScreenLoadingPreview() {
     EditMatchScreenContent(
-        uiState = EditMatchUiModel.Loading,
+        uiState = EditMatchUiState.Loading,
         onMatchNameChange = {},
         onTeamNameChange = { _, _ -> },
         onAddTeamClick = {}
@@ -228,7 +228,7 @@ private fun EditMatchScreenLoadingPreview() {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun EditMatchScreenMatchNotFoundPreview() {
     EditMatchScreenContent(
-        uiState = EditMatchUiModel.MatchNotFound,
+        uiState = EditMatchUiState.MatchNotFound,
         onMatchNameChange = {},
         onTeamNameChange = { _, _ -> },
         onAddTeamClick = {}

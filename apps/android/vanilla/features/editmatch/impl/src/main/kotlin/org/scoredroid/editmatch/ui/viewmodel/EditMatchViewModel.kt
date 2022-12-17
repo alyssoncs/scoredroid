@@ -9,10 +9,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.scoredroid.data.response.MatchResponse
-import org.scoredroid.editmatch.ui.model.EditMatchUiModel
 import org.scoredroid.editmatch.ui.navigation.MATCH_ID_NAV_ARG
+import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.match.domain.request.CreateMatchRequestOptions
 import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.match.domain.usecase.CreateMatchUseCase
@@ -35,8 +36,11 @@ class EditMatchViewModel(
 ) : ViewModel() {
 
     private var initJob: Job
-    private val _uiState = MutableStateFlow<EditMatchUiModel>(EditMatchUiModel.Loading)
+    private val _uiState = MutableStateFlow<EditMatchUiState>(EditMatchUiState.Loading)
     val uiState = _uiState.asStateFlow()
+
+    private val _shouldNavigateBack = MutableStateFlow(false)
+    val shouldNavigateBack = _shouldNavigateBack.asStateFlow()
 
     init {
         initJob = viewModelScope.launch {
@@ -75,7 +79,12 @@ class EditMatchViewModel(
     fun onSave() {
         viewModelScope.launch {
             saveMatch(getMatchId())
+            _shouldNavigateBack.update { true }
         }
+    }
+
+    fun onNavigateBack() {
+        _shouldNavigateBack.update { false }
     }
 
     private suspend fun ensureMatchExists() {
@@ -88,18 +97,18 @@ class EditMatchViewModel(
     private suspend fun updateUiOnMatchUpdates() {
         getMatchFlow(getMatchId())?.let { matchResponseFlow ->
             _uiState.emitAll(matchResponseFlow.map { matchResponse -> matchResponse.toUiModel() })
-        } ?: _uiState.emit(EditMatchUiModel.MatchNotFound)
+        } ?: _uiState.emit(EditMatchUiState.MatchNotFound)
     }
 
     private suspend fun createEmptyMatch(): MatchResponse {
         return createMatch(CreateMatchRequestOptions())
     }
 
-    private fun MatchResponse.toUiModel(): EditMatchUiModel {
-        return EditMatchUiModel.Content(
+    private fun MatchResponse.toUiModel(): EditMatchUiState {
+        return EditMatchUiState.Content(
             matchName = name,
             teams = teams.map { teamResponse ->
-                EditMatchUiModel.Content.Team(
+                EditMatchUiState.Content.Team(
                     name = teamResponse.name,
                     score = teamResponse.score,
                 )

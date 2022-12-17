@@ -17,8 +17,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
-import org.scoredroid.editmatch.ui.model.EditMatchUiModel
 import org.scoredroid.editmatch.ui.navigation.MATCH_ID_NAV_ARG
+import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.match.domain.request.CreateMatchRequestOptions
 import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.match.domain.usecase.CreateMatchUseCase
@@ -75,9 +75,9 @@ class EditMatchViewModelTest {
 
             viewModel.uiState.test {
                 val loadingState = awaitItem()
-                assertThat(loadingState).isInstanceOf(EditMatchUiModel.Loading::class.java)
-                val contentState = awaitItem() as EditMatchUiModel.Content
-                assertThat(contentState).isInstanceOf(EditMatchUiModel.Content::class.java)
+                assertThat(loadingState).isInstanceOf(EditMatchUiState.Loading::class.java)
+                val contentState = awaitItem() as EditMatchUiState.Content
+                assertThat(contentState).isInstanceOf(EditMatchUiState.Content::class.java)
                 assertThat(contentState.matchName).isEqualTo("a brand new match")
                 assertThat(contentState.teams.first().name).isEqualTo("a brand new team")
                 assertThat(contentState.teams.first().score).isEqualTo(2)
@@ -111,8 +111,8 @@ class EditMatchViewModelTest {
             getMatchFlow.response = null
 
             viewModel.uiState.test {
-                assertThat(awaitItem()).isInstanceOf(EditMatchUiModel.Loading::class.java)
-                assertThat(awaitItem()).isInstanceOf(EditMatchUiModel.MatchNotFound::class.java)
+                assertThat(awaitItem()).isInstanceOf(EditMatchUiState.Loading::class.java)
+                assertThat(awaitItem()).isInstanceOf(EditMatchUiState.MatchNotFound::class.java)
             }
         }
 
@@ -126,9 +126,9 @@ class EditMatchViewModelTest {
 
             viewModel.uiState.test {
                 val loadingState = awaitItem()
-                assertThat(loadingState).isInstanceOf(EditMatchUiModel.Loading::class.java)
-                val contentState = awaitItem() as EditMatchUiModel.Content
-                assertThat(contentState).isInstanceOf(EditMatchUiModel.Content::class.java)
+                assertThat(loadingState).isInstanceOf(EditMatchUiState.Loading::class.java)
+                val contentState = awaitItem() as EditMatchUiState.Content
+                assertThat(contentState).isInstanceOf(EditMatchUiState.Content::class.java)
                 assertThat(contentState.matchName).isEqualTo("good old match")
                 assertThat(contentState.teams.first().name).isEqualTo("old team")
                 assertThat(contentState.teams.first().score).isEqualTo(3)
@@ -190,6 +190,15 @@ class EditMatchViewModelTest {
         }
 
         @Test
+        fun `on save, navigate back`() = runTest {
+            viewModel.onSave()
+
+            delay(500)
+
+            assertThat(viewModel.shouldNavigateBack.value).isTrue()
+        }
+
+        @Test
         fun `on cleared, call clear transient data`() = runTest {
             createViewModel()
             delay(500)
@@ -197,6 +206,17 @@ class EditMatchViewModelTest {
             viewModel.callOnCleared()
 
             assertThat(clearTransientDataSpy.matchWithId(matchId).wasCleared()).isTrue()
+        }
+
+        @Test
+        fun `on navigate back, navigate back should be false`() = runTest {
+            viewModel.onSave()
+            delay(500)
+            assertThat(viewModel.shouldNavigateBack.value).isTrue()
+
+            viewModel.onNavigateBack()
+
+            assertThat(viewModel.shouldNavigateBack.value).isFalse()
         }
 
         private fun createViewModel() {
