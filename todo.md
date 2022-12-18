@@ -10,3 +10,4 @@
 - [x] support getting a list of all matches (probably paginated)
 - [x] create a module to expose the CoroutineTestExtension
 - [ ] create a fragment compose utils module
+- [ ] update flow when deleting and clearing transient data from a match
