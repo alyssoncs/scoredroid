@@ -42,6 +42,7 @@ fun EditMatchScreen(
         onMatchNameChange = viewModel::onMatchNameChange,
         onTeamNameChange = viewModel::onTeamNameChange,
         onAddTeamClick = viewModel::onAddTeam,
+        onSaveClick = viewModel::onSave,
     )
 }
 
@@ -51,6 +52,7 @@ private fun EditMatchScreenContent(
     onMatchNameChange: (String) -> Unit,
     onTeamNameChange: (idx: Int, name: String) -> Unit,
     onAddTeamClick: () -> Unit,
+    onSaveClick: () -> Unit,
 ) {
     ScoredroidTheme {
         when (uiState) {
@@ -59,6 +61,7 @@ private fun EditMatchScreenContent(
                 onMatchNameChange,
                 onTeamNameChange,
                 onAddTeamClick,
+                onSaveClick,
             )
             EditMatchUiState.Loading -> Loading()
             EditMatchUiState.MatchNotFound -> MatchNotFound()
@@ -98,6 +101,7 @@ private fun EditMatch(
     onMatchNameChange: (String) -> Unit,
     onTeamNameChange: (idx: Int, name: String) -> Unit,
     onAddTeamClick: () -> Unit,
+    onSaveClick: () -> Unit,
 ) {
     Column {
         Column(
@@ -109,13 +113,13 @@ private fun EditMatch(
         ) {
             MatchName(uiModel.matchName, onMatchNameChange)
             Spacer(modifier = Modifier.size(4.dp))
-            Teams(uiModel.teams, onTeamNameChange)
+            Teams(uiModel.teams, onTeamNameChange, onAddTeamClick)
         }
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
-            onClick = onAddTeamClick,
+            onClick = onSaveClick,
         ) {
             Text(stringResource(R.string.save_match))
         }
@@ -140,6 +144,7 @@ private fun MatchName(
 private fun Teams(
     teams: List<EditMatchUiState.Content.Team>,
     onTeamNameChange: (idx: Int, name: String) -> Unit,
+    onAddTeamClick: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -152,20 +157,20 @@ private fun Teams(
             ) { name -> onTeamNameChange(idx, name) }
         }
         item {
-            AddTeamButton(Modifier.fillParentMaxWidth())
+            AddTeamButton(Modifier.fillParentMaxWidth(), onAddTeamClick)
         }
     }
 }
 
 @Composable
-private fun AddTeamButton(modifier: Modifier) {
+private fun AddTeamButton(modifier: Modifier, onAddTeamClick: () -> Unit) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.End,
     ) {
 
         TextButton(
-            onClick = { },
+            onClick = onAddTeamClick,
         ) {
             Text(stringResource(id = R.string.add_team))
         }
@@ -207,7 +212,8 @@ private fun EditMatchScreenPreview() {
         ),
         onMatchNameChange = {},
         onTeamNameChange = { _, _ -> },
-        onAddTeamClick = {}
+        onAddTeamClick = {},
+        onSaveClick = {},
     )
 }
 
@@ -219,7 +225,8 @@ private fun EditMatchScreenLoadingPreview() {
         uiState = EditMatchUiState.Loading,
         onMatchNameChange = {},
         onTeamNameChange = { _, _ -> },
-        onAddTeamClick = {}
+        onAddTeamClick = {},
+        onSaveClick = {},
     )
 }
 
@@ -231,6 +238,7 @@ private fun EditMatchScreenMatchNotFoundPreview() {
         uiState = EditMatchUiState.MatchNotFound,
         onMatchNameChange = {},
         onTeamNameChange = { _, _ -> },
-        onAddTeamClick = {}
+        onAddTeamClick = {},
+        onSaveClick = {},
     )
 }
