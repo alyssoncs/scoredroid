@@ -15,6 +15,5 @@ interface TransientMatchDataSource {
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match>
     suspend fun getAllMatches(): List<Match>
     suspend fun clear()
-    suspend fun clear(matchId: Long): Result<Unit>
     suspend fun removeMatch(matchId: Long): Result<Unit>
 }

@@ -75,10 +75,6 @@ class InMemoryMatchDataSource private constructor(): TransientMatchDataSource {
         matches.clear()
     }
 
-    override suspend fun clear(matchId: Long): Result<Unit> {
-        return removeMatch(matchId)
-    }
-
     override suspend fun removeMatch(matchId: Long): Result<Unit> {
         return matches.remove(matchId).let {
             if (it == null) {

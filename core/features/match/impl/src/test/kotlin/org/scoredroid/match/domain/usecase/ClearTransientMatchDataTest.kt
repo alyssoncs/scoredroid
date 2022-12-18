@@ -1,7 +1,9 @@
 package org.scoredroid.match.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -50,6 +52,22 @@ class ClearTransientMatchDataTest {
             clearTransientData(matchId)
 
             assertThat(fixture.repository.getMatch(matchId)!!.name).isEqualTo("old name")
+        }
+
+        @Test
+        fun `flow is updated to persistent value`() = runTest(
+            context = UnconfinedTestDispatcher() // TODO: this can probably be removed after turbine bump
+        ) {
+            fixture.getMatchFlow(matchId).test {
+                fixture.rebootApplication()
+                fixture.repository.renameMatch(matchId, "new name")
+
+                clearTransientData(matchId)
+
+                assertThat(awaitItem().name).isEqualTo("old name")
+                assertThat(awaitItem().name).isEqualTo("new name")
+                assertThat(awaitItem().name).isEqualTo("old name")
+            }
         }
     }
 }
