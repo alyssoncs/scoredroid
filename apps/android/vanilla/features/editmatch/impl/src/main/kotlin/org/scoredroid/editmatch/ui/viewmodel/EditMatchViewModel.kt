@@ -6,9 +6,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.scoredroid.data.response.MatchResponse
@@ -36,21 +40,26 @@ class EditMatchViewModel(
 ) : ViewModel() {
 
     private var initJob: Job
-    private val _uiState = MutableStateFlow<EditMatchUiState>(EditMatchUiState.Loading)
-    val uiState = _uiState.asStateFlow()
-
-    private val _shouldNavigateBack = MutableStateFlow(false)
-    val shouldNavigateBack = _shouldNavigateBack.asStateFlow()
-
     init {
         initJob = viewModelScope.launch {
             ensureMatchExists()
         }
-
-        viewModelScope.launch {
-            updateUiOnMatchUpdates()
-        }
     }
+
+    val uiState: StateFlow<EditMatchUiState> = flow {
+        emitAll(
+            getMatchFlow(getMatchId())
+                .map { matchResponse -> matchResponse?.toUiState() }
+                .map { uiState -> uiState ?: EditMatchUiState.MatchNotFound }
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = EditMatchUiState.Loading,
+    )
+
+    private val _shouldNavigateBack = MutableStateFlow(false)
+    val shouldNavigateBack = _shouldNavigateBack.asStateFlow()
 
     override fun onCleared() {
         viewModelScope.launch(NonCancellable) {
@@ -92,14 +101,6 @@ class EditMatchViewModel(
         if (matchId == null) {
             savedStateHandle[MATCH_ID_NAV_ARG] = createEmptyMatch().id
         }
-    }
-
-    private suspend fun updateUiOnMatchUpdates() {
-        _uiState.emitAll(
-            getMatchFlow(getMatchId())
-                .map { matchResponse -> matchResponse?.toUiState() }
-                .map { uiState -> uiState ?: EditMatchUiState.MatchNotFound }
-        )
     }
 
     private suspend fun createEmptyMatch(): MatchResponse {

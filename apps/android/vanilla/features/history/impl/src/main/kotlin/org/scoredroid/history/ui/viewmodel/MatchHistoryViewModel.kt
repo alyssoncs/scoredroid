@@ -21,7 +21,7 @@ class MatchHistoryViewModel(
         emit(MatchHistoryUiModel.Content(getMatches().map(::toUiModel)))
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(),
         initialValue = MatchHistoryUiModel.Loading,
     )
 
