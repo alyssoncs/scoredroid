@@ -95,16 +95,18 @@ class EditMatchViewModel(
     }
 
     private suspend fun updateUiOnMatchUpdates() {
-        getMatchFlow(getMatchId())?.let { matchResponseFlow ->
-            _uiState.emitAll(matchResponseFlow.map { matchResponse -> matchResponse.toUiModel() })
-        } ?: _uiState.emit(EditMatchUiState.MatchNotFound)
+        _uiState.emitAll(
+            getMatchFlow(getMatchId())
+                .map { matchResponse -> matchResponse?.toUiState() }
+                .map { uiState -> uiState ?: EditMatchUiState.MatchNotFound }
+        )
     }
 
     private suspend fun createEmptyMatch(): MatchResponse {
         return createMatch(CreateMatchRequestOptions())
     }
 
-    private fun MatchResponse.toUiModel(): EditMatchUiState {
+    private fun MatchResponse.toUiState(): EditMatchUiState {
         return EditMatchUiState.Content(
             matchName = name,
             teams = teams.map { teamResponse ->

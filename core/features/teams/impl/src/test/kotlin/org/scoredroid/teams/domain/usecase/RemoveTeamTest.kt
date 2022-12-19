@@ -72,8 +72,8 @@ class RemoveTeamTest {
             fixture.getMatchFlow(match.id).test {
                 removeTeam(match.id, 0)
 
-                val oldMatch = awaitItem()
-                val newMatch = awaitItem()
+                val oldMatch = awaitItem()!!
+                val newMatch = awaitItem()!!
 
                 assertThat(newMatch.teams.size).isEqualTo(oldMatch.teams.size.dec())
             }

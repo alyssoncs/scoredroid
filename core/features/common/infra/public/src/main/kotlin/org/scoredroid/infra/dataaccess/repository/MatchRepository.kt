@@ -37,9 +37,9 @@ class MatchRepository(
         persistentDataSource,
     )
 
-    private val matchFlows = mutableMapOf<Long, MutableStateFlow<Match>>()
+    private val matchFlows = mutableMapOf<Long, MutableStateFlow<Match?>>()
 
-    suspend fun getMatchFlow(matchId: Long): Flow<Match>? {
+    suspend fun getMatchFlow(matchId: Long): Flow<Match?> {
         return getMatchMutableFlow(matchId)
     }
 
@@ -104,6 +104,7 @@ class MatchRepository(
 
     suspend fun removeMatch(matchId: Long): Result<Unit> {
         return dataSourceAggregator.removeMatch(matchId)
+            .also { emitDeletedMatch(matchId) }
     }
 
     suspend fun clearTransientData(matchId: Long): Result<Unit> {
@@ -121,7 +122,11 @@ class MatchRepository(
     }
 
     private suspend fun emitMatch(newMatch: Match) {
-        getMatchMutableFlow(newMatch.id)?.emit(newMatch)
+        getMatchMutableFlow(newMatch.id).emit(newMatch)
+    }
+
+    private suspend fun emitDeletedMatch(matchId: Long) {
+        getMatchMutableFlow(matchId).emit(null)
     }
 
     private suspend fun updateScoreForAllTeams(
@@ -139,19 +144,15 @@ class MatchRepository(
         return getMatch(matchId)?.teams?.getOrNull(teamAt)?.score.orZero()
     }
 
-    private suspend fun getMatchMutableFlow(matchId: Long): MutableStateFlow<Match>? {
+    private tailrec suspend fun getMatchMutableFlow(matchId: Long): MutableStateFlow<Match?> {
         val flow = matchFlows[matchId]
 
         return if (flow != null) {
             flow
         } else {
             val match = getMatch(matchId)
-            if (match != null) {
-                matchFlows[matchId] = MutableStateFlow(match)
-                getMatchMutableFlow(matchId)
-            } else {
-                null
-            }
+            matchFlows[matchId] = MutableStateFlow(match)
+            getMatchMutableFlow(matchId)
         }
     }
 

@@ -19,10 +19,10 @@ class GetMatchFlowTest {
     inner class MatchDoesNotExists {
 
         @Test
-        fun `should return null`() = runTest {
+        fun `should return flow with null match`() = runTest {
             val flow = getMatchFlow(matchId = 0L)
 
-            assertThat(flow).isNull()
+            assertThat(flow.first()).isNull()
         }
     }
 
@@ -35,17 +35,10 @@ class GetMatchFlowTest {
         }
 
         @Test
-        fun `should return a flow`() = runTest {
+        fun `should have the correct match`() = runTest {
             val flow = getMatchFlow(matchId = 0L)
 
-            assertThat(flow).isNotNull()
-        }
-
-        @Test
-        fun `should have the correct match`() = runTest {
-            val flow = getMatchFlow(matchId = 0L)!!
-
-            assertThat(flow.first().name).isEqualTo("match name")
+            assertThat(flow.first()!!.name).isEqualTo("match name")
         }
     }
 }

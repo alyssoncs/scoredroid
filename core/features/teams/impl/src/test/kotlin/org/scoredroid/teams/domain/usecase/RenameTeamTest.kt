@@ -75,8 +75,8 @@ class RenameTeamTest {
             fixture.getMatchFlow(matchId).test {
                 renameTeam(matchId, 1, "team name")
 
-                val oldMatch = awaitItem()
-                val newMatch = awaitItem()
+                val oldMatch = awaitItem()!!
+                val newMatch = awaitItem()!!
 
                 assertThat(newMatch.teams.size).isEqualTo(oldMatch.teams.size)
                 assertThat(newMatch.teams[1].name).isEqualTo("team name")

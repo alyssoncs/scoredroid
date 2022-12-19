@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 import org.scoredroid.data.response.MatchResponse
 
 interface GetMatchFlowUseCase {
-    suspend operator fun invoke(matchId: Long): Flow<MatchResponse>?
+    suspend operator fun invoke(matchId: Long): Flow<MatchResponse?>
 }

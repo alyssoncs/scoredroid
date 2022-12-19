@@ -116,8 +116,8 @@ class MoveTeamTest {
                 fixture.getMatchFlow(matchId).test {
                     moveTeam(matchId = matchId, teamAt = 1, moveTo = 0)
 
-                    val oldMatch = awaitItem()
-                    val newMatch = awaitItem()
+                    val oldMatch = awaitItem()!!
+                    val newMatch = awaitItem()!!
 
                     assertTeamOrder(oldMatch, "t0, t1, t2")
                     assertTeamOrder(newMatch, "t1, t0, t2")

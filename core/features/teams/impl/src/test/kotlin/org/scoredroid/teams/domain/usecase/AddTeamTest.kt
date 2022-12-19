@@ -61,8 +61,8 @@ class AddTeamTest {
             fixture.getMatchFlow(matchId).test {
                 addTeam(matchId, AddTeamRequest(name = "team name"))
 
-                val oldMatch = awaitItem()
-                val newMatch = awaitItem()
+                val oldMatch = awaitItem()!!
+                val newMatch = awaitItem()!!
 
                 assertThat(newMatch.teams.size).isEqualTo(oldMatch.teams.size.inc())
                 assertThat(newMatch.teams.last().name).isEqualTo("team name")

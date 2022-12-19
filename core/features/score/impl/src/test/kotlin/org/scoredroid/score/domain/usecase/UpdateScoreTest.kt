@@ -125,7 +125,7 @@ abstract class UpdateScoreTest {
                 updateScore(match.id, 0, 2)
 
                 awaitItem()
-                val newMatch = awaitItem()
+                val newMatch = awaitItem()!!
                 assertScore(newMatch, 2)
             }
         }

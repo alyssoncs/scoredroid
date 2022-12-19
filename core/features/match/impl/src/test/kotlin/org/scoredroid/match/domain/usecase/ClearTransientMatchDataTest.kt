@@ -64,9 +64,9 @@ class ClearTransientMatchDataTest {
 
                 clearTransientData(matchId)
 
-                assertThat(awaitItem().name).isEqualTo("old name")
-                assertThat(awaitItem().name).isEqualTo("new name")
-                assertThat(awaitItem().name).isEqualTo("old name")
+                assertThat(awaitItem()!!.name).isEqualTo("old name")
+                assertThat(awaitItem()!!.name).isEqualTo("new name")
+                assertThat(awaitItem()!!.name).isEqualTo("old name")
             }
         }
     }

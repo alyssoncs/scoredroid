@@ -1,5 +1,6 @@
 package org.scoredroid.match.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -50,6 +51,16 @@ class RemoveMatchTest {
             removeMatch(matchId)
 
             assertThat(fixture.repository.getMatch(matchId)).isNull()
+        }
+
+        @Test
+        fun `flow is updated`() = runTest {
+            fixture.getMatchFlow(matchId).test {
+                removeMatch(matchId)
+
+                assertThat(awaitItem()).isNotNull()
+                assertThat(awaitItem()).isNull()
+            }
         }
     }
 }

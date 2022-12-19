@@ -63,8 +63,8 @@ class RenameMatchTest {
             fixture.getMatchFlow(matchId).test {
                 renameMatch(matchId, newName)
 
-                assertThat(awaitItem().name).isEqualTo(oldName)
-                assertThat(awaitItem().name).isEqualTo(newName)
+                assertThat(awaitItem()!!.name).isEqualTo(oldName)
+                assertThat(awaitItem()!!.name).isEqualTo(newName)
             }
         }
     }

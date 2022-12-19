@@ -93,8 +93,8 @@ class ResetScoreTest {
             fixture.getMatchFlow(match.id).test {
                 resetScore(match.id)
 
-                assertThat(scoreSumOf(awaitItem())).isNotEqualTo(0)
-                assertThat(scoreSumOf(awaitItem())).isEqualTo(0)
+                assertThat(scoreSumOf(awaitItem()!!)).isNotEqualTo(0)
+                assertThat(scoreSumOf(awaitItem()!!)).isEqualTo(0)
             }
         }
 

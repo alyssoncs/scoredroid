@@ -242,9 +242,9 @@ class EditMatchViewModelTest {
     class GetMatchFlowUseCaseStub : GetMatchFlowUseCase {
         var response: MatchResponse? = null
 
-        override suspend fun invoke(matchId: Long): Flow<MatchResponse>? {
+        override suspend fun invoke(matchId: Long): Flow<MatchResponse?> {
             delay(500L)
-            return response?.let(::flowOf)
+            return flowOf(response)
         }
     }
 
