@@ -20,6 +20,7 @@ android {
 dependencies {
     api(projects.apps.android.common.utils.fragments.factoryannotation)
     api(projects.apps.android.common.utils.viewmodels.factoryannotation)
+    api(projects.apps.android.vanilla.features.editmatch.public)
 
     implementation(projects.core.features.match.public)
     implementation(projects.apps.android.vanilla.common.ui.theme)
