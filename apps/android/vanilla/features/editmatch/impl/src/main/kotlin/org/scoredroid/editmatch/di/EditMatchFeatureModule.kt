@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
 import org.scoredroid.editmatch.ui.controller.EditMatchFragment
+import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationResolver
+import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationResolverImpl
 import org.scoredroid.editmatch.ui.viewmodel.EditMatchViewModel
 import org.scoredroid.fragment.annotation.FragmentKey
 import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
@@ -23,6 +25,7 @@ import org.scoredroid.viewmodel.annotation.ViewModelKey
     includes = [
         EditMatchFeatureModule.ViewModelModule::class,
         EditMatchFeatureModule.FragmentModule::class,
+        EditMatchFeatureModule.NavigationModule::class,
     ]
 )
 object EditMatchFeatureModule {
@@ -59,6 +62,14 @@ object EditMatchFeatureModule {
         @[Provides IntoMap FragmentKey(EditMatchFragment::class)]
         fun provideEditMatchFragment(vmFactory: ViewModelProvider.Factory): Fragment {
             return EditMatchFragment(vmFactory)
+        }
+    }
+
+    @Module
+    object NavigationModule {
+        @Provides
+        fun provideEditMatchNavigationResolver(): EditMatchNavigationResolver {
+            return EditMatchNavigationResolverImpl
         }
     }
 }

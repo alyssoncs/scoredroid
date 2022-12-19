@@ -18,6 +18,7 @@ android {
 }
 
 dependencies {
+    api(projects.apps.android.vanilla.features.editmatch.public)
     api(projects.apps.android.common.utils.fragments.factoryannotation)
     api(projects.apps.android.common.utils.viewmodels.factoryannotation)
 
