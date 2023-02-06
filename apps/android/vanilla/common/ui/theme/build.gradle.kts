@@ -10,11 +10,12 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.0"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
 dependencies {
+    libs.versions.compose
     implementation(libs.androidx.core.ktx)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling.preview)
