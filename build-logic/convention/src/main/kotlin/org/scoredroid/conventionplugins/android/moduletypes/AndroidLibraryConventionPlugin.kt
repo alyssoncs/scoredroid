@@ -8,6 +8,8 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+import org.scoredroid.utils.getVersion
+import org.scoredroid.utils.versionCatalog
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -16,7 +18,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             apply("org.jetbrains.kotlin.android")
         }
 
-        val javaVersion = 11
+        val javaVersion = project.versionCatalog.getVersion("java").toInt()
         project.extensions.configure<LibraryExtension> {
             compileSdk = 33
             defaultConfig {

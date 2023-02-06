@@ -30,11 +30,12 @@ android {
             )
         }
     }
+    val javaVersion = libs.versions.java.get().toInt()
     compileOptions {
-        targetCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.toVersion(javaVersion)
     }
     kotlin {
-        jvmToolchain(11)
+        jvmToolchain(javaVersion)
     }
     buildFeatures {
         compose = true

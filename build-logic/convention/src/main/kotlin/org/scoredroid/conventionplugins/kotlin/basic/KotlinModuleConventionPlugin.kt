@@ -4,6 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.scoredroid.utils.getPluginId
+import org.scoredroid.utils.getVersion
 import org.scoredroid.utils.versionCatalog
 
 class KotlinModuleConventionPlugin : Plugin<Project> {
@@ -16,7 +17,7 @@ class KotlinModuleConventionPlugin : Plugin<Project> {
         }
 
         with(project.extensions.getByType(KotlinJvmProjectExtension::class.java)) {
-            jvmToolchain(jdkVersion = 11)
+            jvmToolchain(jdkVersion = project.versionCatalog.getVersion("java").toInt())
         }
     }
 }

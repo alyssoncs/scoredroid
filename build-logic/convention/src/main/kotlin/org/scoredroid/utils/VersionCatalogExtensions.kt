@@ -16,3 +16,7 @@ fun VersionCatalog.getLibrary(catalogAlias: String): Provider<MinimalExternalMod
 fun VersionCatalog.getBundle(catalogAlias: String): Provider<ExternalModuleDependencyBundle> {
     return this.findBundle(catalogAlias).get()
 }
+
+fun VersionCatalog.getVersion(catalogAlias: String): String {
+    return this.findVersion(catalogAlias).get().requiredVersion
+}
