@@ -2,7 +2,6 @@ package org.scoredroid.conventionplugins.kotlin.basic
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.scoredroid.utils.getPluginId
 import org.scoredroid.utils.versionCatalog
@@ -17,9 +16,7 @@ class KotlinModuleConventionPlugin : Plugin<Project> {
         }
 
         with(project.extensions.getByType(KotlinJvmProjectExtension::class.java)) {
-            jvmToolchain {
-                languageVersion.set(JavaLanguageVersion.of(11))
-            }
+            jvmToolchain(jdkVersion = 11)
         }
     }
 }
