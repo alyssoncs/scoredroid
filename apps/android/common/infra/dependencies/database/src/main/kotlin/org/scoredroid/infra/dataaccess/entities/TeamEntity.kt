@@ -3,7 +3,7 @@ package org.scoredroid.infra.dataaccess.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.CASCADE
+import androidx.room.ForeignKey.Companion.CASCADE
 
 @Entity(
     tableName = "team",

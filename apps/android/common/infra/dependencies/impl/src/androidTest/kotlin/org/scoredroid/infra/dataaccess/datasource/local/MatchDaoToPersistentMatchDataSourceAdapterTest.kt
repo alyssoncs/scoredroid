@@ -41,7 +41,6 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     fun createMatch_createsMatchCorrectly() = runTest {
         val request = createMatchRequest().build()
 
-
         val match = dataSourceAdapter.createMatch(request)
 
         assertMatchWasMappedCorrectly(match, request)
