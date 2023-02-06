@@ -1,9 +1,9 @@
 package org.scoredroid.conventionplugins.kotlin.basic
 
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.scoredroid.utils.getPluginId
 import org.scoredroid.utils.versionCatalog
 
@@ -16,9 +16,10 @@ class KotlinModuleConventionPlugin : Plugin<Project> {
             apply(catalog.getPluginId("detekt"))
         }
 
-        with(project.extensions.getByType(JavaPluginExtension::class.java)) {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+        with(project.extensions.getByType(KotlinJvmProjectExtension::class.java)) {
+            jvmToolchain {
+                languageVersion.set(JavaLanguageVersion.of(11))
+            }
         }
     }
 }

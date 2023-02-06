@@ -17,24 +17,21 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
         project.extensions.configure<LibraryExtension> {
 
-            val compileAndTargetSdk = 33
-
-            compileSdk = compileAndTargetSdk
+            compileSdk = 33
             defaultConfig {
                 minSdk = 25
-                targetSdk = compileAndTargetSdk
 
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
 
-            val jvmVersion = JavaVersion.VERSION_11
+            val javaVersion = JavaVersion.VERSION_11
             compileOptions {
-                sourceCompatibility = jvmVersion
-                targetCompatibility = jvmVersion
+                sourceCompatibility = javaVersion
+                targetCompatibility = javaVersion
             }
 
             kotlinOptions {
-                jvmTarget = jvmVersion.toString()
+                jvmTarget = javaVersion.toString()
             }
         }
     }
