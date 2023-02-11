@@ -10,6 +10,7 @@ java {
 }
 
 dependencies {
-    compileOnly(libs.android.gradle)
-    compileOnly(libs.kotlin.gradle)
+    implementation(libs.android.gradle)
+    implementation(libs.kotlin.gradle)
+    implementation(libs.detekt.gradle)
 }
