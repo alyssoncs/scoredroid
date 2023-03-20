@@ -63,8 +63,8 @@ private fun EditMatchScreenContent(
                 onAddTeamClick,
                 onSaveClick,
             )
-            EditMatchUiState.Loading -> Loading()
-            EditMatchUiState.MatchNotFound -> MatchNotFound()
+            is EditMatchUiState.Loading -> Loading()
+            is EditMatchUiState.MatchNotFound -> MatchNotFound()
         }
     }
 }
@@ -209,6 +209,7 @@ private fun EditMatchScreenPreview() {
                     score = 2,
                 )
             ),
+            shouldNavigateBack = false,
         ),
         onMatchNameChange = {},
         onTeamNameChange = { _, _ -> },
@@ -222,7 +223,7 @@ private fun EditMatchScreenPreview() {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun EditMatchScreenLoadingPreview() {
     EditMatchScreenContent(
-        uiState = EditMatchUiState.Loading,
+        uiState = EditMatchUiState.Loading(shouldNavigateBack = false),
         onMatchNameChange = {},
         onTeamNameChange = { _, _ -> },
         onAddTeamClick = {},
@@ -235,7 +236,7 @@ private fun EditMatchScreenLoadingPreview() {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 private fun EditMatchScreenMatchNotFoundPreview() {
     EditMatchScreenContent(
-        uiState = EditMatchUiState.MatchNotFound,
+        uiState = EditMatchUiState.MatchNotFound(shouldNavigateBack = false),
         onMatchNameChange = {},
         onTeamNameChange = { _, _ -> },
         onAddTeamClick = {},

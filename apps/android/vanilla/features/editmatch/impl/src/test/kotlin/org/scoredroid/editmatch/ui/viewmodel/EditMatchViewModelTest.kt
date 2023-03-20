@@ -192,9 +192,10 @@ class EditMatchViewModelTest {
         fun `on save, navigate back`() = runTest {
             viewModel.onSave()
 
-            delay(500)
-
-            assertThat(viewModel.shouldNavigateBack.value).isTrue()
+            viewModel.uiState.test {
+                skipItems(1)
+                assertThat(awaitItem().shouldNavigateBack).isTrue()
+            }
         }
 
         @Test
@@ -209,13 +210,15 @@ class EditMatchViewModelTest {
 
         @Test
         fun `on navigate back, navigate back should be false`() = runTest {
-            viewModel.onSave()
-            delay(500)
-            assertThat(viewModel.shouldNavigateBack.value).isTrue()
+            viewModel.uiState.test {
+                skipItems(1)
+                viewModel.onSave()
+                assertThat(awaitItem().shouldNavigateBack).isTrue()
 
-            viewModel.onNavigateBack()
+                viewModel.onNavigateBack()
 
-            assertThat(viewModel.shouldNavigateBack.value).isFalse()
+                assertThat(awaitItem().shouldNavigateBack).isFalse()
+            }
         }
 
         private fun createViewModel() {

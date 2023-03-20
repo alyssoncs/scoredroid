@@ -8,7 +8,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -49,17 +49,25 @@ class EditMatchViewModel(
     val uiState: StateFlow<EditMatchUiState> = flow {
         emitAll(
             getMatchFlow(getMatchId())
-                .map { matchResponse -> matchResponse?.toUiState() }
-                .map { uiState -> uiState ?: EditMatchUiState.MatchNotFound }
+                .combine(_shouldNavigateBack) { matchState, shouldNavigateBack ->
+                    combineState(matchState, shouldNavigateBack)
+                }
+                .map { combinedMatchState -> combinedMatchState.toUiState() }
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = EditMatchUiState.Loading,
+        initialValue = EditMatchUiState.Loading(shouldNavigateBack = false),
     )
 
+    private fun combineState(
+        matchState: MatchResponse?,
+        shouldNavigateBack: Boolean,
+    ): CombinedMatchState {
+        return CombinedMatchState(matchState, shouldNavigateBack)
+    }
+
     private val _shouldNavigateBack = MutableStateFlow(false)
-    val shouldNavigateBack = _shouldNavigateBack.asStateFlow()
 
     override fun onCleared() {
         viewModelScope.launch(NonCancellable) {
@@ -107,16 +115,21 @@ class EditMatchViewModel(
         return createMatch(CreateMatchRequestOptions())
     }
 
-    private fun MatchResponse.toUiState(): EditMatchUiState {
-        return EditMatchUiState.Content(
-            matchName = name,
-            teams = teams.map { teamResponse ->
-                EditMatchUiState.Content.Team(
-                    name = teamResponse.name,
-                    score = teamResponse.score,
-                )
-            }
-        )
+    private fun CombinedMatchState.toUiState(): EditMatchUiState {
+        return if (this.matchState == null) {
+            EditMatchUiState.MatchNotFound(shouldNavigateBack = this.shouldNavigateBack)
+        } else {
+            EditMatchUiState.Content(
+                matchName = this.matchState.name,
+                teams = this.matchState.teams.map { teamResponse ->
+                    EditMatchUiState.Content.Team(
+                        name = teamResponse.name,
+                        score = teamResponse.score,
+                    )
+                },
+                shouldNavigateBack = this.shouldNavigateBack,
+            )
+        }
     }
 
     private suspend fun getMatchId(): Long {
@@ -127,4 +140,9 @@ class EditMatchViewModel(
         initJob.join()
         return savedStateHandle[MATCH_ID_NAV_ARG]
     }
+
+    private data class CombinedMatchState(
+        val matchState: MatchResponse?,
+        val shouldNavigateBack: Boolean,
+    )
 }
