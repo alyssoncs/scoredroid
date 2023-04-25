@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -127,7 +126,6 @@ private fun EditMatch(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun MatchName(
     matchName: String,
     onMatchNameChange: (String) -> Unit,
@@ -178,7 +176,6 @@ private fun AddTeamButton(modifier: Modifier, onAddTeamClick: () -> Unit) {
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun TeamItem(
     modifier: Modifier,
     team: EditMatchUiState.Content.Team,
