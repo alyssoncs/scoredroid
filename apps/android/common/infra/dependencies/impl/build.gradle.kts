@@ -5,6 +5,10 @@ plugins {
 
 android {
     namespace = "org.scoredroid.infra.impl"
+
+    packaging {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
