@@ -8,11 +8,12 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-val javaVersion = project.versionCatalog.getVersion("java").toInt()
+val catalog = project.versionCatalog
+val javaVersion = catalog.getVersion("java").toInt()
 project.extensions.configure<LibraryExtension> {
-    compileSdk = 33
+    compileSdk = catalog.getVersion("compileSdk").toInt()
     defaultConfig {
-        minSdk = 25
+        minSdk = catalog.getVersion("minSdk").toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
