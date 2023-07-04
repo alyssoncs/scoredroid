@@ -56,14 +56,22 @@ class MatchRepository(
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        return updateMatch(matchId) { addTeam(matchId, team) }
+        return updateAndEmitMatch(matchId) { addTeam(matchId, team) }
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
-        return updateMatch(matchId) { removeTeam(matchId, teamAt) }
+        return updateAndEmitMatch(matchId) { removeTeam(matchId, teamAt) }
     }
 
     suspend fun updateScore(
+        matchId: Long,
+        teamAt: Int,
+        update: (currentScore: Score) -> Score,
+    ): Result<Match> {
+        return updateAndEmitMatch(matchId) { updateScoreLocally(matchId, teamAt, update) }
+    }
+
+    private suspend fun updateScoreLocally(
         matchId: Long,
         teamAt: Int,
         update: (currentScore: Score) -> Score,
@@ -85,15 +93,15 @@ class MatchRepository(
     }
 
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        return updateMatch(matchId) { renameMatch(matchId, name) }
+        return updateAndEmitMatch(matchId) { renameMatch(matchId, name) }
     }
 
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
-        return updateMatch(matchId) { moveTeam(matchId, teamAt, moveTo) }
+        return updateAndEmitMatch(matchId) { moveTeam(matchId, teamAt, moveTo) }
     }
 
     suspend fun renameTeam(matchId: Long, teamAt: Int, newName: String): Result<Match> {
-        return updateMatch(matchId) {
+        return updateAndEmitMatch(matchId) {
             renameTeam(matchId, teamAt, newName)
         }
     }
@@ -113,12 +121,19 @@ class MatchRepository(
             .map { }
     }
 
+    private suspend fun updateAndEmitMatch(
+        matchId: Long,
+        update: suspend TransientMatchDataSource.(matchId: Long) -> Result<Match>,
+    ): Result<Match> {
+        return updateMatch(matchId, update)
+            .onSuccess { newMatch -> emitMatch(newMatch) }
+    }
+
     private suspend fun updateMatch(
         matchId: Long,
         update: suspend TransientMatchDataSource.(matchId: Long) -> Result<Match>,
     ): Result<Match> {
         return dataSourceAggregator.updateMatch(matchId, update)
-            .onSuccess { newMatch -> emitMatch(newMatch) }
     }
 
     private suspend fun emitMatch(newMatch: Match) {
@@ -133,11 +148,13 @@ class MatchRepository(
         match: Match,
         update: (currentScore: Score) -> Score
     ): Result<Match> {
-        var result: Result<Match> = Result.success(match)
-        match.teams.forEachIndexed { teamAt, _ ->
-            result = updateScore(match.id, teamAt, update)
+        return updateAndEmitMatch(match.id) {
+            val results = List(match.teams.size) { index ->
+                updateScoreLocally(match.id, index, update)
+            }
+
+            results.lastOrNull { it.isSuccess } ?: Result.success(match)
         }
-        return result
     }
 
     private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
