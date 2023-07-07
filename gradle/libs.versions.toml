@@ -18,6 +18,7 @@ compose-ui = "1.6.0-alpha01"
 coroutines = "1.7.2"
 dagger = "2.46.1"
 detekt = "1.23.0"
+detekt-compose-plugin = "0.1.12"
 espresso = "3.6.0-alpha01"
 fragment = "1.7.0-alpha01"
 junit4 = "4.13.2"
@@ -60,6 +61,8 @@ test-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+detekt-formatting-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-compose-plugin = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-compose-plugin"}
 
 [bundles]
 unitTest = ["test-junit-api", "test-junit-params", "test-truth", "test-coroutines", "test-turbine"]
