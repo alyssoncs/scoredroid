@@ -4,7 +4,7 @@
 - [x] add persistence layer
 - [x] delete a match
 - [x] save a match
-- [ ] bump kotlin
+- [x] bump kotlin
 - [x] extract dagger convention plugin
 - [ ] support rounds
 - [x] support getting a list of all matches (probably paginated)
