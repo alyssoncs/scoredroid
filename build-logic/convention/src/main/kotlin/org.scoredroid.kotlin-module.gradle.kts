@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.scoredroid.utils.getVersion
 import org.scoredroid.utils.versionCatalog
 
@@ -8,7 +7,6 @@ plugins {
     id("org.scoredroid.detekt")
 }
 
-val catalog = project.versionCatalog
-with(project.extensions.getByType(KotlinJvmProjectExtension::class.java)) {
+kotlin {
     jvmToolchain(jdkVersion = project.versionCatalog.getVersion("java").toInt())
 }
