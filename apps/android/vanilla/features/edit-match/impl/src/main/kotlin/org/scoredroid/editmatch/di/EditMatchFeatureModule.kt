@@ -26,7 +26,7 @@ import org.scoredroid.viewmodel.annotation.ViewModelKey
         EditMatchFeatureModule.ViewModelModule::class,
         EditMatchFeatureModule.FragmentModule::class,
         EditMatchFeatureModule.NavigationModule::class,
-    ]
+    ],
 )
 object EditMatchFeatureModule {
 

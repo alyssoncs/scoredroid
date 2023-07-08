@@ -17,7 +17,7 @@ import org.scoredroid.viewmodel.annotation.ViewModelKey
     includes = [
         HistoryFeatureModule.ViewModelModule::class,
         HistoryFeatureModule.FragmentModule::class,
-    ]
+    ],
 )
 object HistoryFeatureModule {
 

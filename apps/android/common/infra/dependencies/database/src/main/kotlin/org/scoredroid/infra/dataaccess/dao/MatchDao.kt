@@ -49,7 +49,7 @@ interface MatchDao {
             match LEFT JOIN team ON id = match_id
         WHERE 
             id = :matchId
-        """
+        """,
     )
     suspend fun getMatchById(matchId: Long): Map<MatchEntity, List<TeamEntity>>
 
@@ -59,7 +59,7 @@ interface MatchDao {
             * 
         FROM 
             match LEFT JOIN team ON id = match_id
-        """
+        """,
     )
     suspend fun getAllMatches(): Map<MatchEntity, List<TeamEntity>>
 }

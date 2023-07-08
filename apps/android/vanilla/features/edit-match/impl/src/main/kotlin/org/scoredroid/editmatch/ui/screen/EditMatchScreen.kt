@@ -142,7 +142,7 @@ private fun MatchName(
 private fun Teams(
     teams: List<EditMatchUiState.Content.Team>,
     onTeamNameChange: (idx: Int, name: String) -> Unit,
-    onAddTeamClick: () -> Unit
+    onAddTeamClick: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -151,7 +151,7 @@ private fun Teams(
         itemsIndexed(teams) { idx, team ->
             TeamItem(
                 modifier = Modifier.fillParentMaxWidth(),
-                team = team
+                team = team,
             ) { name -> onTeamNameChange(idx, name) }
         }
         item {
@@ -203,7 +203,7 @@ private fun EditMatchScreenPreview() {
                 EditMatchUiState.Content.Team(
                     name = "Losers",
                     score = 2,
-                )
+                ),
             ),
             shouldNavigateBack = false,
         ),

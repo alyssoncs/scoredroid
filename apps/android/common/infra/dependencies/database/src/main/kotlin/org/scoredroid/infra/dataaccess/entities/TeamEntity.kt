@@ -14,7 +14,7 @@ import androidx.room.ForeignKey.Companion.CASCADE
             parentColumns = [MatchEntity.ColumnsName.id],
             childColumns = [TeamEntity.ColumnsName.matchId],
             onDelete = CASCADE,
-        )
+        ),
     ],
 )
 data class TeamEntity(

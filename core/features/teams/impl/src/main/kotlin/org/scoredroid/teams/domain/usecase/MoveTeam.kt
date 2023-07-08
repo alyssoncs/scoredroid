@@ -6,7 +6,7 @@ import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.utils.mappers.toMatchResponse
 
 class MoveTeam(
-    private val repository: MatchRepository
+    private val repository: MatchRepository,
 ) : MoveTeamUseCase {
     override suspend fun invoke(matchId: Long, teamAt: Int, moveTo: Int): Result<MatchResponse> {
         val result = repository.moveTeam(matchId, teamAt, moveTo)

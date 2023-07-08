@@ -15,7 +15,7 @@ import org.scoredroid.editmatch.ui.screen.EditMatchScreen
 import org.scoredroid.editmatch.ui.viewmodel.EditMatchViewModel
 
 class EditMatchFragment(
-    vmFactory: ViewModelProvider.Factory
+    vmFactory: ViewModelProvider.Factory,
 ) : Fragment() {
 
     private val viewModel by viewModels<EditMatchViewModel> { vmFactory }
@@ -23,7 +23,7 @@ class EditMatchFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)

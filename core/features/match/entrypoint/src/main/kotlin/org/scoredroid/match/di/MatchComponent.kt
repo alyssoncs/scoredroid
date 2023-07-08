@@ -9,7 +9,7 @@ import org.scoredroid.match.di.modules.MatchUseCasesModule
 @Component(
     modules = [
         MatchUseCasesModule::class,
-    ]
+    ],
 )
 internal interface MatchComponent : MatchEntrypoint {
     @Component.Factory

@@ -151,7 +151,7 @@ abstract class UpdateScoreTest {
 
         private fun assertScore(
             match: MatchResponse,
-            updateAmount: Int
+            updateAmount: Int,
         ) {
             assertThat(match.teams[0].score)
                 .isEqualTo(updateStrategy(currentScore = initialScore, updateAmount = updateAmount))

@@ -22,7 +22,7 @@ class MatchHistoryViewModelTest {
             id = 5L,
             name = "match name",
             teams = listOf(TeamResponse(name = "team name", score = 0)),
-        )
+        ),
     )
 
     private val expectedUiModel = MatchHistoryUiModel.Content(
@@ -31,8 +31,8 @@ class MatchHistoryViewModelTest {
                 matchName = "match name",
                 numberOfTeams = 1,
                 id = 5L,
-            )
-        )
+            ),
+        ),
     )
 
     private val getMatchesUseCaseStub = GetMatchesUseCaseStub().also {

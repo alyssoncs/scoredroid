@@ -5,7 +5,7 @@ import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.utils.mappers.toMatchResponse
 
 class RenameTeam(
-    private val matchRepository: MatchRepository
+    private val matchRepository: MatchRepository,
 ) : RenameTeamUseCase {
     override suspend fun invoke(
         matchId: Long,

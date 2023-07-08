@@ -12,7 +12,7 @@ object FragmentFactoryModule {
 
     @Provides
     fun provideFragmentFactory(
-        providers: @JvmSuppressWildcards Map<Class<out Fragment>, Provider<Fragment>>
+        providers: @JvmSuppressWildcards Map<Class<out Fragment>, Provider<Fragment>>,
     ): FragmentFactory {
         val factories = providers.mapValues { entry ->
             val provider = entry.value

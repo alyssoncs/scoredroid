@@ -7,5 +7,5 @@ import org.scoredroid.domain.entities.Match
 fun Match.toMatchResponse() = MatchResponse(
     id = id,
     name = name,
-    teams = teams.map { TeamResponse(it.name, it.score.intValue) }
+    teams = teams.map { TeamResponse(it.name, it.score.intValue) },
 )

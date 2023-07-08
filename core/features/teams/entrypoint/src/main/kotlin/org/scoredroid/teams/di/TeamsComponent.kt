@@ -9,7 +9,7 @@ import org.scoredroid.teams.di.modules.TeamsUseCasesModule
 @Component(
     modules = [
         TeamsUseCasesModule::class,
-    ]
+    ],
 )
 internal interface TeamsComponent : TeamsEntrypoint {
     @Component.Factory

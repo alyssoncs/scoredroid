@@ -81,8 +81,8 @@ class CreateMatchTest {
                     teams = listOf(
                         CreateMatchRequestOptions.InitialTeamRequest(name = "team 1"),
                         CreateMatchRequestOptions.InitialTeamRequest(name = "team 2"),
-                    )
-                )
+                    ),
+                ),
             )
 
             assertMatchResponse(fixture, matchResponse) { match ->

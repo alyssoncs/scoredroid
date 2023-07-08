@@ -11,7 +11,7 @@ import org.scoredroid.score.di.modules.ScoreUseCasesModule
     modules = [
         ScoreUpdaterModule::class,
         ScoreUseCasesModule::class,
-    ]
+    ],
 )
 internal interface ScoreComponent : ScoreEntrypoint {
     @Component.Factory

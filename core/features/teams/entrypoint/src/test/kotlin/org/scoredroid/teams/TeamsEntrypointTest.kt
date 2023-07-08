@@ -33,7 +33,7 @@ class TeamsEntrypointTest {
     }
 
     private inline fun <reified T>assertCorrectInstance(
-        dependency: TeamsEntrypoint.() -> Any
+        dependency: TeamsEntrypoint.() -> Any,
     ) {
         assertThat(entrypoint.dependency()).isInstanceOf(T::class.java)
     }

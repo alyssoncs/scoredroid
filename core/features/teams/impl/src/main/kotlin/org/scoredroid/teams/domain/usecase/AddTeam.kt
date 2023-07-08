@@ -7,7 +7,7 @@ import org.scoredroid.teams.domain.request.AddTeamRequest
 import org.scoredroid.utils.mappers.toMatchResponse
 
 class AddTeam(
-    private val matchRepository: MatchRepository
+    private val matchRepository: MatchRepository,
 ) : AddTeamUseCase {
     override suspend fun invoke(matchId: Long, team: AddTeamRequest): Result<MatchResponse> {
         return matchRepository.addTeam(matchId, AddTeamRepositoryRequest(name = team.name))

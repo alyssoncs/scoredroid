@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 
 class ScoredroidFragmentFactory(
-    private val factories: Map<Class<out Fragment>, () -> Fragment>
+    private val factories: Map<Class<out Fragment>, () -> Fragment>,
 ) : FragmentFactory() {
 
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {

@@ -97,7 +97,7 @@ private fun EmptyState() {
         Text(
             text = stringResource(R.string.no_matches),
             style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp),
         )
     }
 }
@@ -110,7 +110,7 @@ private fun MatchItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick(match.id) }
+            .clickable { onClick(match.id) },
     ) {
         Column(
             modifier = Modifier
@@ -164,7 +164,7 @@ private fun MatchHistoryScreenPreview() {
                     numberOfTeams = 0,
                     id = 4,
                 ),
-            )
+            ),
         ),
         onClick = {},
     )

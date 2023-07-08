@@ -9,7 +9,7 @@ import org.scoredroid.utils.mappers.toMatchResponse
 suspend fun assertMatchResponse(
     fixture: MatchRepositoryFixture,
     match: MatchResponse,
-    assertion: (MatchResponse) -> Unit
+    assertion: (MatchResponse) -> Unit,
 ) {
     val persistedMatch = fixture.getPersistedMatch(match.id).toMatchResponse()
     assertion(persistedMatch)
@@ -19,7 +19,7 @@ suspend fun assertMatchResponse(
 suspend fun assertMatchResponse(
     fixture: MatchRepositoryFixture,
     matchResult: Result<MatchResponse>,
-    assertion: (MatchResponse) -> Unit
+    assertion: (MatchResponse) -> Unit,
 ) {
     assertMatchResponse(fixture, matchResult.getOrThrow(), assertion)
 }

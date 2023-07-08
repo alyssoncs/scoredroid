@@ -13,7 +13,7 @@ import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class MatchRepository(
     transientDataSource: TransientMatchDataSource,
-    persistentDataSource: PersistentMatchDataSource
+    persistentDataSource: PersistentMatchDataSource,
 ) {
 
     companion object {
@@ -21,7 +21,7 @@ class MatchRepository(
 
         fun getInstance(
             transientDataSource: TransientMatchDataSource,
-            persistentDataSource: PersistentMatchDataSource
+            persistentDataSource: PersistentMatchDataSource,
         ): MatchRepository {
             val anInstance = instance
             if (anInstance != null)
@@ -145,7 +145,7 @@ class MatchRepository(
 
     private suspend fun updateScoreForAllTeams(
         match: Match,
-        update: (currentScore: Score) -> Score
+        update: (currentScore: Score) -> Score,
     ): Result<Match> {
         return updateAndEmitMatch(match.id) {
             val results = List(match.teams.size) { index ->
@@ -174,7 +174,7 @@ class MatchRepository(
 
     private class DataSourceAggregator(
         private val transientDataSource: TransientMatchDataSource,
-        private val persistentDataSource: PersistentMatchDataSource
+        private val persistentDataSource: PersistentMatchDataSource,
     ) {
         suspend fun getMatch(matchId: Long): Match? {
             return transientDataSource.getMatch(matchId)
@@ -198,7 +198,7 @@ class MatchRepository(
         }
 
         private fun List<Match>.notIn(
-            persistedMatches: List<Match>
+            persistedMatches: List<Match>,
         ): List<Match> {
             val indexedPersistedMatches = persistedMatches.associateBy(Match::id)
             return filterNot { indexedPersistedMatches.contains(it.id) }

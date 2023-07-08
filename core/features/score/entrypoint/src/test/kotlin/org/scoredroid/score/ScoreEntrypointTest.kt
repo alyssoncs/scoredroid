@@ -27,7 +27,7 @@ class ScoreEntrypointTest {
     }
 
     private inline fun <reified T>assertCorrectInstance(
-        dependency: ScoreEntrypoint.() -> Any
+        dependency: ScoreEntrypoint.() -> Any,
     ) {
         assertThat(entrypoint.dependency()).isInstanceOf(T::class.java)
     }

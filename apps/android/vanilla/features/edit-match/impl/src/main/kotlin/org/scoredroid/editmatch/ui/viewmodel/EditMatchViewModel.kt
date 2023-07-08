@@ -52,7 +52,7 @@ class EditMatchViewModel(
                 .combine(_shouldNavigateBack) { matchState, shouldNavigateBack ->
                     combineState(matchState, shouldNavigateBack)
                 }
-                .map { combinedMatchState -> combinedMatchState.toUiState() }
+                .map { combinedMatchState -> combinedMatchState.toUiState() },
         )
     }.stateIn(
         scope = viewModelScope,

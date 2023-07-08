@@ -22,7 +22,7 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
     override suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
         return updateMatch(matchId) { match ->
             match.copy(
-                teams = match.teams + Team(name = team.name, score = 0.toScore())
+                teams = match.teams + Team(name = team.name, score = 0.toScore()),
             )
         }
     }
@@ -30,7 +30,7 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
     override suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
         return updateMatch(matchId) { match ->
             match.copy(
-                teams = match.teams.filterIndexed { idx, _ -> idx != teamAt }
+                teams = match.teams.filterIndexed { idx, _ -> idx != teamAt },
             )
         }
     }
@@ -38,7 +38,7 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
     override suspend fun renameTeam(matchId: Long, teamAt: Int, newName: String): Result<Match> {
         return updateMatch(matchId) { match ->
             match.copy(
-                teams = match.teams.mapIndexed { idx, team -> if (idx == teamAt) team.copy(name = newName) else team }
+                teams = match.teams.mapIndexed { idx, team -> if (idx == teamAt) team.copy(name = newName) else team },
             )
         }
     }
@@ -50,7 +50,7 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
     override suspend fun updateScoreTo(
         matchId: Long,
         teamAt: Int,
-        newScore: Score
+        newScore: Score,
     ): Result<Match> {
         return updateMatch(matchId, onUpdateError = TeamOperationError.TeamNotFound) { match ->
             match.updateScore(teamAt, newScore).takeIf { teamAt in match.teams.indices }
@@ -93,7 +93,7 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
 
     private fun Match.updateScore(
         teamAt: Int,
-        newScore: Score
+        newScore: Score,
     ): Match {
         return copy(
             teams = teams.mapIndexed { idx, team ->
@@ -102,13 +102,13 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
                 } else {
                     team
                 }
-            }
+            },
         )
     }
 
     private fun Match.moveTeam(
         teamAt: Int,
-        moveTo: Int
+        moveTo: Int,
     ): List<Team> {
         val teams = teams.toMutableList()
         val indexToMove = moveTo.coerceIn(teams.indices)

@@ -67,7 +67,7 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
 
     private suspend fun updateTeams(
         match: Match,
-        currentMatch: Match
+        currentMatch: Match,
     ) {
         val teamEntities = match.toEntities()
         matchDao.deleteTeams(getMissingTeams(currentMatch, teamEntities))
@@ -77,23 +77,23 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
 
     private fun getMissingTeams(
         currentMatch: Match,
-        teamsToUpdate: List<TeamEntity>
+        teamsToUpdate: List<TeamEntity>,
     ): List<DeleteTeamDaoRequestModel> {
         return List(
             currentMatch.teams
                 .safeSubList(teamsToUpdate.size, currentMatch.teams.size)
-                .size
+                .size,
         ) { idx ->
             DeleteTeamDaoRequestModel(
                 matchId = currentMatch.id,
-                position = idx + teamsToUpdate.size.toLong()
+                position = idx + teamsToUpdate.size.toLong(),
             )
         }
     }
 
     private fun getTeamsToUpdate(
         currentMatch: Match,
-        teamsToUpdate: List<TeamEntity>
+        teamsToUpdate: List<TeamEntity>,
     ): List<TeamEntity> {
         val indexOfLastSavedTeam = teamsToUpdate.indexOfLastPresentOn(currentMatch)
         return teamsToUpdate.subList(0, indexOfLastSavedTeam.inc())
@@ -101,14 +101,14 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
 
     private fun getAdditionalTeams(
         currentMatch: Match,
-        teamsToUpdate: List<TeamEntity>
+        teamsToUpdate: List<TeamEntity>,
     ): List<TeamEntity> {
         val indexOfLastSavedTeam = teamsToUpdate.indexOfLastPresentOn(currentMatch)
         return teamsToUpdate.subList(indexOfLastSavedTeam.inc(), teamsToUpdate.size)
     }
 
     private fun List<TeamEntity>.indexOfLastPresentOn(
-        currentMatch: Match
+        currentMatch: Match,
     ): Int {
         return if (currentMatch.teams.size < size)
             currentMatch.teams.lastIndex

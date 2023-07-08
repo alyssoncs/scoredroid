@@ -26,7 +26,7 @@ class ScoreUpdater(
     }
 
     private suspend fun updateScore(
-        updateStrategy: suspend MatchRepository.() -> Result<Match>
+        updateStrategy: suspend MatchRepository.() -> Result<Match>,
     ): Result<MatchResponse> {
         val result = matchRepository.updateStrategy()
 

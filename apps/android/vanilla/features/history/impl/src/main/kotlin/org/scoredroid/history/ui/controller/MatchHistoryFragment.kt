@@ -20,7 +20,7 @@ import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 
 class MatchHistoryFragment(
     vmFactory: ViewModelProvider.Factory,
-    private val editMatchNavigationTargetProvider: EditMatchNavigationTargetProvider
+    private val editMatchNavigationTargetProvider: EditMatchNavigationTargetProvider,
 ) : Fragment() {
 
     private val viewModel by viewModels<MatchHistoryViewModel> { vmFactory }
@@ -28,7 +28,7 @@ class MatchHistoryFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -50,7 +50,7 @@ class MatchHistoryFragment(
 
     private fun navigateToEditMatchScreen(
         navigation: MatchHistoryViewModel.Navigation,
-        container: ViewGroup?
+        container: ViewGroup?,
     ) {
         parentFragmentManager.commit {
             setReorderingAllowed(true)

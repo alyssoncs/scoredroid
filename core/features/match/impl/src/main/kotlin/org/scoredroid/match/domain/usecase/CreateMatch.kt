@@ -8,12 +8,12 @@ import org.scoredroid.match.domain.request.CreateMatchRequestOptions
 import org.scoredroid.utils.mappers.toMatchResponse
 
 class CreateMatch(
-    private val matchRepository: MatchRepository
+    private val matchRepository: MatchRepository,
 ) : CreateMatchUseCase {
     override suspend fun invoke(createMatchOptions: CreateMatchRequestOptions): MatchResponse {
         val createMatchRequest = CreateMatchRepositoryRequest(
             name = createMatchOptions.matchName,
-            teams = createMatchOptions.teams.map { TeamRequest(it.name) }
+            teams = createMatchOptions.teams.map { TeamRequest(it.name) },
         )
         return matchRepository.createMatch(createMatchRequest).toMatchResponse()
     }

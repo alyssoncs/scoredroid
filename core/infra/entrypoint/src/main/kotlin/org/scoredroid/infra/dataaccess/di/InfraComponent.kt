@@ -11,13 +11,13 @@ import org.scoredroid.infra.dataaccess.di.modules.RepositoryModule
     modules = [
         DataSourceModule::class,
         RepositoryModule::class,
-    ]
+    ],
 )
 internal interface InfraComponent : InfraEntrypoint {
     @Component.Factory
     interface Factory {
         fun create(
-            @BindsInstance persistentMatchDataSource: PersistentMatchDataSource
+            @BindsInstance persistentMatchDataSource: PersistentMatchDataSource,
         ): InfraComponent
     }
 }

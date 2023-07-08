@@ -8,7 +8,7 @@ import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class FakePersistentMatchDataSource(
     initialMatchId: Long = 0L,
-    private val matchIdStrategy: (currentId: Long) -> Long = { currentId -> currentId.inc() }
+    private val matchIdStrategy: (currentId: Long) -> Long = { currentId -> currentId.inc() },
 ) : PersistentMatchDataSource {
     private var nextId = initialMatchId
     private val matches = mutableMapOf<Long, Match>()

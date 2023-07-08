@@ -51,7 +51,7 @@ class MatchEntrypointTest {
     }
 
     private inline fun <reified T>assertCorrectInstance(
-        dependency: MatchEntrypoint.() -> Any
+        dependency: MatchEntrypoint.() -> Any,
     ) {
         assertThat(entrypoint.dependency()).isInstanceOf(T::class.java)
     }
