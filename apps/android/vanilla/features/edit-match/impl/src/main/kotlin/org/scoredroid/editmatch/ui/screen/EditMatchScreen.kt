@@ -80,9 +80,11 @@ private fun Loading() {
 }
 
 @Composable
-fun MatchNotFound() {
+fun MatchNotFound(
+    modifier: Modifier = Modifier,
+) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -161,7 +163,7 @@ private fun Teams(
 }
 
 @Composable
-private fun AddTeamButton(modifier: Modifier, onAddTeamClick: () -> Unit) {
+private fun AddTeamButton(modifier: Modifier = Modifier, onAddTeamClick: () -> Unit) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.End,
@@ -176,8 +178,8 @@ private fun AddTeamButton(modifier: Modifier, onAddTeamClick: () -> Unit) {
 
 @Composable
 private fun TeamItem(
-    modifier: Modifier,
     team: EditMatchUiState.Content.Team,
+    modifier: Modifier = Modifier,
     onTeamNameChange: (String) -> Unit,
 ) {
     OutlinedTextField(
