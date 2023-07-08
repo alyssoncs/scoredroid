@@ -60,7 +60,7 @@ dependencies {
 
     implementation(projects.apps.android.common.infra.dependencies.impl)
     implementation(projects.apps.android.common.utils.fragments.fragmentFactory)
-    implementation(projects.apps.android.common.utils.viewmodels.vmfactory)
+    implementation(projects.apps.android.common.utils.viewmodels.vmFactory)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.material3)
