@@ -1,5 +1,3 @@
-import com.android.build.gradle.LibraryExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.scoredroid.utils.getVersion
 import org.scoredroid.utils.versionCatalog
 
@@ -10,7 +8,7 @@ plugins {
 
 val catalog = project.versionCatalog
 val javaVersion = catalog.getVersion("java").toInt()
-project.extensions.configure<LibraryExtension> {
+android {
     compileSdk = catalog.getVersion("compileSdk").toInt()
     defaultConfig {
         minSdk = catalog.getVersion("minSdk").toInt()
@@ -25,8 +23,4 @@ project.extensions.configure<LibraryExtension> {
 
 project.kotlin {
     jvmToolchain(javaVersion)
-}
-
-fun Project.kotlin(configure: Action<KotlinAndroidProjectExtension>) {
-    (this as ExtensionAware).extensions.configure("kotlin", configure)
 }
