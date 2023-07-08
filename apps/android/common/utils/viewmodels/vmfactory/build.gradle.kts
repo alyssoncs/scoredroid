@@ -8,5 +8,5 @@ android {
 }
 
 dependencies {
-    api(projects.scoredroid.apps.android.common.utils.viewmodels.factoryannotation)
+    api(projects.scoredroid.apps.android.common.utils.viewmodels.factoryAnnotation)
 }

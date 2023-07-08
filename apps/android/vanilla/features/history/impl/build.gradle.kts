@@ -19,7 +19,7 @@ android {
 
 dependencies {
     api(projects.apps.android.common.utils.fragments.factoryAnnotation)
-    api(projects.apps.android.common.utils.viewmodels.factoryannotation)
+    api(projects.apps.android.common.utils.viewmodels.factoryAnnotation)
     api(projects.apps.android.vanilla.features.editMatch.public)
 
     implementation(projects.core.features.match.public)
