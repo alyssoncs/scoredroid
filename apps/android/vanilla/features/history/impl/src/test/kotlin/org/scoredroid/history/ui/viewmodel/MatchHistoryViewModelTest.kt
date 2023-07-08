@@ -77,7 +77,6 @@ class MatchHistoryViewModelTest {
         }
     }
 
-
     class GetMatchesUseCaseStub : GetMatchesUseCase {
         var theResponse: List<MatchResponse> = emptyList()
 

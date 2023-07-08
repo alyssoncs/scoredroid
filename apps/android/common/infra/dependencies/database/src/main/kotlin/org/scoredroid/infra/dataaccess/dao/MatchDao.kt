@@ -21,7 +21,6 @@ data class DeleteTeamDaoRequestModel(
     val position: Long,
 )
 
-
 @Dao
 interface MatchDao {
     @Insert(entity = MatchEntity::class)

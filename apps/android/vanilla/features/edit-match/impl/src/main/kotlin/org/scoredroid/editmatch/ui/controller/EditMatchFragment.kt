@@ -21,7 +21,8 @@ class EditMatchFragment(
     private val viewModel by viewModels<EditMatchViewModel> { vmFactory }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
@@ -36,4 +37,3 @@ class EditMatchFragment(
         fun createArgs(matchId: Long) = bundleOf(MATCH_ID_NAV_ARG to matchId)
     }
 }
-

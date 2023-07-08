@@ -189,4 +189,3 @@ private fun MatchHistoryScreenLoadingPreview() {
         onClick = {},
     )
 }
-

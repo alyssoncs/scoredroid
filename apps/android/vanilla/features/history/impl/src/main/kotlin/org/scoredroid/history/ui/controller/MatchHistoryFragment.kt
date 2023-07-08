@@ -26,7 +26,8 @@ class MatchHistoryFragment(
     private val viewModel by viewModels<MatchHistoryViewModel> { vmFactory }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -59,4 +60,3 @@ class MatchHistoryFragment(
         }
     }
 }
-

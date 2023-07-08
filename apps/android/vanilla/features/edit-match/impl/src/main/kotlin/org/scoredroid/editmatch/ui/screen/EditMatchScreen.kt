@@ -166,7 +166,6 @@ private fun AddTeamButton(modifier: Modifier, onAddTeamClick: () -> Unit) {
         modifier = modifier,
         horizontalArrangement = Arrangement.End,
     ) {
-
         TextButton(
             onClick = onAddTeamClick,
         ) {

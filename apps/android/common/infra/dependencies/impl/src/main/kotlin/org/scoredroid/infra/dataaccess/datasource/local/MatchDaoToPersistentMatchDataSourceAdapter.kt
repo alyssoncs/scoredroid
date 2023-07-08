@@ -61,7 +61,6 @@ class MatchDaoToPersistentMatchDataSourceAdapter(
         return@withContext Result.success(Unit)
     }
 
-
     private suspend fun updateMatch(match: Match) {
         matchDao.updateMatch(match.toEntity())
     }
