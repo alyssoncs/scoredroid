@@ -4,6 +4,7 @@ import org.scoredroid.utils.versionCatalog
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.scoredroid.detekt")
 }
 
 val catalog = project.versionCatalog
