@@ -4,5 +4,4 @@ plugins {
 
 dependencies {
     api(projects.core.features.common.domain)
-    api(projects.core.features.common.infra.models)
 }
