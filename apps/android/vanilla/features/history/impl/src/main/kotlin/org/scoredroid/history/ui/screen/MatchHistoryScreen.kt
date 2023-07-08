@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.scoredroid.history.impl.R
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
@@ -69,12 +71,12 @@ private fun MatchHistory(
     if (uiModel.matches.isEmpty())
         EmptyState()
     else
-        Matches(uiModel.matches, onClick)
+        Matches(uiModel.matches.toImmutableList(), onClick)
 }
 
 @Composable
 private fun Matches(
-    matches: List<MatchHistoryUiModel.Content.Match>,
+    matches: ImmutableList<MatchHistoryUiModel.Content.Match>,
     onClick: (Long) -> Unit,
 ) {
     LazyColumn(
