@@ -21,6 +21,7 @@ detekt = "1.23.0"
 detekt-compose-plugin = "0.1.12"
 espresso = "3.6.0-alpha01"
 fragment = "1.7.0-alpha01"
+immutable-collections = "0.3.5"
 junit4 = "4.13.2"
 junit = "5.9.3"
 lifecycle = "2.6.1"
@@ -40,6 +41,7 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
+immutable-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "immutable-collections"}
 material = { module = "com.google.android.material:material", version.ref = "material" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
