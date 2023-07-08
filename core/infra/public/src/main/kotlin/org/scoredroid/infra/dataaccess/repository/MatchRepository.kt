@@ -23,7 +23,6 @@ class MatchRepository(
             transientDataSource: TransientMatchDataSource,
             persistentDataSource: PersistentMatchDataSource
         ): MatchRepository {
-
             val anInstance = instance
             if (anInstance != null)
                 return anInstance

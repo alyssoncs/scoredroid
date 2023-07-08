@@ -52,7 +52,6 @@ class RenameTeamTest {
 
         @TestFactory
         fun `team is renamed`(): List<DynamicTest> {
-
             val renameWithoutRebooting = List(numberOfTeams) { it to false }
             val renameRebooting = List(numberOfTeams) { it to true }
 

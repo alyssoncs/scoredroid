@@ -7,7 +7,7 @@ import org.scoredroid.domain.entities.Team
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 
-class InMemoryMatchDataSource private constructor(): TransientMatchDataSource {
+class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
     companion object {
         val instance by lazy { newInstance() }
         fun newInstance(): TransientMatchDataSource = InMemoryMatchDataSource()
