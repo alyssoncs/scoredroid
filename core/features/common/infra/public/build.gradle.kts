@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     api(projects.core.domain)
-    api(projects.core.features.common.data)
     api(projects.core.features.common.infra.dependencies.public)
 
     implementation(libs.coroutines.core)
