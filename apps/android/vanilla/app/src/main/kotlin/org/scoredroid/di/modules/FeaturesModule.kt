@@ -8,6 +8,6 @@ import org.scoredroid.history.di.HistoryFeatureModule
     includes = [
         HistoryFeatureModule::class,
         EditMatchFeatureModule::class,
-    ]
+    ],
 )
 interface FeaturesModule

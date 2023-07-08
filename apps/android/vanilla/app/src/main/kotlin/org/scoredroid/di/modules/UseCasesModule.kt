@@ -7,6 +7,6 @@ import dagger.Module
         MatchUseCasesModule::class,
         TeamsUseCasesModule::class,
         ScoreUseCasesModule::class,
-    ]
+    ],
 )
 object UseCasesModule

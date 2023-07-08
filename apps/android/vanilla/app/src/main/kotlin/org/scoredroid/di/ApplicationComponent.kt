@@ -17,7 +17,7 @@ import org.scoredroid.viewmodel.di.ViewModelFactoryModule
         ViewModelFactoryModule::class,
         UseCasesModule::class,
         FeaturesModule::class,
-    ]
+    ],
 )
 interface ApplicationComponent {
 
