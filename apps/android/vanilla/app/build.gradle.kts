@@ -59,7 +59,7 @@ dependencies {
     implementation(projects.apps.android.vanilla.features.editMatch.impl)
 
     implementation(projects.apps.android.common.infra.dependencies.impl)
-    implementation(projects.apps.android.common.utils.fragments.fragmentfactory)
+    implementation(projects.apps.android.common.utils.fragments.fragmentFactory)
     implementation(projects.apps.android.common.utils.viewmodels.vmfactory)
 
     implementation(libs.androidx.appcompat)
