@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.features.common.infra.public)
-    implementation(projects.core.features.common.infra.dependencies.impl)
+    api(projects.core.infra.public)
+    implementation(projects.core.infra.dependencies.impl)
     implementation(projects.core.features.common.utils)
 
     implementation(libs.coroutines.core)

@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
     api(projects.core.features.teams.public)
-    api(projects.core.features.common.infra.dependencies.public)
+    api(projects.core.infra.dependencies.public)
     implementation(projects.core.features.teams.impl)
-    implementation(projects.core.features.common.infra.entrypoint)
-    testImplementation(projects.core.features.common.infra.test)
+    implementation(projects.core.infra.entrypoint)
+    testImplementation(projects.core.infra.test)
 }
