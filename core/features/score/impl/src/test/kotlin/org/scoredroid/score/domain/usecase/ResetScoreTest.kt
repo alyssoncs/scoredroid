@@ -15,7 +15,6 @@ import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.test.assertions.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
-
 @ExperimentalCoroutinesApi
 class ResetScoreTest {
 

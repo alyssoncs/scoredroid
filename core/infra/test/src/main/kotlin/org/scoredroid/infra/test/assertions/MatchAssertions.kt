@@ -24,7 +24,6 @@ suspend fun assertMatchResponse(
     assertMatchResponse(fixture, matchResult.getOrThrow(), assertion)
 }
 
-
 private suspend fun MatchRepositoryFixture.getPersistedMatch(matchId: Long): Match {
     this.rebootApplication()
     val match = this.repository.getMatch(matchId)

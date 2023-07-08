@@ -8,5 +8,4 @@ class ClearTransientMatchData(
     override suspend fun invoke(matchId: Long): Result<Unit> {
         return matchRepository.clearTransientData(matchId)
     }
-
 }

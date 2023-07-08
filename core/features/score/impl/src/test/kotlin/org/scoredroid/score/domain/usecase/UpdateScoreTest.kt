@@ -28,12 +28,10 @@ abstract class UpdateScoreTest {
     protected val fixture = MatchRepositoryFixtureFactory.create()
     protected val incrementScore = IncrementScore(ScoreUpdater(fixture.repository))
 
-
     @BeforeEach
     fun setUp() {
         updateScore = createUpdateScoreUseCase(fixture.repository)
     }
-
 
     @Nested
     inner class NoMatchesCreated {

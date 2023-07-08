@@ -13,7 +13,6 @@ import org.scoredroid.infra.test.assertions.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import kotlin.properties.Delegates
 
-
 @ExperimentalCoroutinesApi
 class RenameMatchTest {
 
