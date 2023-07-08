@@ -25,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.scoredroid.editmatch.impl.R
 import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.editmatch.ui.viewmodel.EditMatchViewModel
@@ -114,7 +116,7 @@ private fun EditMatch(
         ) {
             MatchName(uiModel.matchName, onMatchNameChange)
             Spacer(modifier = Modifier.size(4.dp))
-            Teams(uiModel.teams, onTeamNameChange, onAddTeamClick)
+            Teams(uiModel.teams.toImmutableList(), onTeamNameChange, onAddTeamClick)
         }
         Button(
             modifier = Modifier
@@ -142,7 +144,7 @@ private fun MatchName(
 
 @Composable
 private fun Teams(
-    teams: List<EditMatchUiState.Content.Team>,
+    teams: ImmutableList<EditMatchUiState.Content.Team>,
     onTeamNameChange: (idx: Int, name: String) -> Unit,
     onAddTeamClick: () -> Unit,
 ) {
