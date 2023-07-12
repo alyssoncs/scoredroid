@@ -3,7 +3,6 @@ package org.scoredroid.editmatch.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -30,7 +29,6 @@ import org.scoredroid.viewmodel.callOnCleared
 import kotlin.random.Random
 
 @ExtendWith(CoroutineTestExtension::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class EditMatchViewModelTest {
     private val viewModel: EditMatchViewModel by lazy {
         EditMatchViewModel(
