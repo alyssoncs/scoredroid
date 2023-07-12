@@ -27,7 +27,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -57,6 +57,7 @@ dependencies {
     implementation(projects.core.features.score.entrypoint)
 
     implementation(projects.apps.android.vanilla.features.history.impl)
+    implementation(projects.apps.android.vanilla.features.createMatch.impl)
     implementation(projects.apps.android.vanilla.features.editMatch.impl)
 
     implementation(projects.apps.android.common.infra.dependencies.impl)
@@ -66,6 +67,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.material3)
     implementation(libs.fragment.ktx)
-    implementation (libs.material)
+    implementation(libs.material)
     debugImplementation(libs.compose.ui.tooling)
 }

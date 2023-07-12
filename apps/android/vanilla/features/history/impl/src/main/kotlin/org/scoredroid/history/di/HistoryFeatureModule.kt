@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import org.scoredroid.creatematch.ui.navigation.CreateMatchNavigationTargetProvider
 import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
 import org.scoredroid.fragment.annotation.FragmentKey
 import org.scoredroid.history.ui.controller.MatchHistoryFragment
@@ -37,8 +38,13 @@ object HistoryFeatureModule {
         fun provideMatchHistoryFragment(
             vmFactory: ViewModelProvider.Factory,
             editMatchNavigationTargetProvider: EditMatchNavigationTargetProvider,
+            createMatchNavigationTargetProvider: CreateMatchNavigationTargetProvider,
         ): Fragment {
-            return MatchHistoryFragment(vmFactory, editMatchNavigationTargetProvider)
+            return MatchHistoryFragment(
+                vmFactory,
+                editMatchNavigationTargetProvider,
+                createMatchNavigationTargetProvider,
+            )
         }
     }
 }

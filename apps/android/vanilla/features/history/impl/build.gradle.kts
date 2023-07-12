@@ -21,6 +21,7 @@ dependencies {
     api(projects.apps.android.common.utils.fragments.factoryAnnotation)
     api(projects.apps.android.common.utils.viewmodels.factoryAnnotation)
     api(projects.apps.android.vanilla.features.editMatch.public)
+    api(projects.apps.android.vanilla.features.createMatch.public)
 
     implementation(projects.core.features.match.public)
     implementation(projects.apps.android.vanilla.common.ui.theme)

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
+import org.scoredroid.creatematch.ui.navigation.CreateMatchNavigationTargetProvider
 import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
 import org.scoredroid.history.ui.screen.MatchHistoryScreen
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
@@ -21,6 +22,7 @@ import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 class MatchHistoryFragment(
     vmFactory: ViewModelProvider.Factory,
     private val editMatchNavigationTargetProvider: EditMatchNavigationTargetProvider,
+    private val createMatchNavigationTargetProvider: CreateMatchNavigationTargetProvider,
 ) : Fragment() {
 
     private val viewModel by viewModels<MatchHistoryViewModel> { vmFactory }
@@ -43,7 +45,9 @@ class MatchHistoryFragment(
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                MatchHistoryScreen(viewModel = viewModel)
+                MatchHistoryScreen(viewModel = viewModel) {
+                    navigateToCreateMatchScreen(container)
+                }
             }
         }
     }
@@ -56,6 +60,17 @@ class MatchHistoryFragment(
             setReorderingAllowed(true)
             val (fragment, args) = editMatchNavigationTargetProvider.getNavigationTarget(navigation.matchId)
             replace(container?.id ?: 0, fragment, args, null)
+            addToBackStack(null)
+        }
+    }
+
+    private fun navigateToCreateMatchScreen(
+        container: ViewGroup?,
+    ) {
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            val fragment = createMatchNavigationTargetProvider.getNavigationTarget()
+            replace(container?.id ?: 0, fragment, null)
             addToBackStack(null)
         }
     }

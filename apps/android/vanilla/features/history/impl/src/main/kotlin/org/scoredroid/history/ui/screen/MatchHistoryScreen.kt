@@ -10,15 +10,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -33,20 +37,21 @@ import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 import org.scoredroid.ui.theme.ScoredroidTheme
 
 @Composable
-fun MatchHistoryScreen(viewModel: MatchHistoryViewModel) {
+fun MatchHistoryScreen(viewModel: MatchHistoryViewModel, onCreateMatchClick: () -> Unit) {
     val uiModel by viewModel.uiModel.collectAsState()
 
-    MatchHistoryScreenContent(uiModel, viewModel::onClick)
+    MatchHistoryScreenContent(uiModel, onCreateMatchClick, viewModel::onClick)
 }
 
 @Composable
 private fun MatchHistoryScreenContent(
     uiModel: MatchHistoryUiModel,
+    onCreateMatchClick: () -> Unit,
     onClick: (Long) -> Unit,
 ) {
     ScoredroidTheme {
         when (uiModel) {
-            is MatchHistoryUiModel.Content -> MatchHistory(uiModel, onClick)
+            is MatchHistoryUiModel.Content -> MatchHistory(uiModel, onCreateMatchClick, onClick)
             MatchHistoryUiModel.Loading -> Loading()
         }
     }
@@ -66,22 +71,36 @@ private fun Loading() {
 @Composable
 private fun MatchHistory(
     uiModel: MatchHistoryUiModel.Content,
+    onCreateMatchClick: () -> Unit,
     onClick: (Long) -> Unit,
 ) {
-    if (uiModel.matches.isEmpty())
-        EmptyState()
-    else
-        Matches(uiModel.matches.toImmutableList(), onClick)
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = onCreateMatchClick) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = "Create match FAB",
+                )
+            }
+        },
+    ) { paddingValue ->
+        if (uiModel.matches.isEmpty())
+            EmptyState(Modifier.padding(paddingValue))
+        else
+            Matches(uiModel.matches.toImmutableList(), Modifier.padding(paddingValue), onClick)
+    }
 }
 
 @Composable
 private fun Matches(
     matches: ImmutableList<MatchHistoryUiModel.Content.Match>,
+    modifier: Modifier = Modifier,
     onClick: (Long) -> Unit,
 ) {
     LazyColumn(
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier,
     ) {
         items(matches) { match ->
             MatchItem(match, onClick)
@@ -90,9 +109,9 @@ private fun Matches(
 }
 
 @Composable
-private fun EmptyState() {
+private fun EmptyState(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -130,7 +149,6 @@ private fun MatchItem(
 }
 
 @Composable
-@OptIn(ExperimentalComposeUiApi::class)
 private fun formatNumberOfTeams(numberOfTeams: Int): String {
     return pluralStringResource(
         R.plurals.number_of_teams,
@@ -168,6 +186,7 @@ private fun MatchHistoryScreenPreview() {
                 ),
             ),
         ),
+        onCreateMatchClick = {},
         onClick = {},
     )
 }
@@ -178,6 +197,7 @@ private fun MatchHistoryScreenPreview() {
 private fun MatchHistoryScreenEmptyStatePreview() {
     MatchHistoryScreenContent(
         uiModel = MatchHistoryUiModel.Content(emptyList()),
+        onCreateMatchClick = {},
         onClick = {},
     )
 }
@@ -188,6 +208,7 @@ private fun MatchHistoryScreenEmptyStatePreview() {
 private fun MatchHistoryScreenLoadingPreview() {
     MatchHistoryScreenContent(
         uiModel = MatchHistoryUiModel.Loading,
+        onCreateMatchClick = {},
         onClick = {},
     )
 }
