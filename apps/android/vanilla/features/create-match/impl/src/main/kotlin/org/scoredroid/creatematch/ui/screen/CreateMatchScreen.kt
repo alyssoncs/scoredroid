@@ -35,8 +35,11 @@ import org.scoredroid.ui.theme.ScoredroidTheme
 @Composable
 fun CreateMatchScreen(
     viewModel: CreateMatchViewModel,
+    onCreated: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    if (uiState.created) onCreated()
 
     CreateMatchScreenContent(
         uiState = uiState,
@@ -188,6 +191,7 @@ private fun EditMatchScreenPreview() {
                 "Losers",
             ),
             loading = false,
+            created = false,
         ),
         onMatchNameChange = {},
         onTeamNameChange = { _, _ -> },

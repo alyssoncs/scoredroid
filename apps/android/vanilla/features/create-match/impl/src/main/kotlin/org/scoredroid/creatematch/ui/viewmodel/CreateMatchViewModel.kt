@@ -13,6 +13,17 @@ import org.scoredroid.match.domain.usecase.CreateMatchUseCase
 class CreateMatchViewModel(
     private val createMatch: CreateMatchUseCase,
 ) : ViewModel() {
+    private val _uiState = MutableStateFlow(
+        CreateMatchUiState(
+            matchName = "",
+            teams = listOf(),
+            loading = false,
+            created = false,
+        ),
+    )
+
+    val uiState = _uiState.asStateFlow()
+
     fun onMatchNameChange(newName: String) {
         _uiState.update { currentState -> currentState.copy(matchName = newName) }
     }
@@ -40,7 +51,7 @@ class CreateMatchViewModel(
         viewModelScope.launch {
             createMatch(uiState.value.toCreateMatchRequest())
         }
-        _uiState.update { currentState -> currentState.copy(loading = false) }
+        _uiState.update { currentState -> currentState.copy(loading = false, created = true) }
     }
 
     private fun CreateMatchUiState.toCreateMatchRequest(): CreateMatchRequestOptions {
@@ -51,14 +62,4 @@ class CreateMatchViewModel(
             },
         )
     }
-
-    private val _uiState = MutableStateFlow(
-        CreateMatchUiState(
-            matchName = "",
-            teams = listOf(),
-            loading = false,
-        ),
-    )
-
-    val uiState = _uiState.asStateFlow()
 }

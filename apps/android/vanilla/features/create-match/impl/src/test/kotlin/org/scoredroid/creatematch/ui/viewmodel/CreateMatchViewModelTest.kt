@@ -26,6 +26,7 @@ class CreateMatchViewModelTest {
             assertThat(uiState.matchName).isEmpty()
             assertThat(uiState.teams).isEmpty()
             assertThat(uiState.loading).isFalse()
+            assertThat(uiState.created).isFalse()
         }
     }
 
@@ -81,6 +82,17 @@ class CreateMatchViewModelTest {
 
             assertThat(awaitItem().loading).isTrue()
             assertThat(awaitItem().loading).isFalse()
+        }
+    }
+
+    @Test
+    fun `on create, should update uiState to created`() = runTest {
+        viewModel.uiState.test {
+            skipItems(1)
+            viewModel.onCreate()
+
+            assertThat(awaitItem().created).isFalse()
+            assertThat(awaitItem().created).isTrue()
         }
     }
 

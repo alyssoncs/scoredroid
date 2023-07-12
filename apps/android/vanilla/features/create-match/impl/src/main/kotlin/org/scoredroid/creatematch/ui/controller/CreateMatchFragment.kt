@@ -26,7 +26,9 @@ class CreateMatchFragment(
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                CreateMatchScreen(viewModel)
+                CreateMatchScreen(viewModel) {
+                    parentFragmentManager.popBackStack()
+                }
             }
         }
     }
