@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import org.scoredroid.creatematch.ui.navigation.CreateMatchNavigationTargetProvider
 import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
+import org.scoredroid.fragment.transactions.commitWithReordering
 import org.scoredroid.history.ui.screen.MatchHistoryScreen
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 
@@ -56,8 +56,7 @@ class MatchHistoryFragment(
         navigation: MatchHistoryViewModel.Navigation,
         container: ViewGroup?,
     ) {
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
+        parentFragmentManager.commitWithReordering {
             val (fragment, args) = editMatchNavigationTargetProvider.getNavigationTarget(navigation.matchId)
             replace(container?.id ?: 0, fragment, args, null)
             addToBackStack(null)
@@ -67,8 +66,7 @@ class MatchHistoryFragment(
     private fun navigateToCreateMatchScreen(
         container: ViewGroup?,
     ) {
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
+        parentFragmentManager.commitWithReordering {
             val fragment = createMatchNavigationTargetProvider.getNavigationTarget()
             replace(container?.id ?: 0, fragment, null)
             addToBackStack(null)

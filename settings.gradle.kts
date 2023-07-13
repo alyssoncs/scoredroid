@@ -21,8 +21,9 @@ dependencyResolutionManagement {
 rootProject.name = "scoredroid"
 include(":apps:android:common:infra:dependencies:database")
 include(":apps:android:common:infra:dependencies:impl")
-include(":apps:android:common:utils:fragments:fragment-factory")
 include(":apps:android:common:utils:fragments:factory-annotation")
+include(":apps:android:common:utils:fragments:fragment-factory")
+include(":apps:android:common:utils:fragments:transactions")
 include(":apps:android:common:utils:viewmodels:factory-annotation")
 include(":apps:android:common:utils:viewmodels:test")
 include(":apps:android:common:utils:viewmodels:vm-factory")

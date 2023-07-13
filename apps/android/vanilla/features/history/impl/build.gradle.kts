@@ -24,6 +24,8 @@ dependencies {
     api(projects.apps.android.vanilla.features.createMatch.public)
 
     implementation(projects.core.features.match.public)
+
+    implementation(projects.apps.android.common.utils.fragments.transactions)
     implementation(projects.apps.android.vanilla.common.ui.theme)
 
     implementation(libs.immutable.collections)
