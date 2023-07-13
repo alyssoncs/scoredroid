@@ -24,8 +24,8 @@ dependencies {
 
     implementation(projects.core.features.match.public)
     implementation(projects.apps.android.vanilla.common.ui.theme)
+    implementation(projects.apps.android.vanilla.common.ui.components)
 
-    implementation(libs.immutable.collections)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
