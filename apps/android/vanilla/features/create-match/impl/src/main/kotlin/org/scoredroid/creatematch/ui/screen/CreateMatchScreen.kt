@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.collections.immutable.toImmutableList
 import org.scoredroid.creatematch.impl.R
 import org.scoredroid.creatematch.ui.state.CreateMatchUiState
 import org.scoredroid.creatematch.ui.viewmodel.CreateMatchViewModel
@@ -49,7 +50,7 @@ private fun CreateMatchScreenContent(
         Box {
             EditMatchForm(
                 matchName = uiState.matchName,
-                teams = uiState.teams,
+                teams = uiState.teams.toImmutableList(),
                 saveButtonText = stringResource(id = R.string.create_match),
                 onMatchNameChange = onMatchNameChange,
                 onTeamNameChange = onTeamNameChange,

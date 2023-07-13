@@ -18,26 +18,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun EditMatchForm(
     matchName: String,
-    teams: List<String>,
+    teams: ImmutableList<String>,
     saveButtonText: String,
     onMatchNameChange: (String) -> Unit,
     onTeamNameChange: (idx: Int, name: String) -> Unit,
     onAddTeamClick: () -> Unit,
     onSaveClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column(modifier) {
         EditMatchFormContent(
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth()
                 .weight(1f),
             machName = matchName,
-            teams = teams.toImmutableList(),
+            teams = teams,
             onMatchNameChange = onMatchNameChange,
             onTeamNameChange = onTeamNameChange,
             onAddTeamClick = onAddTeamClick,
@@ -128,7 +129,7 @@ private fun TeamItem(
 private fun EditMatchScreenPreview() {
     EditMatchForm(
         matchName = "Ultimate match",
-        teams = listOf(
+        teams = persistentListOf(
             "Champions",
             "Losers",
         ),

@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.collections.immutable.toImmutableList
 import org.scoredroid.editmatch.impl.R
 import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.editmatch.ui.viewmodel.EditMatchViewModel
@@ -47,7 +48,7 @@ private fun EditMatchScreenContent(
         when (uiState) {
             is EditMatchUiState.Content -> EditMatchForm(
                 matchName = uiState.matchName,
-                teams = uiState.teams.map(EditMatchUiState.Content.Team::name),
+                teams = uiState.teams.map(EditMatchUiState.Content.Team::name).toImmutableList(),
                 saveButtonText = stringResource(id = R.string.save_match),
                 onMatchNameChange = onMatchNameChange,
                 onTeamNameChange = onTeamNameChange,
