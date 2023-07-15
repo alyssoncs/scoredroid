@@ -2,7 +2,6 @@ package org.scoredroid.history.ui.viewmodel
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
@@ -14,7 +13,6 @@ import org.scoredroid.match.domain.usecase.GetMatchesUseCase
 import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class MatchHistoryViewModelTest {
 
     private val matchResponse = listOf(

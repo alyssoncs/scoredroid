@@ -1,7 +1,6 @@
 package org.scoredroid.match.domain.usecase
 
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -12,7 +11,6 @@ import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.TeamRequest
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetMatchesTest {
 
     private val fixture = MatchRepositoryFixtureFactory.create()
