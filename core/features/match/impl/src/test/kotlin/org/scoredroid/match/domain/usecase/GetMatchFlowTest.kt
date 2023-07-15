@@ -1,7 +1,6 @@
 package org.scoredroid.match.domain.usecase
 
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetMatchFlowTest {
 
     private val fixture = MatchRepositoryFixtureFactory.create()
