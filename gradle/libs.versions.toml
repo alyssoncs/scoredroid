@@ -3,7 +3,7 @@
 agp = "8.0.2"
 compileSdk = "34"
 java = "17"
-kotlin = "1.8.22"
+kotlin = "1.9.0"
 minSdk = "25"
 targetSdk = "34"
 
@@ -12,7 +12,7 @@ android-junit5 = "1.9.3.0"
 androidx-appcompat = "1.7.0-alpha02"
 androidx-core = "1.12.0-alpha05"
 androidx-junit = "1.2.0-alpha01"
-compose-compiler = "1.4.8"
+compose-compiler = "1.5.0"
 compose-material3 = "1.2.0-alpha03"
 compose-ui = "1.6.0-alpha01"
 coroutines = "1.7.2"
@@ -25,7 +25,7 @@ immutable-collections = "0.3.5"
 junit4 = "4.13.2"
 junit = "5.10.0-RC2"
 lifecycle = "2.6.1"
-ksp = "1.8.22-1.0.11"
+ksp = "1.9.0-1.0.12"
 material = "1.11.0-alpha01"
 room = "2.6.0-alpha02"
 truth = "1.1.5"
@@ -78,4 +78,3 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-
