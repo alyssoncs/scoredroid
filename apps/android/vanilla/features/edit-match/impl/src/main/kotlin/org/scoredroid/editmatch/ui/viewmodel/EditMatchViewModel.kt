@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -40,20 +39,16 @@ class EditMatchViewModel(
 ) : ViewModel() {
 
     private var initJob: Job
+
     init {
         initJob = viewModelScope.launch {
             ensureMatchExists()
         }
     }
 
-    private val _shouldNavigateBack = MutableStateFlow(false)
+    private val shouldNavigateBack = MutableStateFlow(false)
     val uiState: StateFlow<EditMatchUiState> = flow {
-        emitAll(
-            getMatchFlow(getMatchId())
-                .combine(_shouldNavigateBack) { matchState, shouldNavigateBack ->
-                    toUiState(matchState, shouldNavigateBack)
-                },
-        )
+        emitAll(combine(getMatchFlow(getMatchId()), shouldNavigateBack, ::toUiState))
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
@@ -87,7 +82,7 @@ class EditMatchViewModel(
     fun onSave() {
         viewModelScope.launch {
             saveMatch(getMatchId())
-            _shouldNavigateBack.update { true }
+            shouldNavigateBack.update { true }
         }
     }
 
