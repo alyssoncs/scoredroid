@@ -24,8 +24,12 @@ import org.scoredroid.ui.theme.ScoredroidTheme
 @Composable
 fun EditMatchScreen(
     viewModel: EditMatchViewModel,
+    onNavigateBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    if (uiState.shouldNavigateBack)
+        onNavigateBack()
 
     EditMatchScreenContent(
         uiState = uiState,
