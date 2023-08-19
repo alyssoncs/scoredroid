@@ -20,7 +20,10 @@ class FakePersistentMatchDataSource(
             id = nextId,
             name = matchRequest.name,
             teams = matchRequest.teams.map { Team(name = it.name, score = 0.toScore()) },
-        ).also { updateNextId(); saveOnCache(it) }
+        ).also {
+            updateNextId()
+            saveOnCache(it)
+        }
     }
 
     override suspend fun getMatch(matchId: Long): Match? {

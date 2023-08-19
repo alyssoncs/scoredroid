@@ -19,7 +19,9 @@ object ViewModelFactoryModule {
     ): ViewModelProvider.Factory {
         val vmFactories: Map<Class<out ViewModel>, (SavedStateHandle) -> ViewModel> = vmProviders
             .mapValues { entry ->
-                { entry.value.get() }
+                {
+                    entry.value.get()
+                }
             }
 
         return ScoredroidViewModelFactory(vmFactories + vmSavedStateFactories)
