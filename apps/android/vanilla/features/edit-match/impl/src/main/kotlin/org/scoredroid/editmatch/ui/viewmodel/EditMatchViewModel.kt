@@ -46,28 +46,19 @@ class EditMatchViewModel(
         }
     }
 
+    private val _shouldNavigateBack = MutableStateFlow(false)
     val uiState: StateFlow<EditMatchUiState> = flow {
         emitAll(
             getMatchFlow(getMatchId())
                 .combine(_shouldNavigateBack) { matchState, shouldNavigateBack ->
-                    combineState(matchState, shouldNavigateBack)
-                }
-                .map { combinedMatchState -> combinedMatchState.toUiState() },
+                    toUiState(matchState, shouldNavigateBack)
+                },
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = EditMatchUiState.Loading(shouldNavigateBack = false),
     )
-
-    private fun combineState(
-        matchState: MatchResponse?,
-        shouldNavigateBack: Boolean,
-    ): CombinedMatchState {
-        return CombinedMatchState(matchState, shouldNavigateBack)
-    }
-
-    private val _shouldNavigateBack = MutableStateFlow(false)
 
     override fun onCleared() {
         viewModelScope.launch(NonCancellable) {
@@ -111,19 +102,22 @@ class EditMatchViewModel(
         return createMatch(CreateMatchRequestOptions())
     }
 
-    private fun CombinedMatchState.toUiState(): EditMatchUiState {
-        return if (this.matchState == null) {
-            EditMatchUiState.MatchNotFound(shouldNavigateBack = this.shouldNavigateBack)
+    private fun toUiState(
+        matchResponse: MatchResponse?,
+        shouldNavigateBack: Boolean,
+    ): EditMatchUiState {
+        return if (matchResponse == null) {
+            EditMatchUiState.MatchNotFound(shouldNavigateBack = shouldNavigateBack)
         } else {
             EditMatchUiState.Content(
-                matchName = this.matchState.name,
-                teams = this.matchState.teams.map { teamResponse ->
+                matchName = matchResponse.name,
+                teams = matchResponse.teams.map { teamResponse ->
                     EditMatchUiState.Content.Team(
                         name = teamResponse.name,
                         score = teamResponse.score,
                     )
                 },
-                shouldNavigateBack = this.shouldNavigateBack,
+                shouldNavigateBack = shouldNavigateBack,
             )
         }
     }
@@ -136,9 +130,4 @@ class EditMatchViewModel(
         initJob.join()
         return savedStateHandle[MATCH_ID_NAV_ARG]
     }
-
-    private data class CombinedMatchState(
-        val matchState: MatchResponse?,
-        val shouldNavigateBack: Boolean,
-    )
 }
