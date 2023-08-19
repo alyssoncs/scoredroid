@@ -206,19 +206,6 @@ class EditMatchViewModelTest {
             assertThat(clearTransientDataSpy.matchWithId(matchId).wasCleared()).isTrue()
         }
 
-        @Test
-        fun `on navigate back, navigate back should be false`() = runTest {
-            viewModel.uiState.test {
-                skipItems(1)
-                viewModel.onSave()
-                assertThat(awaitItem().shouldNavigateBack).isTrue()
-
-                viewModel.onNavigateBack()
-
-                assertThat(awaitItem().shouldNavigateBack).isFalse()
-            }
-        }
-
         private fun createViewModel() {
             viewModel.uiState
         }

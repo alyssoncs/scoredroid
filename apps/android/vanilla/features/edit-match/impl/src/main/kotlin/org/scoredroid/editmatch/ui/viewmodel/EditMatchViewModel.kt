@@ -100,10 +100,6 @@ class EditMatchViewModel(
         }
     }
 
-    fun onNavigateBack() {
-        _shouldNavigateBack.update { false }
-    }
-
     private suspend fun ensureMatchExists() {
         val matchId = savedStateHandle.get<Long>(MATCH_ID_NAV_ARG)
         if (matchId == null) {
