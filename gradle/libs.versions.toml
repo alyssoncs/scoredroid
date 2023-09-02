@@ -61,6 +61,7 @@ test-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 # :build-logic
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 detekt-formatting-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
