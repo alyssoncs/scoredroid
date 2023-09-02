@@ -27,7 +27,7 @@ junit = "5.10.0"
 viewmodel = "2.7.0-alpha01"
 ksp = "1.9.0-1.0.12"
 material = "1.11.0-alpha02"
-room = "2.6.0-alpha03"
+room = "2.6.0-beta01"
 truth = "1.1.5"
 turbine = "1.0.0"
 
