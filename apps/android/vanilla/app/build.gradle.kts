@@ -59,6 +59,7 @@ dependencies {
     implementation(projects.apps.android.vanilla.features.history.impl)
     implementation(projects.apps.android.vanilla.features.createMatch.impl)
     implementation(projects.apps.android.vanilla.features.editMatch.impl)
+    implementation(projects.apps.android.vanilla.features.play.impl)
 
     implementation(projects.apps.android.common.infra.dependencies.impl)
     implementation(projects.apps.android.common.utils.fragments.fragmentFactory)
