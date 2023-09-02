@@ -1,6 +1,4 @@
 import org.gradle.kotlin.dsl.dependencies
-import org.scoredroid.utils.getLibrary
-import org.scoredroid.utils.versionCatalog
 
 plugins {
     id("org.scoredroid.android-lib")
@@ -10,7 +8,6 @@ plugins {
     id("org.scoredroid.unit-test")
 }
 
-val catalog = project.versionCatalog
 dependencies {
     api(project(":apps:android:common:utils:fragments:factory-annotation"))
     api(project(":apps:android:common:utils:viewmodels:factory-annotation"))

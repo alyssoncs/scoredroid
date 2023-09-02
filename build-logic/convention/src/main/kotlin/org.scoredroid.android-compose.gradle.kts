@@ -19,8 +19,6 @@ android {
 }
 
 dependencies {
-    //implementation(projects.apps.android.vanilla.common.ui.components)
-
     implementation(catalog.getLibrary("compose.material3"))
     implementation(catalog.getLibrary("compose.ui.tooling.preview"))
     debugImplementation(catalog.getLibrary("compose.ui.tooling"))
