@@ -1,7 +1,7 @@
 plugins {
     id("org.scoredroid.android-lib")
     id("org.scoredroid.dagger")
-    alias(libs.plugins.ksp)
+    id("com.google.devtools.ksp")
 }
 
 android {
