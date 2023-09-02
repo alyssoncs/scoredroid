@@ -1,11 +1,7 @@
 plugins {
-    id("org.scoredroid.android-lib")
+    id("org.scoredroid.android-feature-public")
 }
 
 android {
     namespace = "org.scoredroid.creatematch.api"
-}
-
-dependencies {
-    implementation(libs.fragment.ktx)
 }
