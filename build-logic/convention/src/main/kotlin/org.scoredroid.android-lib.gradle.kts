@@ -1,4 +1,4 @@
-import org.scoredroid.utils.getVersion
+import org.scoredroid.utils.getIntVersion
 import org.scoredroid.utils.versionCatalog
 
 plugins {
@@ -8,11 +8,11 @@ plugins {
 }
 
 val catalog = project.versionCatalog
-val javaVersion = catalog.getVersion("java").toInt()
+val javaVersion = catalog.getIntVersion("java")
 android {
-    compileSdk = catalog.getVersion("compileSdk").toInt()
+    compileSdk = catalog.getIntVersion("compileSdk")
     defaultConfig {
-        minSdk = catalog.getVersion("minSdk").toInt()
+        minSdk = catalog.getIntVersion("minSdk")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

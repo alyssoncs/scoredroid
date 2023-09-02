@@ -1,4 +1,4 @@
-import org.scoredroid.utils.getVersion
+import org.scoredroid.utils.getIntVersion
 import org.scoredroid.utils.versionCatalog
 
 plugins {
@@ -8,5 +8,5 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(jdkVersion = project.versionCatalog.getVersion("java").toInt())
+    jvmToolchain(jdkVersion = project.versionCatalog.getIntVersion("java"))
 }
