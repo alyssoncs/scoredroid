@@ -11,5 +11,4 @@ dependencies {
 
     implementation(projects.core.features.match.public)
     implementation(projects.core.features.score.public)
-    implementation(projects.apps.android.vanilla.common.ui.components)
 }
