@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.scoredroid.infra.test.assertions.assertMatchResponse
+import org.scoredroid.infra.test.assertions.dataaccess.repository.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import org.scoredroid.match.domain.request.CreateMatchRequestOptions
 

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.scoredroid.data.response.MatchResponse
-import org.scoredroid.infra.test.assertions.assertMatchResponse
+import org.scoredroid.infra.test.assertions.dataaccess.repository.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 import kotlin.properties.Delegates
 

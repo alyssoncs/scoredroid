@@ -1,4 +1,4 @@
-package org.scoredroid.infra.test.assertions
+package org.scoredroid.infra.test.assertions.dataaccess.repository
 
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.scoredroid.data.response.MatchResponse

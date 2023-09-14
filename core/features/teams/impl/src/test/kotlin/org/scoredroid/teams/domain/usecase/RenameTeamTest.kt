@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.scoredroid.data.response.MatchResponse
-import org.scoredroid.infra.test.assertions.assertMatchResponse
+import org.scoredroid.infra.test.assertions.dataaccess.repository.assertMatchResponse
 import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryFixtureFactory
 
 @ExperimentalCoroutinesApi

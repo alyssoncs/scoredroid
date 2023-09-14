@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
-import org.scoredroid.infra.test.assertions.assertMatchResponse
+import org.scoredroid.infra.test.assertions.dataaccess.repository.assertMatchResponse
 
 @ExperimentalCoroutinesApi
 class DecrementScoreTest : UpdateScoreTest() {

@@ -10,4 +10,5 @@ dependencies {
 
     testFixturesImplementation(projects.core.features.common.utils)
     testFixturesImplementation(projects.core.infra.dependencies.impl)
+    testFixturesImplementation(libs.test.junit.api)
 }
