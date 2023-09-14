@@ -9,5 +9,5 @@ dependencies {
 
     implementation(libs.coroutines.core)
 
-    testImplementation(projects.core.infra.test)
+    testImplementation(testFixtures(projects.core.infra.public))
 }

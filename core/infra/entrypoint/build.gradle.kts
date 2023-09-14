@@ -5,5 +5,5 @@ plugins {
 dependencies {
     api(projects.core.infra.public)
     implementation(projects.core.infra.dependencies.impl)
-    testImplementation(projects.core.infra.test)
+    testImplementation(testFixtures(projects.core.infra.public))
 }

@@ -3,5 +3,4 @@ plugins {
 }
 
 dependencies {
-    api(testFixtures(projects.core.infra.public))
 }
