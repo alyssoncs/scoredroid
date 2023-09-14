@@ -9,4 +9,5 @@ dependencies {
     api(libs.coroutines.core)
 
     testFixturesImplementation(projects.core.features.common.utils)
+    testFixturesImplementation(projects.core.infra.dependencies.impl)
 }
