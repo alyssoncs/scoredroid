@@ -7,5 +7,5 @@ dependencies {
     api(projects.core.infra.dependencies.public)
     implementation(projects.core.features.score.impl)
     implementation(projects.core.infra.entrypoint)
-    testImplementation(projects.core.infra.test)
+    testImplementation(testFixtures(projects.core.infra.public))
 }
