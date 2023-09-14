@@ -6,6 +6,7 @@ plugins {
 dependencies {
     api(projects.core.domain)
     api(projects.core.infra.dependencies.public)
+    api(libs.coroutines.core)
 
-    implementation(libs.coroutines.core)
+    testFixturesImplementation(projects.core.features.common.utils)
 }
