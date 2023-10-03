@@ -1,6 +1,5 @@
 package org.scoredroid.history.ui.screen
 
-import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -35,6 +33,7 @@ import org.scoredroid.history.impl.R
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 import org.scoredroid.ui.theme.ScoredroidTheme
+import org.scoredroid.ui.tooling.PreviewThemes
 
 @Composable
 fun MatchHistoryScreen(viewModel: MatchHistoryViewModel, onCreateMatchClick: () -> Unit) {
@@ -158,8 +157,7 @@ private fun formatNumberOfTeams(numberOfTeams: Int): String {
 }
 
 @Composable
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@PreviewThemes
 private fun MatchHistoryScreenPreview() {
     MatchHistoryScreenContent(
         uiModel = MatchHistoryUiModel.Content(
@@ -192,8 +190,7 @@ private fun MatchHistoryScreenPreview() {
 }
 
 @Composable
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@PreviewThemes
 private fun MatchHistoryScreenEmptyStatePreview() {
     MatchHistoryScreenContent(
         uiModel = MatchHistoryUiModel.Content(emptyList()),
@@ -203,8 +200,7 @@ private fun MatchHistoryScreenEmptyStatePreview() {
 }
 
 @Composable
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@PreviewThemes
 private fun MatchHistoryScreenLoadingPreview() {
     MatchHistoryScreenContent(
         uiModel = MatchHistoryUiModel.Loading,

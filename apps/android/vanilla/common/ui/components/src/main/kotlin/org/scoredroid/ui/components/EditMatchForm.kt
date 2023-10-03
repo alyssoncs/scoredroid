@@ -1,6 +1,5 @@
 package org.scoredroid.ui.components
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,10 +14,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import org.scoredroid.ui.tooling.PreviewThemes
 
 @Composable
 fun EditMatchForm(
@@ -124,8 +123,7 @@ private fun TeamItem(
 }
 
 @Composable
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@PreviewThemes
 private fun EditMatchScreenPreview() {
     EditMatchForm(
         matchName = "Ultimate match",

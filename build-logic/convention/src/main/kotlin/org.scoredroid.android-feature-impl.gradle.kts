@@ -13,6 +13,7 @@ dependencies {
     api(project(":apps:android:common:utils:viewmodels:factory-annotation"))
 
     implementation(project(":apps:android:vanilla:common:ui:theme"))
+    implementation(project(":apps:android:vanilla:common:ui:tooling"))
 
     testImplementation(project(":apps:android:common:utils:viewmodels:test"))
 }

@@ -9,4 +9,6 @@ android {
 
 dependencies {
     api(libs.immutable.collections)
+
+    implementation(projects.apps.android.vanilla.common.ui.tooling)
 }

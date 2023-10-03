@@ -1,6 +1,5 @@
 package org.scoredroid.editmatch.ui.screen
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,13 +12,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.toImmutableList
 import org.scoredroid.editmatch.impl.R
 import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.editmatch.ui.viewmodel.EditMatchViewModel
 import org.scoredroid.ui.components.EditMatchForm
 import org.scoredroid.ui.theme.ScoredroidTheme
+import org.scoredroid.ui.tooling.PreviewThemes
 
 @Composable
 fun EditMatchScreen(
@@ -94,8 +93,7 @@ fun MatchNotFound(
 }
 
 @Composable
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@PreviewThemes
 private fun EditMatchScreenPreview() {
     EditMatchScreenContent(
         uiState = EditMatchUiState.Content(
@@ -120,8 +118,7 @@ private fun EditMatchScreenPreview() {
 }
 
 @Composable
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@PreviewThemes
 private fun EditMatchScreenLoadingPreview() {
     EditMatchScreenContent(
         uiState = EditMatchUiState.Loading(shouldNavigateBack = false),
@@ -133,8 +130,7 @@ private fun EditMatchScreenLoadingPreview() {
 }
 
 @Composable
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@PreviewThemes
 private fun EditMatchScreenMatchNotFoundPreview() {
     EditMatchScreenContent(
         uiState = EditMatchUiState.MatchNotFound(shouldNavigateBack = false),
