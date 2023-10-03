@@ -93,7 +93,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
             id = 5,
             name = "a brand new match",
             teams = listOf(
-                Team(name = "team a", score = 5.toScore())
+                Team(name = "team a", score = 5.toScore()),
             ),
         )
 
@@ -139,8 +139,8 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
             oldMatch.copy(
                 teams = oldMatch.teams.mapIndexed { idx, team ->
                     team.copy(name = "team $idx")
-                }
-            )
+                },
+            ),
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
@@ -161,8 +161,8 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
             oldMatch.copy(
                 teams = oldMatch.teams.mapIndexed { idx, team ->
                     team.copy(score = idx.inc().toScore())
-                }
-            )
+                },
+            ),
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
@@ -181,8 +181,8 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
         val result = dataSourceAdapter.save(
             oldMatch.copy(
-                teams = oldMatch.teams.reversed()
-            )
+                teams = oldMatch.teams.reversed(),
+            ),
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
@@ -206,8 +206,8 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
                     oldMatch.teams.first(),
                     additionalTeam,
                     oldMatch.teams.last(),
-                )
-            )
+                ),
+            ),
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
@@ -227,8 +227,8 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
         val result = dataSourceAdapter.save(
             oldMatch.copy(
-                teams = listOf(oldMatch.teams.first(), oldMatch.teams.last())
-            )
+                teams = listOf(oldMatch.teams.first(), oldMatch.teams.last()),
+            ),
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
@@ -258,7 +258,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
     private fun assertMatchWasMappedCorrectly(
         match: Match,
-        request: CreateMatchRepositoryRequest
+        request: CreateMatchRepositoryRequest,
     ) {
         assertThat(match.id).isNotNull()
         assertThat(match.name).isEqualTo(request.name)
@@ -272,14 +272,14 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     private suspend fun assertMatchWasUpdatedCorrectly(
         oldMatch: Match,
         result: Result<Unit>,
-        assert: (Match) -> Unit
+        assert: (Match) -> Unit,
     ) {
         val newMatch = dataSourceAdapter.getMatch(oldMatch.id)!!
         assertThat(result.isSuccess).isTrue()
         assert(newMatch)
     }
 
-    class CreateMatchRepositoryRequestBuilder() {
+    class CreateMatchRepositoryRequestBuilder {
         private var matchName = "match name"
         private var teams = listOf("team 01, team 02")
 
@@ -300,4 +300,3 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
     private fun createMatchRequest() = CreateMatchRepositoryRequestBuilder()
 }
-
