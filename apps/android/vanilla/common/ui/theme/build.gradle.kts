@@ -8,6 +8,5 @@ android {
 }
 
 dependencies {
-    libs.versions.compose
     implementation(libs.androidx.core.ktx)
 }
