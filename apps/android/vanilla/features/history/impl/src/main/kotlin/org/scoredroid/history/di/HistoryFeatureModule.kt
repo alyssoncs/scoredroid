@@ -12,6 +12,7 @@ import org.scoredroid.fragment.annotation.FragmentKey
 import org.scoredroid.history.ui.controller.MatchHistoryFragment
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 import org.scoredroid.match.domain.usecase.GetMatchesUseCase
+import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
 import org.scoredroid.viewmodel.annotation.ViewModelKey
 
 @Module(
@@ -39,11 +40,13 @@ object HistoryFeatureModule {
             vmFactory: ViewModelProvider.Factory,
             editMatchNavigationTargetProvider: EditMatchNavigationTargetProvider,
             createMatchNavigationTargetProvider: CreateMatchNavigationTargetProvider,
+            playNavigationTargetProvider: PlayNavigationTargetProvider,
         ): Fragment {
             return MatchHistoryFragment(
                 vmFactory,
                 editMatchNavigationTargetProvider,
                 createMatchNavigationTargetProvider,
+                playNavigationTargetProvider,
             )
         }
     }

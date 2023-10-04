@@ -9,6 +9,7 @@ android {
 dependencies {
     api(projects.apps.android.vanilla.features.editMatch.public)
     api(projects.apps.android.vanilla.features.createMatch.public)
+    api(projects.apps.android.vanilla.features.play.public)
 
     implementation(projects.core.features.match.public)
 

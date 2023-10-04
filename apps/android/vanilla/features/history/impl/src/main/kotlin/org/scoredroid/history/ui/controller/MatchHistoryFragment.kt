@@ -18,11 +18,13 @@ import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
 import org.scoredroid.fragment.transactions.commitWithReordering
 import org.scoredroid.history.ui.screen.MatchHistoryScreen
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
+import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
 
 class MatchHistoryFragment(
     vmFactory: ViewModelProvider.Factory,
     private val editMatchNavigationTargetProvider: EditMatchNavigationTargetProvider,
     private val createMatchNavigationTargetProvider: CreateMatchNavigationTargetProvider,
+    private val playNavigationTargetProvider: PlayNavigationTargetProvider,
 ) : Fragment() {
 
     private val viewModel by viewModels<MatchHistoryViewModel> { vmFactory }
@@ -57,7 +59,7 @@ class MatchHistoryFragment(
         container: ViewGroup?,
     ) {
         parentFragmentManager.commitWithReordering {
-            val (fragment, args) = editMatchNavigationTargetProvider.getNavigationTarget(navigation.matchId)
+            val (fragment, args) = playNavigationTargetProvider.getNavigationTarget(navigation.matchId)
             replace(container?.id ?: 0, fragment, args, null)
             addToBackStack(null)
         }
