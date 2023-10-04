@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import org.scoredroid.play.ui.screen.PlayScreen
 import org.scoredroid.play.ui.viewmodel.PlayViewModel
+import org.scoredroid.ui.theme.ScoredroidTheme
 
 class PlayFragment(
     vmFactory: ViewModelProvider.Factory,
@@ -26,7 +27,9 @@ class PlayFragment(
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                PlayScreen(viewModel)
+                ScoredroidTheme {
+                    PlayScreen(viewModel)
+                }
             }
         }
     }

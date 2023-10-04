@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <plurals name="score">
+        <item quantity="one">%d point</item>
+        <item quantity="other">%d points</item>
+    </plurals>
+    <string name="decrement_score_button_content_description">Decrement score</string>
+    <string name="increment_score_button_content_description">Increment score</string>
+    <string name="match_not_found">Match not found.</string>
 </resources>
