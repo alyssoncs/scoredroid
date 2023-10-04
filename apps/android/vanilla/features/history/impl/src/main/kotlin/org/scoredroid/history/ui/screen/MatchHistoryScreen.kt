@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
@@ -130,7 +131,7 @@ private fun MatchItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick(match.id) },
+            .clickable(onClickLabel = stringResource(id = R.string.match_tile_click_label)) { onClick(match.id) },
     ) {
         Column(
             modifier = Modifier
