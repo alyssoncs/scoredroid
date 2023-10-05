@@ -24,6 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -75,7 +80,7 @@ private fun TeamList(
         modifier = modifier,
     ) {
         itemsIndexed(uiState.teams) { index, team ->
-            TeamItem(
+            TeamTile(
                 team = team,
                 decrementScore = { decrementScore(index) },
                 incrementScore = { incrementScore(index) },
@@ -102,13 +107,22 @@ fun MatchNotFound(
 }
 
 @Composable
-private fun TeamItem(
+private fun TeamTile(
     team: PlayUiState.Content.Team,
     decrementScore: () -> Unit,
     incrementScore: () -> Unit,
 ) {
+    val accessibilityActions = listOf(
+        decrementScoreAccessibilityAction(decrementScore),
+        incrementScoreAccessibilityAction(incrementScore),
+    )
+
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) {
+                customActions = accessibilityActions
+            },
     ) {
         Row(
             modifier = Modifier
@@ -117,10 +131,30 @@ private fun TeamItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            DecrementScoreButton(decrementScore)
+            val noSemantics = Modifier.clearAndSetSemantics { }
+
+            DecrementScoreButton(noSemantics, decrementScore)
             TeamInfo(team)
-            IncrementScoreButton(incrementScore)
+            IncrementScoreButton(noSemantics, incrementScore)
         }
+    }
+}
+
+@Composable
+private fun decrementScoreAccessibilityAction(decrementScore: () -> Unit): CustomAccessibilityAction {
+    val decrementScoreActionLabel = stringResource(R.string.decrement_score_button_content_description)
+    return CustomAccessibilityAction(decrementScoreActionLabel) {
+        decrementScore()
+        true
+    }
+}
+
+@Composable
+private fun incrementScoreAccessibilityAction(incrementScore: () -> Unit): CustomAccessibilityAction {
+    val incrementScoreActionLabel = stringResource(R.string.increment_score_button_content_description)
+    return CustomAccessibilityAction(incrementScoreActionLabel) {
+        incrementScore()
+        true
     }
 }
 
@@ -136,12 +170,13 @@ private fun Loading(modifier: Modifier) {
 }
 
 @Composable
-private fun DecrementScoreButton(onClick: () -> Unit) {
+private fun DecrementScoreButton(modifier: Modifier, onClick: () -> Unit) {
     FilledIconButton(
         onClick = onClick,
         colors = IconButtonDefaults.filledIconButtonColors(
             containerColor = MaterialTheme.colorScheme.secondary,
         ),
+        modifier = modifier,
     ) {
         Icon(
             painter = painterResource(id = R.drawable.round_remove_24),
@@ -153,9 +188,8 @@ private fun DecrementScoreButton(onClick: () -> Unit) {
 @Composable
 private fun TeamInfo(team: PlayUiState.Content.Team) {
     Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .semantics(mergeDescendants = true) {},
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            .semantics { liveRegion = LiveRegionMode.Polite },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -175,8 +209,11 @@ private fun TeamInfo(team: PlayUiState.Content.Team) {
 }
 
 @Composable
-private fun IncrementScoreButton(onClick: () -> Unit) {
-    FilledIconButton(onClick = onClick) {
+private fun IncrementScoreButton(modifier: Modifier, onClick: () -> Unit) {
+    FilledIconButton(
+        onClick = onClick,
+        modifier = modifier,
+    ) {
         Icon(
             painterResource(id = R.drawable.round_add_24),
             contentDescription = stringResource(id = R.string.increment_score_button_content_description),
