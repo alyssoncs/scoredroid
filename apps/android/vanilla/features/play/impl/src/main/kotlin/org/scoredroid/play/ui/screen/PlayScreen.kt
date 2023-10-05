@@ -72,7 +72,7 @@ private fun TeamList(
     uiState: PlayUiState.Content,
     decrementScore: (teamAt: Int) -> Unit,
     incrementScore: (teamAt: Int) -> Unit,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         contentPadding = PaddingValues(8.dp),
@@ -91,7 +91,7 @@ private fun TeamList(
 
 @Composable
 fun MatchNotFound(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -159,7 +159,7 @@ private fun incrementScoreAccessibilityAction(incrementScore: () -> Unit): Custo
 }
 
 @Composable
-private fun Loading(modifier: Modifier) {
+private fun Loading(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -170,7 +170,7 @@ private fun Loading(modifier: Modifier) {
 }
 
 @Composable
-private fun DecrementScoreButton(modifier: Modifier, onClick: () -> Unit) {
+private fun DecrementScoreButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     FilledIconButton(
         onClick = onClick,
         colors = IconButtonDefaults.filledIconButtonColors(
@@ -209,7 +209,7 @@ private fun TeamInfo(team: PlayUiState.Content.Team) {
 }
 
 @Composable
-private fun IncrementScoreButton(modifier: Modifier, onClick: () -> Unit) {
+private fun IncrementScoreButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     FilledIconButton(
         onClick = onClick,
         modifier = modifier,
