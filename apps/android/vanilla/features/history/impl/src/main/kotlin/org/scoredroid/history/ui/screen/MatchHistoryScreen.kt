@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,21 +39,33 @@ import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
 
 @Composable
-fun MatchHistoryScreen(viewModel: MatchHistoryViewModel, onCreateMatchClick: () -> Unit) {
+fun MatchHistoryScreen(
+    viewModel: MatchHistoryViewModel,
+    onMatchClick: (matchId: Long) -> Unit,
+    onEditMatchClick: (matchId: Long) -> Unit,
+    onCreateMatchClick: () -> Unit,
+) {
     val uiModel by viewModel.uiModel.collectAsState()
 
-    MatchHistoryScreenContent(uiModel, onCreateMatchClick, viewModel::onClick)
+    MatchHistoryScreenContent(uiModel, onCreateMatchClick, onMatchClick, onEditMatchClick)
 }
 
 @Composable
 private fun MatchHistoryScreenContent(
     uiModel: MatchHistoryUiModel,
     onCreateMatchClick: () -> Unit,
-    onClick: (Long) -> Unit,
+    onMatchClick: (Long) -> Unit,
+    onEditClick: (Long) -> Unit,
 ) {
     ScoredroidTheme {
         when (uiModel) {
-            is MatchHistoryUiModel.Content -> MatchHistory(uiModel, onCreateMatchClick, onClick)
+            is MatchHistoryUiModel.Content -> MatchHistory(
+                uiModel,
+                onCreateMatchClick,
+                onMatchClick,
+                onEditClick,
+            )
+
             MatchHistoryUiModel.Loading -> Loading()
         }
     }
@@ -71,14 +86,15 @@ private fun Loading() {
 private fun MatchHistory(
     uiModel: MatchHistoryUiModel.Content,
     onCreateMatchClick: () -> Unit,
-    onClick: (Long) -> Unit,
+    onMatchClick: (Long) -> Unit,
+    onEditClick: (Long) -> Unit,
 ) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = onCreateMatchClick) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
-                    contentDescription = "Create match FAB",
+                    contentDescription = stringResource(R.string.create_match_fab_content_description),
                 )
             }
         },
@@ -86,15 +102,21 @@ private fun MatchHistory(
         if (uiModel.matches.isEmpty())
             EmptyState(Modifier.padding(paddingValue))
         else
-            Matches(uiModel.matches.toImmutableList(), Modifier.padding(paddingValue), onClick)
+            Matches(
+                uiModel.matches.toImmutableList(),
+                onMatchClick,
+                onEditClick,
+                Modifier.padding(paddingValue),
+            )
     }
 }
 
 @Composable
 private fun Matches(
     matches: ImmutableList<MatchHistoryUiModel.Content.Match>,
+    onMatchClick: (Long) -> Unit,
+    onEditClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    onClick: (Long) -> Unit,
 ) {
     LazyColumn(
         contentPadding = PaddingValues(8.dp),
@@ -102,7 +124,7 @@ private fun Matches(
         modifier = modifier,
     ) {
         items(matches) { match ->
-            MatchItem(match, onClick)
+            MatchItem(match, onMatchClick, onEditClick)
         }
     }
 }
@@ -125,24 +147,40 @@ private fun EmptyState(modifier: Modifier = Modifier) {
 @Composable
 private fun MatchItem(
     match: MatchHistoryUiModel.Content.Match,
-    onClick: (Long) -> Unit,
+    onMatchClick: (Long) -> Unit,
+    onEditClick: (Long) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClickLabel = stringResource(id = R.string.match_tile_click_label)) { onClick(match.id) },
+            .clickable(onClickLabel = stringResource(id = R.string.match_tile_click_label)) {
+                onMatchClick(match.id)
+            },
     ) {
-        Column(
+        Row(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(
-                text = match.matchName,
-                style = MaterialTheme.typography.titleLarge,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(text = formatNumberOfTeams(match.numberOfTeams))
+            Column {
+                Text(
+                    text = match.matchName,
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(text = formatNumberOfTeams(match.numberOfTeams))
+            }
+            IconButton(
+                onClick = { onEditClick(match.id) },
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.edit_24),
+                    contentDescription = stringResource(R.string.edit_match_button_content_description),
+                )
+            }
         }
     }
 }
@@ -185,7 +223,8 @@ private fun MatchHistoryScreenPreview() {
             ),
         ),
         onCreateMatchClick = {},
-        onClick = {},
+        onMatchClick = {},
+        onEditClick = {},
     )
 }
 
@@ -195,7 +234,8 @@ private fun MatchHistoryScreenEmptyStatePreview() {
     MatchHistoryScreenContent(
         uiModel = MatchHistoryUiModel.Content(emptyList()),
         onCreateMatchClick = {},
-        onClick = {},
+        onMatchClick = {},
+        onEditClick = {},
     )
 }
 
@@ -205,6 +245,7 @@ private fun MatchHistoryScreenLoadingPreview() {
     MatchHistoryScreenContent(
         uiModel = MatchHistoryUiModel.Loading,
         onCreateMatchClick = {},
-        onClick = {},
+        onMatchClick = {},
+        onEditClick = {},
     )
 }

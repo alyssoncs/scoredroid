@@ -51,30 +51,6 @@ class MatchHistoryViewModelTest {
         }
     }
 
-    @Test
-    fun `on click, navigate to edit match`() = runTest {
-        matchHistoryViewModel.navigateToEditScreen.test {
-            assertThat(awaitItem()).isNull()
-
-            matchHistoryViewModel.onClick(5L)
-
-            assertThat(awaitItem()!!.matchId).isEqualTo(5L)
-        }
-    }
-
-    @Test
-    fun `on navigate to edit screen, set navigate to edit match as null`() = runTest {
-        matchHistoryViewModel.navigateToEditScreen.test {
-            assertThat(awaitItem()).isNull()
-            matchHistoryViewModel.onClick(5L)
-            assertThat(awaitItem()).isNotNull()
-
-            matchHistoryViewModel.onNavigateToEditScreen()
-
-            assertThat(awaitItem()).isNull()
-        }
-    }
-
     class GetMatchesUseCaseStub : GetMatchesUseCase {
         var theResponse: List<MatchResponse> = emptyList()
 

@@ -6,4 +6,6 @@
     </plurals>
     <string name="no_matches">There are no matches so far.</string>
     <string name="match_tile_click_label">Play</string>
+    <string name="create_match_fab_content_description">Create match</string>
+    <string name="edit_match_button_content_description">Edit match</string>
 </resources>

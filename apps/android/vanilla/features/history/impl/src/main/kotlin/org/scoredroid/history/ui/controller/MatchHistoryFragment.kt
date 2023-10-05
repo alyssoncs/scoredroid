@@ -8,11 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.launch
 import org.scoredroid.creatematch.ui.navigation.CreateMatchNavigationTargetProvider
 import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
 import org.scoredroid.fragment.transactions.commitWithReordering
@@ -34,32 +30,36 @@ class MatchHistoryFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.navigateToEditScreen.collect {
-                    it?.let { navigation ->
-                        viewModel.onNavigateToEditScreen()
-                        navigateToEditMatchScreen(navigation, container)
-                    }
-                }
-            }
-        }
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                MatchHistoryScreen(viewModel = viewModel) {
-                    navigateToCreateMatchScreen(container)
-                }
+                MatchHistoryScreen(
+                    viewModel = viewModel,
+                    onCreateMatchClick = { navigateToCreateMatchScreen(container) },
+                    onMatchClick = { navigateToPlayScreen(it, container) },
+                    onEditMatchClick = { navigateToEditMatchScreen(it, container) },
+                )
             }
         }
     }
 
     private fun navigateToEditMatchScreen(
-        navigation: MatchHistoryViewModel.Navigation,
+        matchId: Long,
         container: ViewGroup?,
     ) {
         parentFragmentManager.commitWithReordering {
-            val (fragment, args) = playNavigationTargetProvider.getNavigationTarget(navigation.matchId)
+            val (fragment, args) = editMatchNavigationTargetProvider.getNavigationTarget(matchId)
+            replace(container?.id ?: 0, fragment, args, null)
+            addToBackStack(null)
+        }
+    }
+
+    private fun navigateToPlayScreen(
+        matchId: Long,
+        container: ViewGroup?,
+    ) {
+        parentFragmentManager.commitWithReordering {
+            val (fragment, args) = playNavigationTargetProvider.getNavigationTarget(matchId)
             replace(container?.id ?: 0, fragment, args, null)
             addToBackStack(null)
         }
