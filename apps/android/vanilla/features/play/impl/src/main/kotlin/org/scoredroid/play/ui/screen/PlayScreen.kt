@@ -78,7 +78,8 @@ private fun TeamList(
             TeamItem(
                 team = team,
                 decrementScore = { decrementScore(index) },
-            ) { incrementScore(index) }
+                incrementScore = { incrementScore(index) },
+            )
         }
     }
 }
