@@ -47,30 +47,32 @@ class MatchHistoryFragment(
         matchId: Long,
         container: ViewGroup?,
     ) {
-        parentFragmentManager.commitWithReordering {
-            val (fragment, args) = editMatchNavigationTargetProvider.getNavigationTarget(matchId)
-            replace(container?.id ?: 0, fragment, args, null)
-            addToBackStack(null)
-        }
+        val (fragment, args) = editMatchNavigationTargetProvider.getNavigationTarget(matchId)
+        navigate(container, fragment, args)
     }
 
     private fun navigateToPlayScreen(
         matchId: Long,
         container: ViewGroup?,
     ) {
-        parentFragmentManager.commitWithReordering {
-            val (fragment, args) = playNavigationTargetProvider.getNavigationTarget(matchId)
-            replace(container?.id ?: 0, fragment, args, null)
-            addToBackStack(null)
-        }
+        val (fragment, args) = playNavigationTargetProvider.getNavigationTarget(matchId)
+        navigate(container, fragment, args)
     }
 
     private fun navigateToCreateMatchScreen(
         container: ViewGroup?,
     ) {
+        val fragment = createMatchNavigationTargetProvider.getNavigationTarget()
+        navigate(container, fragment)
+    }
+
+    private fun navigate(
+        container: ViewGroup?,
+        fragment: Class<out Fragment>,
+        args: Bundle? = null,
+    ) {
         parentFragmentManager.commitWithReordering {
-            val fragment = createMatchNavigationTargetProvider.getNavigationTarget()
-            replace(container?.id ?: 0, fragment, null)
+            replace(container?.id ?: 0, fragment, args, null)
             addToBackStack(null)
         }
     }
