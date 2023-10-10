@@ -15,6 +15,7 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -60,10 +61,12 @@ private fun PlayScreenContent(
     incrementScore: (teamAt: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    when (uiState) {
-        is PlayUiState.Content -> TeamList(uiState, decrementScore, incrementScore, modifier)
-        PlayUiState.Loading -> Loading(modifier)
-        PlayUiState.Error -> MatchNotFound(modifier)
+    Surface {
+        when (uiState) {
+            is PlayUiState.Content -> TeamList(uiState, decrementScore, incrementScore, modifier)
+            PlayUiState.Loading -> Loading(modifier)
+            PlayUiState.Error -> MatchNotFound(modifier)
+        }
     }
 }
 
