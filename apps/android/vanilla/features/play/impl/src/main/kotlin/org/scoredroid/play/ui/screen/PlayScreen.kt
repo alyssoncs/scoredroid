@@ -244,3 +244,15 @@ private fun PlayScreenPreview() {
         )
     }
 }
+
+@PreviewThemes
+@Composable
+private fun PlayScreenLoadingPreview() {
+    ScoredroidTheme {
+        PlayScreenContent(
+            uiState = PlayUiState.Loading,
+            decrementScore = {},
+            incrementScore = {},
+        )
+    }
+}
