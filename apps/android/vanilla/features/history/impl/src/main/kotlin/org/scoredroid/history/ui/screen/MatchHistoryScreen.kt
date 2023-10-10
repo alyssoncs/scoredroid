@@ -57,17 +57,15 @@ private fun MatchHistoryScreenContent(
     onMatchClick: (Long) -> Unit,
     onEditClick: (Long) -> Unit,
 ) {
-    ScoredroidTheme {
-        when (uiModel) {
-            is MatchHistoryUiModel.Content -> MatchHistory(
-                uiModel,
-                onCreateMatchClick,
-                onMatchClick,
-                onEditClick,
-            )
+    when (uiModel) {
+        is MatchHistoryUiModel.Content -> MatchHistory(
+            uiModel,
+            onCreateMatchClick,
+            onMatchClick,
+            onEditClick,
+        )
 
-            MatchHistoryUiModel.Loading -> Loading()
-        }
+        MatchHistoryUiModel.Loading -> Loading()
     }
 }
 
@@ -197,55 +195,61 @@ private fun formatNumberOfTeams(numberOfTeams: Int): String {
 @Composable
 @PreviewThemes
 private fun MatchHistoryScreenPreview() {
-    MatchHistoryScreenContent(
-        uiModel = MatchHistoryUiModel.Content(
-            listOf(
-                MatchHistoryUiModel.Content.Match(
-                    matchName = "first match",
-                    numberOfTeams = 3,
-                    id = 1,
-                ),
-                MatchHistoryUiModel.Content.Match(
-                    matchName = "second match",
-                    numberOfTeams = 1,
-                    id = 2,
-                ),
-                MatchHistoryUiModel.Content.Match(
-                    matchName = "third match",
-                    numberOfTeams = 0,
-                    id = 3,
-                ),
-                MatchHistoryUiModel.Content.Match(
-                    matchName = "I hope you don't mind, but this is a very long named match",
-                    numberOfTeams = 0,
-                    id = 4,
+    ScoredroidTheme {
+        MatchHistoryScreenContent(
+            uiModel = MatchHistoryUiModel.Content(
+                listOf(
+                    MatchHistoryUiModel.Content.Match(
+                        matchName = "first match",
+                        numberOfTeams = 3,
+                        id = 1,
+                    ),
+                    MatchHistoryUiModel.Content.Match(
+                        matchName = "second match",
+                        numberOfTeams = 1,
+                        id = 2,
+                    ),
+                    MatchHistoryUiModel.Content.Match(
+                        matchName = "third match",
+                        numberOfTeams = 0,
+                        id = 3,
+                    ),
+                    MatchHistoryUiModel.Content.Match(
+                        matchName = "I hope you don't mind, but this is a very long named match",
+                        numberOfTeams = 0,
+                        id = 4,
+                    ),
                 ),
             ),
-        ),
-        onCreateMatchClick = {},
-        onMatchClick = {},
-        onEditClick = {},
-    )
+            onCreateMatchClick = {},
+            onMatchClick = {},
+            onEditClick = {},
+        )
+    }
 }
 
 @Composable
 @PreviewThemes
 private fun MatchHistoryScreenEmptyStatePreview() {
-    MatchHistoryScreenContent(
-        uiModel = MatchHistoryUiModel.Content(emptyList()),
-        onCreateMatchClick = {},
-        onMatchClick = {},
-        onEditClick = {},
-    )
+    ScoredroidTheme {
+        MatchHistoryScreenContent(
+            uiModel = MatchHistoryUiModel.Content(emptyList()),
+            onCreateMatchClick = {},
+            onMatchClick = {},
+            onEditClick = {},
+        )
+    }
 }
 
 @Composable
 @PreviewThemes
 private fun MatchHistoryScreenLoadingPreview() {
-    MatchHistoryScreenContent(
-        uiModel = MatchHistoryUiModel.Loading,
-        onCreateMatchClick = {},
-        onMatchClick = {},
-        onEditClick = {},
-    )
+    ScoredroidTheme {
+        MatchHistoryScreenContent(
+            uiModel = MatchHistoryUiModel.Loading,
+            onCreateMatchClick = {},
+            onMatchClick = {},
+            onEditClick = {},
+        )
+    }
 }

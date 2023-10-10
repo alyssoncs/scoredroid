@@ -15,6 +15,7 @@ import org.scoredroid.fragment.transactions.commitWithReordering
 import org.scoredroid.history.ui.screen.MatchHistoryScreen
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
+import org.scoredroid.ui.theme.ScoredroidTheme
 
 class MatchHistoryFragment(
     vmFactory: ViewModelProvider.Factory,
@@ -33,12 +34,14 @@ class MatchHistoryFragment(
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                MatchHistoryScreen(
-                    viewModel = viewModel,
-                    onCreateMatchClick = { navigateToCreateMatchScreen(container) },
-                    onMatchClick = { navigateToPlayScreen(it, container) },
-                    onEditMatchClick = { navigateToEditMatchScreen(it, container) },
-                )
+                ScoredroidTheme {
+                    MatchHistoryScreen(
+                        viewModel = viewModel,
+                        onCreateMatchClick = { navigateToCreateMatchScreen(container) },
+                        onMatchClick = { navigateToPlayScreen(it, container) },
+                        onEditMatchClick = { navigateToEditMatchScreen(it, container) },
+                    )
+                }
             }
         }
     }
