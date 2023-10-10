@@ -57,15 +57,42 @@ private fun MatchHistoryScreenContent(
     onMatchClick: (Long) -> Unit,
     onEditClick: (Long) -> Unit,
 ) {
-    when (uiModel) {
-        is MatchHistoryUiModel.Content -> MatchHistory(
-            uiModel,
-            onCreateMatchClick,
-            onMatchClick,
-            onEditClick,
-        )
+    Scaffold(
+        floatingActionButton = { Fab(uiModel, onCreateMatchClick) },
+    ) { paddingValue ->
+        when (uiModel) {
+            is MatchHistoryUiModel.Content -> {
+                if (uiModel.matches.isEmpty()) {
+                    EmptyState(Modifier.padding(paddingValue))
+                } else {
+                    Matches(
+                        uiModel.matches.toImmutableList(),
+                        onMatchClick,
+                        onEditClick,
+                        Modifier.padding(paddingValue),
+                    )
+                }
+            }
 
-        MatchHistoryUiModel.Loading -> Loading()
+            MatchHistoryUiModel.Loading -> {
+                Loading()
+            }
+        }
+    }
+}
+
+@Composable
+private fun Fab(
+    uiModel: MatchHistoryUiModel,
+    onCreateMatchClick: () -> Unit,
+) {
+    if (uiModel is MatchHistoryUiModel.Content) {
+        FloatingActionButton(onClick = onCreateMatchClick) {
+            Icon(
+                imageVector = Icons.Rounded.Add,
+                contentDescription = stringResource(R.string.create_match_fab_content_description),
+            )
+        }
     }
 }
 
@@ -77,35 +104,6 @@ private fun Loading() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CircularProgressIndicator()
-    }
-}
-
-@Composable
-private fun MatchHistory(
-    uiModel: MatchHistoryUiModel.Content,
-    onCreateMatchClick: () -> Unit,
-    onMatchClick: (Long) -> Unit,
-    onEditClick: (Long) -> Unit,
-) {
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = onCreateMatchClick) {
-                Icon(
-                    imageVector = Icons.Rounded.Add,
-                    contentDescription = stringResource(R.string.create_match_fab_content_description),
-                )
-            }
-        },
-    ) { paddingValue ->
-        if (uiModel.matches.isEmpty())
-            EmptyState(Modifier.padding(paddingValue))
-        else
-            Matches(
-                uiModel.matches.toImmutableList(),
-                onMatchClick,
-                onEditClick,
-                Modifier.padding(paddingValue),
-            )
     }
 }
 
