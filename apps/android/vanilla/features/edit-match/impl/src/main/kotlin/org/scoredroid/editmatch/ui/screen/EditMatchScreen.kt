@@ -3,8 +3,10 @@ package org.scoredroid.editmatch.ui.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -47,26 +49,33 @@ private fun EditMatchScreenContent(
     onAddTeamClick: () -> Unit,
     onSaveClick: () -> Unit,
 ) {
-    when (uiState) {
-        is EditMatchUiState.Content -> EditMatchForm(
-            matchName = uiState.matchName,
-            teams = uiState.teams.map(EditMatchUiState.Content.Team::name).toImmutableList(),
-            saveButtonText = stringResource(id = R.string.save_match),
-            onMatchNameChange = onMatchNameChange,
-            onTeamNameChange = onTeamNameChange,
-            onAddTeamClick = onAddTeamClick,
-            onSaveClick = onSaveClick,
-        )
+    Scaffold { paddingValues ->
+        val modifier = Modifier.padding(paddingValues)
+        when (uiState) {
+            is EditMatchUiState.Content -> {
+                EditMatchForm(
+                    matchName = uiState.matchName,
+                    teams = uiState.teams.map(EditMatchUiState.Content.Team::name)
+                        .toImmutableList(),
+                    saveButtonText = stringResource(id = R.string.save_match),
+                    onMatchNameChange = onMatchNameChange,
+                    onTeamNameChange = onTeamNameChange,
+                    onAddTeamClick = onAddTeamClick,
+                    onSaveClick = onSaveClick,
+                    modifier = modifier,
+                )
+            }
 
-        is EditMatchUiState.Loading -> Loading()
-        is EditMatchUiState.MatchNotFound -> MatchNotFound()
+            is EditMatchUiState.Loading -> Loading(modifier)
+            is EditMatchUiState.MatchNotFound -> MatchNotFound(modifier)
+        }
     }
 }
 
 @Composable
-private fun Loading() {
+private fun Loading(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -75,7 +84,7 @@ private fun Loading() {
 }
 
 @Composable
-fun MatchNotFound(
+private fun MatchNotFound(
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -94,26 +103,28 @@ fun MatchNotFound(
 @Composable
 @PreviewThemes
 private fun EditMatchScreenPreview() {
-    EditMatchScreenContent(
-        uiState = EditMatchUiState.Content(
-            matchName = "Ultimate match",
-            teams = listOf(
-                EditMatchUiState.Content.Team(
-                    name = "Champions",
-                    score = 4,
+    ScoredroidTheme {
+        EditMatchScreenContent(
+            uiState = EditMatchUiState.Content(
+                matchName = "Ultimate match",
+                teams = listOf(
+                    EditMatchUiState.Content.Team(
+                        name = "Champions",
+                        score = 4,
+                    ),
+                    EditMatchUiState.Content.Team(
+                        name = "Losers",
+                        score = 2,
+                    ),
                 ),
-                EditMatchUiState.Content.Team(
-                    name = "Losers",
-                    score = 2,
-                ),
+                shouldNavigateBack = false,
             ),
-            shouldNavigateBack = false,
-        ),
-        onMatchNameChange = {},
-        onTeamNameChange = { _, _ -> },
-        onAddTeamClick = {},
-        onSaveClick = {},
-    )
+            onMatchNameChange = {},
+            onTeamNameChange = { _, _ -> },
+            onAddTeamClick = {},
+            onSaveClick = {},
+        )
+    }
 }
 
 @Composable
