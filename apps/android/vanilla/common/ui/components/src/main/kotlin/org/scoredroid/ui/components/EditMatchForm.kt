@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
 
 @Composable
@@ -125,16 +126,18 @@ private fun TeamItem(
 @Composable
 @PreviewThemes
 private fun EditMatchScreenPreview() {
-    EditMatchForm(
-        matchName = "Ultimate match",
-        teams = persistentListOf(
-            "Champions",
-            "Losers",
-        ),
-        saveButtonText = "Save",
-        onMatchNameChange = {},
-        onTeamNameChange = { _, _ -> },
-        onAddTeamClick = {},
-        onSaveClick = {},
-    )
+    ScoredroidTheme {
+        EditMatchForm(
+            matchName = "Ultimate match",
+            teams = persistentListOf(
+                "Champions",
+                "Losers",
+            ),
+            saveButtonText = "Save",
+            onMatchNameChange = {},
+            onTeamNameChange = { _, _ -> },
+            onAddTeamClick = {},
+            onSaveClick = {},
+        )
+    }
 }
