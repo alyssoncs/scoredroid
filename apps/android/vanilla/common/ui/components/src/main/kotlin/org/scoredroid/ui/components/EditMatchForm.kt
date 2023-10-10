@@ -125,7 +125,7 @@ private fun TeamItem(
 
 @Composable
 @PreviewThemes
-private fun EditMatchScreenPreview() {
+private fun EditMatchFormPreview() {
     ScoredroidTheme {
         EditMatchForm(
             matchName = "Ultimate match",
