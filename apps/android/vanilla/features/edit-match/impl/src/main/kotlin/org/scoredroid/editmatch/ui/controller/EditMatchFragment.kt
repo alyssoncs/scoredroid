@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import org.scoredroid.editmatch.ui.screen.EditMatchScreen
 import org.scoredroid.editmatch.ui.viewmodel.EditMatchViewModel
+import org.scoredroid.ui.theme.ScoredroidTheme
 
 class EditMatchFragment(
     vmFactory: ViewModelProvider.Factory,
@@ -26,8 +27,10 @@ class EditMatchFragment(
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                EditMatchScreen(viewModel) {
-                    parentFragmentManager.popBackStack()
+                ScoredroidTheme {
+                    EditMatchScreen(viewModel) {
+                        parentFragmentManager.popBackStack()
+                    }
                 }
             }
         }
