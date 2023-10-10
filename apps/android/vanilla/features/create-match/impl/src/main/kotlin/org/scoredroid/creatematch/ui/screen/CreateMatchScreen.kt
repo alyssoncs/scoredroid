@@ -45,20 +45,18 @@ private fun CreateMatchScreenContent(
     onAddTeamClick: () -> Unit,
     onCreateClick: () -> Unit,
 ) {
-    ScoredroidTheme {
-        Box {
-            EditMatchForm(
-                matchName = uiState.matchName,
-                teams = uiState.teams.toImmutableList(),
-                saveButtonText = stringResource(id = R.string.create_match),
-                onMatchNameChange = onMatchNameChange,
-                onTeamNameChange = onTeamNameChange,
-                onAddTeamClick = onAddTeamClick,
-                onSaveClick = onCreateClick,
-            )
-            if (uiState.loading) {
-                Loading()
-            }
+    Box {
+        EditMatchForm(
+            matchName = uiState.matchName,
+            teams = uiState.teams.toImmutableList(),
+            saveButtonText = stringResource(id = R.string.create_match),
+            onMatchNameChange = onMatchNameChange,
+            onTeamNameChange = onTeamNameChange,
+            onAddTeamClick = onAddTeamClick,
+            onSaveClick = onCreateClick,
+        )
+        if (uiState.loading) {
+            Loading()
         }
     }
 }
@@ -77,19 +75,21 @@ private fun Loading() {
 @Composable
 @PreviewThemes
 private fun EditMatchScreenPreview() {
-    CreateMatchScreenContent(
-        uiState = CreateMatchUiState(
-            matchName = "Ultimate match",
-            teams = listOf(
-                "Champions",
-                "Losers",
+    ScoredroidTheme {
+        CreateMatchScreenContent(
+            uiState = CreateMatchUiState(
+                matchName = "Ultimate match",
+                teams = listOf(
+                    "Champions",
+                    "Losers",
+                ),
+                loading = false,
+                created = false,
             ),
-            loading = false,
-            created = false,
-        ),
-        onMatchNameChange = {},
-        onTeamNameChange = { _, _ -> },
-        onAddTeamClick = {},
-        onCreateClick = {},
-    )
+            onMatchNameChange = {},
+            onTeamNameChange = { _, _ -> },
+            onAddTeamClick = {},
+            onCreateClick = {},
+        )
+    }
 }

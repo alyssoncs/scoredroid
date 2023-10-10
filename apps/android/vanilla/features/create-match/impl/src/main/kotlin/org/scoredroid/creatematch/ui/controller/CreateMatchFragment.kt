@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import org.scoredroid.creatematch.ui.screen.CreateMatchScreen
 import org.scoredroid.creatematch.ui.viewmodel.CreateMatchViewModel
+import org.scoredroid.ui.theme.ScoredroidTheme
 
 class CreateMatchFragment(
     vmFactory: ViewModelProvider.Factory,
@@ -26,8 +27,10 @@ class CreateMatchFragment(
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                CreateMatchScreen(viewModel) {
-                    parentFragmentManager.popBackStack()
+                ScoredroidTheme {
+                    CreateMatchScreen(viewModel) {
+                        parentFragmentManager.popBackStack()
+                    }
                 }
             }
         }
