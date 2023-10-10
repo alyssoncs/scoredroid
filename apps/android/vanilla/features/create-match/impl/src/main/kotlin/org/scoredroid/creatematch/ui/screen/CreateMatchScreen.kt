@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,18 +46,20 @@ private fun CreateMatchScreenContent(
     onAddTeamClick: () -> Unit,
     onCreateClick: () -> Unit,
 ) {
-    Box {
-        EditMatchForm(
-            matchName = uiState.matchName,
-            teams = uiState.teams.toImmutableList(),
-            saveButtonText = stringResource(id = R.string.create_match),
-            onMatchNameChange = onMatchNameChange,
-            onTeamNameChange = onTeamNameChange,
-            onAddTeamClick = onAddTeamClick,
-            onSaveClick = onCreateClick,
-        )
-        if (uiState.loading) {
-            Loading()
+    Surface {
+        Box {
+            EditMatchForm(
+                matchName = uiState.matchName,
+                teams = uiState.teams.toImmutableList(),
+                saveButtonText = stringResource(id = R.string.create_match),
+                onMatchNameChange = onMatchNameChange,
+                onTeamNameChange = onTeamNameChange,
+                onAddTeamClick = onAddTeamClick,
+                onSaveClick = onCreateClick,
+            )
+            if (uiState.loading) {
+                Loading()
+            }
         }
     }
 }
