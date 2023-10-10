@@ -3,10 +3,9 @@ package org.scoredroid.editmatch.ui.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -49,8 +48,7 @@ private fun EditMatchScreenContent(
     onAddTeamClick: () -> Unit,
     onSaveClick: () -> Unit,
 ) {
-    Scaffold { paddingValues ->
-        val modifier = Modifier.padding(paddingValues)
+    Surface {
         when (uiState) {
             is EditMatchUiState.Content -> {
                 EditMatchForm(
@@ -62,12 +60,11 @@ private fun EditMatchScreenContent(
                     onTeamNameChange = onTeamNameChange,
                     onAddTeamClick = onAddTeamClick,
                     onSaveClick = onSaveClick,
-                    modifier = modifier,
                 )
             }
 
-            is EditMatchUiState.Loading -> Loading(modifier)
-            is EditMatchUiState.MatchNotFound -> MatchNotFound(modifier)
+            is EditMatchUiState.Loading -> Loading()
+            is EditMatchUiState.MatchNotFound -> MatchNotFound()
         }
     }
 }
