@@ -61,11 +61,11 @@ private fun PlayScreenContent(
     incrementScore: (teamAt: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface {
+    Surface(modifier) {
         when (uiState) {
-            is PlayUiState.Content -> TeamList(uiState, decrementScore, incrementScore, modifier)
-            PlayUiState.Loading -> Loading(modifier)
-            PlayUiState.Error -> MatchNotFound(modifier)
+            is PlayUiState.Content -> TeamList(uiState, decrementScore, incrementScore)
+            PlayUiState.Loading -> Loading()
+            PlayUiState.Error -> MatchNotFound()
         }
     }
 }
