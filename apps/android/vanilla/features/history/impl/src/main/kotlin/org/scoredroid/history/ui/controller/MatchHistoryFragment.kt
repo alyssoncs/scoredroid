@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import org.scoredroid.creatematch.ui.navigation.CreateMatchNavigationTargetProvider
 import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
+import org.scoredroid.fragment.compose.composeView
 import org.scoredroid.fragment.transactions.commitWithReordering
 import org.scoredroid.history.ui.screen.MatchHistoryScreen
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
@@ -31,17 +30,14 @@ class MatchHistoryFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                ScoredroidTheme {
-                    MatchHistoryScreen(
-                        viewModel = viewModel,
-                        onCreateMatchClick = { navigateToCreateMatchScreen(container) },
-                        onMatchClick = { navigateToPlayScreen(it, container) },
-                        onEditMatchClick = { navigateToEditMatchScreen(it, container) },
-                    )
-                }
+        return composeView {
+            ScoredroidTheme {
+                MatchHistoryScreen(
+                    viewModel = viewModel,
+                    onCreateMatchClick = { navigateToCreateMatchScreen(container) },
+                    onMatchClick = { navigateToPlayScreen(it, container) },
+                    onEditMatchClick = { navigateToEditMatchScreen(it, container) },
+                )
             }
         }
     }

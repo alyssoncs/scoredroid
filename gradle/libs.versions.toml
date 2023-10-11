@@ -14,7 +14,7 @@ androidx-core = "1.12.0"
 androidx-junit = "1.2.0-alpha01"
 compose-compiler = "1.5.3"
 compose-material3 = "1.2.0-alpha08"
-compose-tooling = "1.6.0-alpha06"
+compose-ui = "1.6.0-alpha06"
 coroutines = "1.7.3"
 dagger = "2.48"
 detekt = "1.23.1"
@@ -35,8 +35,9 @@ turbine = "1.0.0"
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-tooling" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-tooling" }
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }

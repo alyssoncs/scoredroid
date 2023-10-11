@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.dependencies
-
 plugins {
     id("org.scoredroid.android-lib")
     id("org.scoredroid.android-compose")
@@ -9,6 +7,7 @@ plugins {
 }
 
 dependencies {
+    api(project(":apps:android:common:utils:fragments:compose"))
     api(project(":apps:android:common:utils:fragments:factory-annotation"))
     api(project(":apps:android:common:utils:viewmodels:factory-annotation"))
 
