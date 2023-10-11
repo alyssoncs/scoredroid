@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.dependencies
 import org.scoredroid.utils.getLibrary
 import org.scoredroid.utils.versionCatalog
 
