@@ -6,12 +6,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.match.domain.usecase.GetMatchesUseCase
+import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 
 class MatchHistoryViewModel(
     private val getMatches: GetMatchesUseCase,
+    private val removeMatch: RemoveMatchUseCase,
 ) : ViewModel() {
 
     val uiModel: StateFlow<MatchHistoryUiModel> = flow {
@@ -23,6 +26,12 @@ class MatchHistoryViewModel(
         started = SharingStarted.WhileSubscribed(),
         initialValue = MatchHistoryUiModel.Loading,
     )
+
+    fun removeMatch(matchId: Long) {
+        viewModelScope.launch {
+            removeMatch.invoke(matchId)
+        }
+    }
 
     private fun toUiModel(it: MatchResponse) = MatchHistoryUiModel.Content.Match(
         matchName = it.name,

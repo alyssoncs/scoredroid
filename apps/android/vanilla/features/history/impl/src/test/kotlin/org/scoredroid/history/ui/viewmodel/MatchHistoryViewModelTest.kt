@@ -13,6 +13,7 @@ import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.match.domain.usecase.GetMatchesUseCase
+import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)
@@ -37,8 +38,9 @@ class MatchHistoryViewModelTest {
     )
 
     private val getMatchesUseCaseStub = GetMatchesUseCaseStub(matchResponse)
+    private val removeMatchUseCaseSpy = RemoveMatchUseCaseSpy()
 
-    private val matchHistoryViewModel = MatchHistoryViewModel(getMatchesUseCaseStub)
+    private val matchHistoryViewModel = MatchHistoryViewModel(getMatchesUseCaseStub, removeMatchUseCaseSpy)
 
     @Test
     fun `should fetch matches from use case`() = runTest {
@@ -71,6 +73,13 @@ class MatchHistoryViewModelTest {
         }
     }
 
+    @Test
+    fun `remove match calls use case`() = runTest {
+        matchHistoryViewModel.removeMatch(0L)
+
+        assertThat(removeMatchUseCaseSpy.removedMatchId).isEqualTo(0L)
+    }
+
     class GetMatchesUseCaseStub(initialValue: List<MatchResponse>) : GetMatchesUseCase {
         private val responseFlow: MutableStateFlow<List<MatchResponse>> = MutableStateFlow(initialValue)
 
@@ -83,6 +92,15 @@ class MatchHistoryViewModelTest {
             responseFlow.update {
                 it + response
             }
+        }
+    }
+
+    class RemoveMatchUseCaseSpy() : RemoveMatchUseCase {
+        var removedMatchId: Long? = null
+
+        override suspend fun invoke(matchId: Long): Result<Unit> {
+            removedMatchId = matchId
+            return Result.success(Unit)
         }
     }
 }

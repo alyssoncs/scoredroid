@@ -12,6 +12,7 @@ import org.scoredroid.fragment.annotation.FragmentKey
 import org.scoredroid.history.ui.controller.MatchHistoryFragment
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 import org.scoredroid.match.domain.usecase.GetMatchesUseCase
+import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
 import org.scoredroid.viewmodel.annotation.ViewModelKey
 
@@ -28,8 +29,9 @@ object HistoryFeatureModule {
         @[Provides IntoMap ViewModelKey(MatchHistoryViewModel::class)]
         fun provideMatchHistoryViewModel(
             getMatches: GetMatchesUseCase,
+            removeMatch: RemoveMatchUseCase,
         ): ViewModel {
-            return MatchHistoryViewModel(getMatches)
+            return MatchHistoryViewModel(getMatches, removeMatch)
         }
     }
 
