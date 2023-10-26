@@ -2,6 +2,7 @@ package org.scoredroid.infra.dataaccess.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
@@ -41,7 +42,7 @@ class MatchRepository(
     private val matchesFlow = MutableStateFlow<List<Match>>(emptyList())
 
     suspend fun getMatchFlow(matchId: Long): Flow<Match?> {
-        return getMatchMutableFlow(matchId)
+        return getMatchesFlow().map { matches -> matches.find { match -> match.id == matchId } }
     }
 
     suspend fun getMatch(matchId: Long): Match? {
@@ -188,19 +189,19 @@ class MatchRepository(
         }
 
         suspend fun getMatches(): List<Match> {
-            val persistedMatches = persistentDataSource.getAllMatches()
-            val transientOnlyMatches = getTransientOnlyMatches(persistedMatches)
+            val transientMatches = transientDataSource.getAllMatches()
+            val persistedOnlyMatches = getPersistentOnlyMatches(transientMatches)
 
-            return persistedMatches + transientOnlyMatches
+            return transientMatches + persistedOnlyMatches
         }
 
-        private suspend fun getTransientOnlyMatches(persistedMatches: List<Match>): List<Match> {
-            val transientMatches = transientDataSource.getAllMatches()
+        private suspend fun getPersistentOnlyMatches(transientMatches: List<Match>): List<Match> {
+            val persistentMatches = persistentDataSource.getAllMatches()
 
-            if (transientMatches.isEmpty())
-                return transientMatches
+            if (persistentMatches.isEmpty())
+                return persistentMatches
 
-            return transientMatches.notIn(persistedMatches)
+            return persistentMatches.notIn(transientMatches)
         }
 
         private fun List<Match>.notIn(

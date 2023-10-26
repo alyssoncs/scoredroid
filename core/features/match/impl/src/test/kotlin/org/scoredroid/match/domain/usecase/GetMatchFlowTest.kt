@@ -1,5 +1,6 @@
 package org.scoredroid.match.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -35,6 +36,36 @@ class GetMatchFlowTest {
         @Test
         fun `should have the correct match`() = runTest {
             val flow = getMatchFlow(matchId = 0L)
+
+            assertThat(flow.first()!!.name).isEqualTo("match name")
+        }
+
+        @Test
+        fun `updates on the match updates the flow`() = runTest {
+            getMatchFlow(matchId = 0L).test {
+                skipItems(1)
+
+                fixture.renameMatch(0L, "new name")
+
+                assertThat(awaitItem()!!.name).isEqualTo("new name")
+            }
+        }
+
+        @Test
+        fun `match deletion makes the flow emits null`() = runTest {
+            getMatchFlow(matchId = 0L).test {
+                skipItems(1)
+
+                fixture.removeMatch(0L)
+
+                assertThat(awaitItem()).isNull()
+            }
+        }
+
+        @Test
+        fun `should get correct flow on cold start`() = runTest {
+            val coldStartGetMatchFlow = GetMatchFlow(fixture.coldStart().repository)
+            val flow = coldStartGetMatchFlow(matchId = 0L)
 
             assertThat(flow.first()!!.name).isEqualTo("match name")
         }
