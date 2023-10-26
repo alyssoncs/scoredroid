@@ -198,17 +198,14 @@ class MatchRepository(
         private suspend fun getPersistentOnlyMatches(transientMatches: List<Match>): List<Match> {
             val persistentMatches = persistentDataSource.getAllMatches()
 
-            if (persistentMatches.isEmpty())
-                return persistentMatches
-
             return persistentMatches.notIn(transientMatches)
         }
 
         private fun List<Match>.notIn(
-            persistedMatches: List<Match>,
+            other: List<Match>,
         ): List<Match> {
-            val indexedPersistedMatches = persistedMatches.associateBy(Match::id)
-            return filterNot { indexedPersistedMatches.contains(it.id) }
+            val indexedOther = other.associateBy(Match::id)
+            return filterNot { indexedOther.contains(it.id) }
         }
 
         suspend fun updateMatch(
