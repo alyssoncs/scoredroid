@@ -95,7 +95,7 @@ class MatchHistoryViewModelTest {
         }
     }
 
-    class RemoveMatchUseCaseSpy() : RemoveMatchUseCase {
+    class RemoveMatchUseCaseSpy : RemoveMatchUseCase {
         var removedMatchId: Long? = null
 
         override suspend fun invoke(matchId: Long): Result<Unit> {
