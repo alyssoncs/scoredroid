@@ -155,12 +155,13 @@ private fun MatchItem(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Column {
+            Column(
+                modifier = Modifier.weight(1f),
+            ) {
                 Text(
                     text = match.matchName,
                     style = MaterialTheme.typography.titleLarge,
