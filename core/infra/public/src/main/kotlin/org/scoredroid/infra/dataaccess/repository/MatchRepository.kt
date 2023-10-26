@@ -67,16 +67,10 @@ class MatchRepository(
         teamAt: Int,
         update: (currentScore: Score) -> Score,
     ): Result<Match> {
-        return updateAndEmitMatch(matchId) { updateScoreLocally(matchId, teamAt, update) }
-    }
-
-    private suspend fun updateScoreLocally(
-        matchId: Long,
-        teamAt: Int,
-        update: (currentScore: Score) -> Score,
-    ): Result<Match> {
-        val currentScore = getCurrentScore(matchId, teamAt)
-        return updateMatch(matchId) { updateScoreTo(matchId, teamAt, update(currentScore)) }
+        return updateAndEmitMatch(matchId) {
+            val currentScore = getCurrentScore(matchId, teamAt)
+            updateScoreTo(matchId, teamAt, update(currentScore))
+        }
     }
 
     suspend fun updateScoreForAllTeams(
@@ -124,15 +118,8 @@ class MatchRepository(
         matchId: Long,
         update: suspend TransientMatchDataSource.(matchId: Long) -> Result<Match>,
     ): Result<Match> {
-        return updateMatch(matchId, update)
-            .onSuccess { newMatch -> emitMatch(newMatch) }
-    }
-
-    private suspend fun updateMatch(
-        matchId: Long,
-        update: suspend TransientMatchDataSource.(matchId: Long) -> Result<Match>,
-    ): Result<Match> {
         return dataSourceAggregator.updateMatch(matchId, update)
+            .onSuccess { newMatch -> emitMatch(newMatch) }
     }
 
     private suspend fun emitMatch(newMatch: Match) {
@@ -149,7 +136,8 @@ class MatchRepository(
     ): Result<Match> {
         return updateAndEmitMatch(match.id) {
             val results = List(match.teams.size) { index ->
-                updateScoreLocally(match.id, index, update)
+                val currentScore = getCurrentScore(match.id, index)
+                updateScoreTo(match.id, index, update(currentScore))
             }
 
             results.lastOrNull { it.isSuccess } ?: Result.success(match)
