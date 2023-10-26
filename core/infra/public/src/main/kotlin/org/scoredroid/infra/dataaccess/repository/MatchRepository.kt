@@ -2,6 +2,7 @@ package org.scoredroid.infra.dataaccess.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.orZero
@@ -37,6 +38,7 @@ class MatchRepository(
     )
 
     private val matchFlows = mutableMapOf<Long, MutableStateFlow<Match?>>()
+    private val matchesFlow = MutableStateFlow<List<Match>>(emptyList())
 
     suspend fun getMatchFlow(matchId: Long): Flow<Match?> {
         return getMatchMutableFlow(matchId)
@@ -46,12 +48,20 @@ class MatchRepository(
         return dataSourceAggregator.getMatch(matchId)
     }
 
-    suspend fun getMatches(): List<Match> {
-        return dataSourceAggregator.getMatches()
+    suspend fun getMatchesFlow(): Flow<List<Match>> {
+        val allMatches = dataSourceAggregator.getMatches()
+        matchesFlow.value = allMatches
+
+        return matchesFlow
     }
 
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
         return dataSourceAggregator.createMatch(createMatchRequest)
+            .also { newMatch ->
+                matchesFlow.update { currentMatches ->
+                    currentMatches + newMatch
+                }
+            }
     }
 
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
@@ -124,10 +134,18 @@ class MatchRepository(
 
     private suspend fun emitMatch(newMatch: Match) {
         getMatchMutableFlow(newMatch.id).emit(newMatch)
+        matchesFlow.update { currentMatches ->
+            currentMatches.map { match ->
+                if (match.id == newMatch.id) newMatch else match
+            }
+        }
     }
 
     private suspend fun emitDeletedMatch(matchId: Long) {
         getMatchMutableFlow(matchId).emit(null)
+        matchesFlow.update { currentMatches ->
+            currentMatches.filter { match -> match.id != matchId }
+        }
     }
 
     private suspend fun updateScoreForAllTeams(

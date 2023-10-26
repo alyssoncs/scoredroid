@@ -15,7 +15,9 @@ class MatchHistoryViewModel(
 ) : ViewModel() {
 
     val uiModel: StateFlow<MatchHistoryUiModel> = flow {
-        emit(MatchHistoryUiModel.Content(getMatches().map(::toUiModel)))
+        getMatches().collect {
+            emit(MatchHistoryUiModel.Content(it.map(::toUiModel)))
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),

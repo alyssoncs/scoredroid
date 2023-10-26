@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
+import org.scoredroid.infra.dataaccess.datasource.local.InMemoryMatchDataSource
 import org.scoredroid.infra.dataaccess.datasource.local.TransientMatchDataSource
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
@@ -34,9 +35,35 @@ class MatchRepositoryFixture(
         }
     }
 
+    suspend fun renameMatch(matchId: Long, name: String) {
+        repository.renameMatch(matchId, name)
+    }
+
+    suspend fun removeMatch(matchId: Long) {
+        repository.removeMatch(matchId)
+    }
+
     suspend fun addTeamsToExistingMatch(matchId: Long, vararg teamNames: String) {
         teamNames.forEach { name ->
             repository.addTeam(matchId = matchId, AddTeamRepositoryRequest(name))
+        }
+    }
+
+    suspend fun makeFirstTeam(matchId: Long, teamAt: Int) {
+        repository.moveTeam(matchId, teamAt, 0)
+    }
+
+    suspend fun removeTeam(matchId: Long, teamAt: Int) {
+        repository.removeTeam(matchId = matchId, teamAt = teamAt)
+    }
+
+    suspend fun renameTeam(matchId: Long, teamAt: Int, name: String) {
+        repository.renameTeam(matchId, teamAt, name)
+    }
+
+    suspend fun bumpScore(matchId: Long, teamAt: Int) {
+        repository.updateScore(matchId, teamAt) { currentScore ->
+            currentScore + 1
         }
     }
 
@@ -59,5 +86,15 @@ class MatchRepositoryFixture(
 
     fun persistenceFailsWith(exception: Throwable) {
         persistentMatchDataSource.failWith(exception)
+    }
+
+    fun coldStart(): MatchRepositoryFixture {
+        val inMemoryDataSource = InMemoryMatchDataSource.newInstance()
+        val repository = MatchRepository(inMemoryDataSource, this.persistentMatchDataSource)
+        return MatchRepositoryFixture(
+            repository,
+            inMemoryDataSource,
+            this.persistentMatchDataSource,
+        )
     }
 }

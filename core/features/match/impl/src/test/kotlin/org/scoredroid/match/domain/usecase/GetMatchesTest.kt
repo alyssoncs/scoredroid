@@ -1,5 +1,6 @@
 package org.scoredroid.match.domain.usecase
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -20,10 +21,12 @@ class GetMatchesTest {
     inner class NoMatchExists {
 
         @Test
-        fun `should return empty list`() = runTest {
-            val matches = getMatches()
+        fun `should return flow with empty list`() = runTest {
+            val matchesFlow = getMatches()
 
-            assertThat(matches).isEmpty()
+            matchesFlow.test {
+                awaitItem().isEmpty()
+            }
         }
     }
 
@@ -72,12 +75,15 @@ class GetMatchesTest {
             }
 
             @Test
-            fun `should return matches in reverse order`() = runTest {
-                val matches = getMatches()
+            fun `should return flow with matches in reverse order`() = runTest {
+                val matchesFow = getMatches()
 
-                assertThat(matches).hasSize(2)
-                assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
-                assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                matchesFow.test {
+                    val matches = awaitItem()
+                    assertThat(matches).hasSize(2)
+                    assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
+                    assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                }
             }
         }
 
@@ -92,12 +98,15 @@ class GetMatchesTest {
             }
 
             @Test
-            fun `should return matches in reverse order`() = runTest {
-                val matches = getMatches()
+            fun `should return flow with matches in reverse order`() = runTest {
+                val matchesFlow = getMatches()
 
-                assertThat(matches).hasSize(2)
-                assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
-                assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                matchesFlow.test {
+                    val matches = awaitItem()
+                    assertThat(matches).hasSize(2)
+                    assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
+                    assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                }
             }
         }
 
@@ -112,12 +121,171 @@ class GetMatchesTest {
             }
 
             @Test
-            fun `should return matches in reverse order`() = runTest {
-                val matches = getMatches()
+            fun `should return flow with matches in reverse order`() = runTest {
+                val matchesFlow = getMatches()
 
-                assertThat(matches).hasSize(2)
-                assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
-                assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                matchesFlow.test {
+                    val matches = awaitItem()
+                    assertThat(matches).hasSize(2)
+                    assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
+                    assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                }
+            }
+        }
+
+        @Nested
+        inner class ColdStart {
+
+            private lateinit var getMatchesWithColdStart: GetMatches
+
+            @BeforeEach
+            fun setUp() = runTest {
+                fixture.createMatch(firstMatchRequest)
+                fixture.createMatch(secondMatchRequest)
+                getMatchesWithColdStart = GetMatches(fixture.coldStart().repository)
+            }
+
+            @Test
+            fun `should return flow with matches in reverse order`() = runTest {
+                val matchesFlow = getMatchesWithColdStart()
+
+                matchesFlow.test {
+                    val matches = awaitItem()
+                    assertThat(matches).hasSize(2)
+                    assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
+                    assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                }
+            }
+        }
+
+        @Nested
+        inner class Updates {
+
+            @BeforeEach
+            fun setUp() = runTest {
+                fixture.createMatch(firstMatchRequest)
+                fixture.createMatch(secondMatchRequest)
+            }
+
+            @Test
+            fun `new match updates the flow`() = runTest {
+                val matchesFlow = getMatches()
+
+                matchesFlow.test {
+                    assertThat(awaitItem()).hasSize(2)
+
+                    fixture.createNamedMatch("third match")
+
+                    val newMatches = awaitItem()
+                    assertThat(newMatches).hasSize(3)
+                    assertThat(newMatches[0].name).isEqualTo("third match")
+                }
+            }
+
+            @Test
+            fun `new team updates the flow`() = runTest {
+                val matchesFlow = getMatches()
+
+                matchesFlow.test {
+                    assertThat(awaitItem()).hasSize(2)
+
+                    fixture.addTeamsToExistingMatch(1L, "team 2")
+
+                    val newMatches = awaitItem()
+                    assertThat(newMatches).hasSize(2)
+                    assertThat(newMatches.first().teams).hasSize(2)
+                    assertThat(newMatches.first().teams.last().name).isEqualTo("team 2")
+                }
+            }
+
+            @Test
+            fun `team removal updates the flow`() = runTest {
+                val matchesFlow = getMatches()
+
+                matchesFlow.test {
+                    assertThat(awaitItem()).hasSize(2)
+
+                    fixture.removeTeam(1L, 0)
+
+                    val newMatches = awaitItem()
+                    assertThat(newMatches).hasSize(2)
+                    assertThat(newMatches.first().teams).isEmpty()
+                }
+            }
+
+            @Test
+            fun `score update updates the flow`() = runTest {
+                val matchesFlow = getMatches()
+
+                matchesFlow.test {
+                    assertThat(awaitItem()).hasSize(2)
+
+                    fixture.bumpScore(1L, 0)
+
+                    val newMatches = awaitItem()
+                    assertThat(newMatches).hasSize(2)
+                    assertThat(newMatches.first().teams.first().score).isEqualTo(1)
+                }
+            }
+
+            @Test
+            fun `match rename updates the flow`() = runTest {
+                val matchesFlow = getMatches()
+
+                matchesFlow.test {
+                    assertThat(awaitItem()).hasSize(2)
+
+                    fixture.renameMatch(1L, "new name")
+
+                    val newMatches = awaitItem()
+                    assertThat(newMatches).hasSize(2)
+                    assertThat(newMatches.first().name).isEqualTo("new name")
+                }
+            }
+
+            @Test
+            fun `team movement updates the flow`() = runTest {
+                val matchesFlow = getMatches()
+
+                matchesFlow.test {
+                    assertThat(awaitItem()).hasSize(2)
+
+                    fixture.makeFirstTeam(0L, 1)
+
+                    val newMatches = awaitItem()
+                    assertThat(newMatches).hasSize(2)
+                    assertThat(newMatches.last().teams.first().name).isEqualTo("team b")
+                }
+            }
+
+            @Test
+            fun `team rename updates the flow`() = runTest {
+                val matchesFlow = getMatches()
+
+                matchesFlow.test {
+                    assertThat(awaitItem()).hasSize(2)
+
+                    fixture.renameTeam(1L, 0, "new name")
+
+                    val newMatches = awaitItem()
+                    assertThat(newMatches).hasSize(2)
+                    assertThat(newMatches.first().teams.first().name).isEqualTo("new name")
+                }
+            }
+
+            @Test
+            fun `match removal updates the flow`() = runTest {
+                val matchesFlow = getMatches()
+
+                matchesFlow.test {
+                    assertThat(awaitItem()).hasSize(2)
+
+                    fixture.removeMatch(1L)
+
+                    val newMatches = awaitItem()
+                    assertThat(newMatches).hasSize(1)
+                    assertThat(newMatches.first().name).isEqualTo("first match")
+                }
             }
         }
     }

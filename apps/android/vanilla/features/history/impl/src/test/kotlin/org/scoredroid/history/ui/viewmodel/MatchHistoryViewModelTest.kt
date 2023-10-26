@@ -3,6 +3,9 @@ package org.scoredroid.history.ui.viewmodel
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -33,9 +36,7 @@ class MatchHistoryViewModelTest {
         ),
     )
 
-    private val getMatchesUseCaseStub = GetMatchesUseCaseStub().also {
-        it.theResponse = matchResponse
-    }
+    private val getMatchesUseCaseStub = GetMatchesUseCaseStub(matchResponse)
 
     private val matchHistoryViewModel = MatchHistoryViewModel(getMatchesUseCaseStub)
 
@@ -51,12 +52,37 @@ class MatchHistoryViewModelTest {
         }
     }
 
-    class GetMatchesUseCaseStub : GetMatchesUseCase {
-        var theResponse: List<MatchResponse> = emptyList()
+    @Test
+    fun `flow update updates the ui state`() = runTest {
+        matchHistoryViewModel.uiModel.test {
+            assertThat(awaitItem()).isInstanceOf(MatchHistoryUiModel.Loading::class.java)
+            assertThat(awaitItem()).isInstanceOf(MatchHistoryUiModel.Content::class.java)
 
-        override suspend fun invoke(): List<MatchResponse> {
+            getMatchesUseCaseStub.emitNewMatch(
+                MatchResponse(
+                    id = 5L,
+                    name = "match name",
+                    teams = listOf(TeamResponse(name = "team name", score = 0)),
+                ),
+            )
+
+            val content = awaitItem() as MatchHistoryUiModel.Content
+            assertThat(content.matches).hasSize(2)
+        }
+    }
+
+    class GetMatchesUseCaseStub(initialValue: List<MatchResponse>) : GetMatchesUseCase {
+        private val responseFlow: MutableStateFlow<List<MatchResponse>> = MutableStateFlow(initialValue)
+
+        override suspend fun invoke(): Flow<List<MatchResponse>> {
             delay(1000)
-            return theResponse
+            return responseFlow
+        }
+
+        fun emitNewMatch(response: MatchResponse) {
+            responseFlow.update {
+                it + response
+            }
         }
     }
 }
