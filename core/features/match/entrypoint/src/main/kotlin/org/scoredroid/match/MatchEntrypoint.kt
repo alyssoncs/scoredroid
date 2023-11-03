@@ -4,7 +4,6 @@ import org.scoredroid.infra.dataaccess.InfraEntrypoint
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.match.di.DaggerMatchComponent
 import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
-import org.scoredroid.match.domain.usecase.CreateMatchUseCase
 import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
 import org.scoredroid.match.domain.usecase.GetMatchesUseCase
 import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
@@ -19,7 +18,6 @@ interface MatchEntrypoint {
         }
     }
 
-    val createMatchUseCase: CreateMatchUseCase
     val getMatchFlowUseCase: GetMatchFlowUseCase
     val getMatchesUseCase: GetMatchesUseCase
     val removeMatchUseCase: RemoveMatchUseCase
