@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
-import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
 import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 import org.scoredroid.play.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.play.ui.state.PlayUiState
 import org.scoredroid.score.domain.usecase.DecrementScoreUseCase
 import org.scoredroid.score.domain.usecase.IncrementScoreUseCase
+import org.scoredroid.usecase.GetMatchFlowUseCase
 import org.scoredroid.viewmodel.CoroutineTestExtension
 import org.scoredroid.viewmodel.callOnCleared
 import java.lang.IllegalStateException

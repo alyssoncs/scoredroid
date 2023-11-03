@@ -6,7 +6,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
 import org.scoredroid.fragment.annotation.FragmentKey
-import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
 import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 import org.scoredroid.play.ui.controller.PlayFragment
 import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
@@ -14,6 +13,7 @@ import org.scoredroid.play.ui.navigation.PlayNavigationTargetProviderImpl
 import org.scoredroid.play.ui.viewmodel.PlayViewModel
 import org.scoredroid.score.domain.usecase.DecrementScoreUseCase
 import org.scoredroid.score.domain.usecase.IncrementScoreUseCase
+import org.scoredroid.usecase.GetMatchFlowUseCase
 import org.scoredroid.viewmodel.SavedStateHandleViewModelProvider
 import org.scoredroid.viewmodel.annotation.ViewModelKey
 

@@ -53,6 +53,7 @@ android {
 
 dependencies {
     implementation(projects.core.features.createMatch.entrypoint)
+    implementation(projects.core.features.getMatch.entrypoint)
     implementation(projects.core.features.match.entrypoint)
     implementation(projects.core.features.teams.entrypoint)
     implementation(projects.core.features.score.entrypoint)

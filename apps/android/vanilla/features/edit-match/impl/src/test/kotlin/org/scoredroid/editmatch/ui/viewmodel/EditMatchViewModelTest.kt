@@ -16,7 +16,6 @@ import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.editmatch.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
-import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
 import org.scoredroid.match.domain.usecase.RenameMatchUseCase
 import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 import org.scoredroid.teams.domain.request.AddTeamRequest
@@ -24,6 +23,7 @@ import org.scoredroid.teams.domain.usecase.AddTeamUseCase
 import org.scoredroid.teams.domain.usecase.RenameTeamUseCase
 import org.scoredroid.usecase.CreateMatchRequestOptions
 import org.scoredroid.usecase.CreateMatchUseCase
+import org.scoredroid.usecase.GetMatchFlowUseCase
 import org.scoredroid.viewmodel.CoroutineTestExtension
 import org.scoredroid.viewmodel.callOnCleared
 import kotlin.random.Random

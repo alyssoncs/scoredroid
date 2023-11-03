@@ -3,15 +3,16 @@ package org.scoredroid.di.modules
 import dagger.Module
 import dagger.Provides
 import org.scoredroid.entrypoint.CreateMatchEntrypoint
+import org.scoredroid.entrypoint.GetMatchEntrypoint
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.match.MatchEntrypoint
 import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
-import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
-import org.scoredroid.match.domain.usecase.GetMatchesUseCase
 import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.match.domain.usecase.RenameMatchUseCase
 import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 import org.scoredroid.usecase.CreateMatchUseCase
+import org.scoredroid.usecase.GetMatchFlowUseCase
+import org.scoredroid.usecase.GetMatchesUseCase
 
 @Module
 object MatchUseCasesModule {
@@ -27,17 +28,22 @@ object MatchUseCasesModule {
     }
 
     @Provides
+    fun provideGetMatchEntrypoint(dataSource: PersistentMatchDataSource): GetMatchEntrypoint {
+        return GetMatchEntrypoint.create(dataSource)
+    }
+
+    @Provides
     fun provideCreateMatchUseCase(entrypoint: CreateMatchEntrypoint): CreateMatchUseCase {
         return entrypoint.createMatchUseCase
     }
 
     @Provides
-    fun provideGetMatchFlowUseCase(entrypoint: MatchEntrypoint): GetMatchFlowUseCase {
+    fun provideGetMatchFlowUseCase(entrypoint: GetMatchEntrypoint): GetMatchFlowUseCase {
         return entrypoint.getMatchFlowUseCase
     }
 
     @Provides
-    fun provideGetMatchesUseCase(entrypoint: MatchEntrypoint): GetMatchesUseCase {
+    fun provideGetMatchesUseCase(entrypoint: GetMatchEntrypoint): GetMatchesUseCase {
         return entrypoint.getMatchesUseCase
     }
 
