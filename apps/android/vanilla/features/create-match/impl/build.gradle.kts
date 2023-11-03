@@ -9,6 +9,6 @@ android {
 dependencies {
     api(projects.apps.android.vanilla.features.createMatch.public)
 
-    implementation(projects.core.features.match.public)
+    implementation(projects.core.features.createMatch.public)
     implementation(projects.apps.android.vanilla.common.ui.components)
 }

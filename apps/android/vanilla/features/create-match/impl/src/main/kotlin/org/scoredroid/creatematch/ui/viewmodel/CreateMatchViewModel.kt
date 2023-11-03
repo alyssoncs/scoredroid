@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.scoredroid.creatematch.ui.state.CreateMatchUiState
-import org.scoredroid.match.domain.request.CreateMatchRequestOptions
-import org.scoredroid.match.domain.usecase.CreateMatchUseCase
+import org.scoredroid.usecase.CreateMatchRequestOptions
+import org.scoredroid.usecase.CreateMatchUseCase
 
 class CreateMatchViewModel(
     private val createMatch: CreateMatchUseCase,

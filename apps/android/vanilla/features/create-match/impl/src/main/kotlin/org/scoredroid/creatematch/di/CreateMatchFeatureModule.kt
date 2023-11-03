@@ -11,7 +11,7 @@ import org.scoredroid.creatematch.ui.navigation.CreateMatchNavigationTargetProvi
 import org.scoredroid.creatematch.ui.navigation.CreateMatchNavigationTargetProviderImpl
 import org.scoredroid.creatematch.ui.viewmodel.CreateMatchViewModel
 import org.scoredroid.fragment.annotation.FragmentKey
-import org.scoredroid.match.domain.usecase.CreateMatchUseCase
+import org.scoredroid.usecase.CreateMatchUseCase
 import org.scoredroid.viewmodel.annotation.ViewModelKey
 
 @Module(

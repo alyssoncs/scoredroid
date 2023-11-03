@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
-import org.scoredroid.match.domain.request.CreateMatchRequestOptions
-import org.scoredroid.match.domain.usecase.CreateMatchUseCase
+import org.scoredroid.usecase.CreateMatchRequestOptions
+import org.scoredroid.usecase.CreateMatchUseCase
 import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)

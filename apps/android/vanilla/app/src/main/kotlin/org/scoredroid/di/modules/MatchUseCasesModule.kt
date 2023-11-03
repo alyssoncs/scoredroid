@@ -2,15 +2,16 @@ package org.scoredroid.di.modules
 
 import dagger.Module
 import dagger.Provides
+import org.scoredroid.entrypoint.CreateMatchEntrypoint
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.match.MatchEntrypoint
 import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
-import org.scoredroid.match.domain.usecase.CreateMatchUseCase
 import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
 import org.scoredroid.match.domain.usecase.GetMatchesUseCase
 import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.match.domain.usecase.RenameMatchUseCase
 import org.scoredroid.match.domain.usecase.SaveMatchUseCase
+import org.scoredroid.usecase.CreateMatchUseCase
 
 @Module
 object MatchUseCasesModule {
@@ -21,7 +22,12 @@ object MatchUseCasesModule {
     }
 
     @Provides
-    fun provideCreateMatchUseCase(entrypoint: MatchEntrypoint): CreateMatchUseCase {
+    fun provideCreateMatchEntrypoint(dataSource: PersistentMatchDataSource): CreateMatchEntrypoint {
+        return CreateMatchEntrypoint.create(dataSource)
+    }
+
+    @Provides
+    fun provideCreateMatchUseCase(entrypoint: CreateMatchEntrypoint): CreateMatchUseCase {
         return entrypoint.createMatchUseCase
     }
 
