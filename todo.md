@@ -15,3 +15,9 @@
 - [x] change MatchHistoryFragment and MatchHistoryViewModel to listen navigation on uiState
 - [ ] create a common loading component
 - [ ] create a common match not found component
+- [x] create create-match feature module
+- [ ] create get-match feature module
+- [ ] create play-match feature module
+- [ ] create remove-match feature module
+- [ ] create persist-match-changes feature module
+- [ ] create edit-match feature module
