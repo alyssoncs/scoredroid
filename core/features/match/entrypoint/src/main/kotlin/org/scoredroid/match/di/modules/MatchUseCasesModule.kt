@@ -5,10 +5,6 @@ import dagger.Provides
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.match.domain.usecase.ClearTransientMatchData
 import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
-import org.scoredroid.match.domain.usecase.GetMatchFlow
-import org.scoredroid.match.domain.usecase.GetMatchFlowUseCase
-import org.scoredroid.match.domain.usecase.GetMatches
-import org.scoredroid.match.domain.usecase.GetMatchesUseCase
 import org.scoredroid.match.domain.usecase.RemoveMatch
 import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.match.domain.usecase.RenameMatch
@@ -18,15 +14,6 @@ import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 
 @Module
 internal object MatchUseCasesModule {
-    @Provides
-    fun provideGetMatchFlow(repository: MatchRepository): GetMatchFlowUseCase {
-        return GetMatchFlow(repository)
-    }
-
-    @Provides
-    fun provideGetMatches(repository: MatchRepository): GetMatchesUseCase {
-        return GetMatches(repository)
-    }
 
     @Provides
     fun provideRemoveMatch(repository: MatchRepository): RemoveMatchUseCase {

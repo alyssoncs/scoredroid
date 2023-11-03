@@ -4,8 +4,6 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 import org.scoredroid.match.domain.usecase.ClearTransientMatchData
-import org.scoredroid.match.domain.usecase.GetMatchFlow
-import org.scoredroid.match.domain.usecase.GetMatches
 import org.scoredroid.match.domain.usecase.RemoveMatch
 import org.scoredroid.match.domain.usecase.RenameMatch
 import org.scoredroid.match.domain.usecase.SaveMatch
@@ -13,16 +11,6 @@ import org.scoredroid.match.domain.usecase.SaveMatch
 class MatchEntrypointTest {
     private val persistentMatchDataSource = FakePersistentMatchDataSource()
     private val entrypoint = MatchEntrypoint.create(persistentMatchDataSource)
-
-    @Test
-    fun `getMatchFlowUseCase has the correct instance`() {
-        assertCorrectInstance<GetMatchFlow> { getMatchFlowUseCase }
-    }
-
-    @Test
-    fun `getMatchesCase has the correct instance`() {
-        assertCorrectInstance<GetMatches> { getMatchesUseCase }
-    }
 
     @Test
     fun `removeMatchUseCase has the correct instance`() {
