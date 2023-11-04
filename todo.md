@@ -21,4 +21,3 @@
 - [x] create remove-match feature module
 - [x] create persist-match-changes feature module
 - [x] create edit-match feature module
-- [ ] make fixture return flow of entity instead of response
