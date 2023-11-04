@@ -5,7 +5,7 @@ plugins {
 dependencies {
     api(projects.core.infra.matchRepository.public)
 
-    implementation(projects.core.infra.dependencies.impl)
+    implementation(projects.core.infra.matchRepository.dataSources.impl)
 
     testImplementation(testFixtures(projects.core.infra.matchRepository.public))
 }

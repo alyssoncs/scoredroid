@@ -5,11 +5,11 @@ plugins {
 
 dependencies {
     api(projects.core.entities)
-    api(projects.core.infra.dependencies.public)
+    api(projects.core.infra.matchRepository.dataSources.public)
     api(libs.coroutines.core)
 
     testFixturesApi(projects.core.features.common.data)
     testFixturesImplementation(projects.core.features.common.utils)
-    testFixturesImplementation(projects.core.infra.dependencies.impl)
+    testFixturesImplementation(projects.core.infra.matchRepository.dataSources.impl)
     testFixturesImplementation(libs.test.junit.api)
 }

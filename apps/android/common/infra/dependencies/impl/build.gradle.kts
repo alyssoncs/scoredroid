@@ -12,7 +12,7 @@ android {
 }
 
 dependencies {
-    api(projects.core.infra.dependencies.public)
+    api(projects.core.infra.matchRepository.dataSources.public)
     api(projects.apps.android.common.infra.dependencies.database)
 
     implementation(libs.coroutines.core)
