@@ -12,8 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
-import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.usecase.GetMatchesFlowUseCase
+import org.scoredroid.usecase.RemoveMatchUseCase
 import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)

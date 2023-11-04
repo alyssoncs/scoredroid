@@ -1,4 +1,4 @@
-package org.scoredroid.match.domain.usecase
+package org.scoredroid.usecase
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat

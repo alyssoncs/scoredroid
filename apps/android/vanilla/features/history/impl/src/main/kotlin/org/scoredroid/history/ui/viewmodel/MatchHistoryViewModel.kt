@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
-import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.usecase.GetMatchesFlowUseCase
+import org.scoredroid.usecase.RemoveMatchUseCase
 
 class MatchHistoryViewModel(
     private val getMatchesFlow: GetMatchesFlowUseCase,

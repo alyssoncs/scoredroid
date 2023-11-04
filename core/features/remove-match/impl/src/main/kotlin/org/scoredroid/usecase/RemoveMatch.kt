@@ -1,4 +1,4 @@
-package org.scoredroid.match.domain.usecase
+package org.scoredroid.usecase
 
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 

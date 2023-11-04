@@ -11,9 +11,9 @@ import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
 import org.scoredroid.fragment.annotation.FragmentKey
 import org.scoredroid.history.ui.controller.MatchHistoryFragment
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
-import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
 import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
 import org.scoredroid.usecase.GetMatchesFlowUseCase
+import org.scoredroid.usecase.RemoveMatchUseCase
 import org.scoredroid.viewmodel.annotation.ViewModelKey
 
 @Module(
