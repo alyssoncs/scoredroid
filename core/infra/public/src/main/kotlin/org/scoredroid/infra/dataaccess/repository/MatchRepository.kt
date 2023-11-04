@@ -9,7 +9,6 @@ import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.orZero
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.infra.dataaccess.datasource.local.TransientMatchDataSource
-import org.scoredroid.infra.dataaccess.error.TeamOperationError
 import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
@@ -83,18 +82,6 @@ class MatchRepository(
         }
     }
 
-    suspend fun updateScoreForAllTeams(
-        matchId: Long,
-        update: (currentScore: Score) -> Score,
-    ): Result<Match> {
-        val match = getMatch(matchId)
-        return if (match != null) {
-            updateScoreForAllTeams(match, update)
-        } else {
-            Result.failure(TeamOperationError.MatchNotFound)
-        }
-    }
-
     suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
         return updateAndEmitMatch(matchId) { renameMatch(matchId, name) }
     }
@@ -143,20 +130,6 @@ class MatchRepository(
     private fun emitDeletedMatch(matchId: Long) {
         matchesFlow.update { currentMatches ->
             currentMatches.filter { match -> match.id != matchId }
-        }
-    }
-
-    private suspend fun updateScoreForAllTeams(
-        match: Match,
-        update: (currentScore: Score) -> Score,
-    ): Result<Match> {
-        return updateAndEmitMatch(match.id) {
-            val results = List(match.teams.size) { index ->
-                val currentScore = getCurrentScore(match.id, index)
-                updateScoreTo(match.id, index, update(currentScore))
-            }
-
-            results.lastOrNull { it.isSuccess } ?: Result.success(match)
         }
     }
 
