@@ -17,14 +17,14 @@ import kotlinx.coroutines.launch
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.editmatch.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.editmatch.ui.state.EditMatchUiState
-import org.scoredroid.match.domain.usecase.RenameMatchUseCase
-import org.scoredroid.teams.domain.request.AddTeamRequest
-import org.scoredroid.teams.domain.usecase.AddTeamUseCase
-import org.scoredroid.teams.domain.usecase.RenameTeamUseCase
+import org.scoredroid.usecase.AddTeamRequest
+import org.scoredroid.usecase.AddTeamUseCase
 import org.scoredroid.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.usecase.CreateMatchRequestOptions
 import org.scoredroid.usecase.CreateMatchUseCase
 import org.scoredroid.usecase.GetMatchFlowUseCase
+import org.scoredroid.usecase.RenameMatchUseCase
+import org.scoredroid.usecase.RenameTeamUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
 
 class EditMatchViewModel(

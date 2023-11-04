@@ -3,6 +3,7 @@ package org.scoredroid.di.modules
 import dagger.Module
 import dagger.Provides
 import org.scoredroid.entrypoint.CreateMatchEntrypoint
+import org.scoredroid.entrypoint.EditMatchEntrypoint
 import org.scoredroid.entrypoint.GetMatchEntrypoint
 import org.scoredroid.entrypoint.PersistMatchChangesEntrypoint
 import org.scoredroid.entrypoint.PlayMatchEntrypoint
@@ -15,6 +16,11 @@ object FeatureEntrypointsModule {
     @Provides
     fun provideCreateMatchEntrypoint(dataSource: PersistentMatchDataSource): CreateMatchEntrypoint {
         return CreateMatchEntrypoint.create(dataSource)
+    }
+
+    @Provides
+    fun provideEditMatchEntrypoint(dataSource: PersistentMatchDataSource): EditMatchEntrypoint {
+        return EditMatchEntrypoint.create(dataSource)
     }
 
     @Provides

@@ -53,12 +53,11 @@ android {
 
 dependencies {
     implementation(projects.core.features.createMatch.entrypoint)
+    implementation(projects.core.features.editMatch.entrypoint)
     implementation(projects.core.features.getMatch.entrypoint)
     implementation(projects.core.features.persistMatchChanges.entrypoint)
     implementation(projects.core.features.playMatch.entrypoint)
     implementation(projects.core.features.removeMatch.entrypoint)
-    implementation(projects.core.features.match.entrypoint)
-    implementation(projects.core.features.teams.entrypoint)
 
     implementation(projects.apps.android.vanilla.features.history.impl)
     implementation(projects.apps.android.vanilla.features.createMatch.impl)
