@@ -11,9 +11,9 @@ import org.scoredroid.play.ui.controller.PlayFragment
 import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
 import org.scoredroid.play.ui.navigation.PlayNavigationTargetProviderImpl
 import org.scoredroid.play.ui.viewmodel.PlayViewModel
-import org.scoredroid.score.domain.usecase.DecrementScoreUseCase
-import org.scoredroid.score.domain.usecase.IncrementScoreUseCase
+import org.scoredroid.usecase.DecrementScoreUseCase
 import org.scoredroid.usecase.GetMatchFlowUseCase
+import org.scoredroid.usecase.IncrementScoreUseCase
 import org.scoredroid.viewmodel.SavedStateHandleViewModelProvider
 import org.scoredroid.viewmodel.annotation.ViewModelKey
 

@@ -11,9 +11,9 @@ import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 import org.scoredroid.play.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.play.ui.state.PlayUiState
-import org.scoredroid.score.domain.usecase.DecrementScoreUseCase
-import org.scoredroid.score.domain.usecase.IncrementScoreUseCase
+import org.scoredroid.usecase.DecrementScoreUseCase
 import org.scoredroid.usecase.GetMatchFlowUseCase
+import org.scoredroid.usecase.IncrementScoreUseCase
 
 class PlayViewModel(
     private val getMatchFlow: GetMatchFlowUseCase,

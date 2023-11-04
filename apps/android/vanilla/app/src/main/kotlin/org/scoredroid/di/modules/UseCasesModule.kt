@@ -6,7 +6,6 @@ import dagger.Module
     includes = [
         MatchUseCasesModule::class,
         TeamsUseCasesModule::class,
-        ScoreUseCasesModule::class,
     ],
 )
 object UseCasesModule

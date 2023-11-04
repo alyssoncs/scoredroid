@@ -17,7 +17,7 @@
 - [ ] create a common match not found component
 - [x] create create-match feature module
 - [x] create get-match feature module
-- [ ] create play-match feature module
+- [x] create play-match feature module
 - [ ] create remove-match feature module
 - [ ] create persist-match-changes feature module
 - [ ] create edit-match feature module
