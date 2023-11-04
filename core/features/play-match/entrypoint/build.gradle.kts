@@ -9,5 +9,5 @@ dependencies {
     implementation(projects.core.features.playMatch.impl)
     implementation(projects.core.infra.entrypoint)
 
-    testImplementation(testFixtures(projects.core.infra.public))
+    testImplementation(testFixtures(projects.core.infra.matchRepository.public))
 }

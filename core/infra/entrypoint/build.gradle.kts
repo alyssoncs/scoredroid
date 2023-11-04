@@ -3,7 +3,9 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.infra.public)
+    api(projects.core.infra.matchRepository.public)
+
     implementation(projects.core.infra.dependencies.impl)
-    testImplementation(testFixtures(projects.core.infra.public))
+
+    testImplementation(testFixtures(projects.core.infra.matchRepository.public))
 }

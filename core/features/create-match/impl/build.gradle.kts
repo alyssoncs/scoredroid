@@ -5,8 +5,8 @@ plugins {
 dependencies {
     api(projects.core.features.createMatch.public)
 
-    implementation(projects.core.infra.public)
+    implementation(projects.core.infra.matchRepository.public)
     implementation(projects.core.features.common.utils)
 
-    testImplementation(testFixtures(projects.core.infra.public))
+    testImplementation(testFixtures(projects.core.infra.matchRepository.public))
 }
