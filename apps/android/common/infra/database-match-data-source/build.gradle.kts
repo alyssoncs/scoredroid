@@ -13,7 +13,7 @@ android {
 
 dependencies {
     api(projects.core.infra.matchRepository.dataSources.public)
-    api(projects.apps.android.common.infra.dependencies.database)
+    api(projects.apps.android.common.infra.matchDatabase)
 
     implementation(libs.coroutines.core)
     implementation(libs.bundles.room)

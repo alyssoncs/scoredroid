@@ -64,7 +64,7 @@ dependencies {
     implementation(projects.apps.android.vanilla.features.editMatch.impl)
     implementation(projects.apps.android.vanilla.features.play.impl)
 
-    implementation(projects.apps.android.common.infra.dependencies.impl)
+    implementation(projects.apps.android.common.infra.databaseMatchDataSource)
     implementation(projects.apps.android.common.utils.fragments.fragmentFactory)
     implementation(projects.apps.android.common.utils.fragments.transactions)
     implementation(projects.apps.android.common.utils.viewmodels.vmFactory)

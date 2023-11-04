@@ -19,8 +19,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "scoredroid"
-include(":apps:android:common:infra:dependencies:database")
-include(":apps:android:common:infra:dependencies:impl")
+include(":apps:android:common:infra:database-match-data-source")
+include(":apps:android:common:infra:match-database")
 include(":apps:android:common:utils:fragments:compose")
 include(":apps:android:common:utils:fragments:factory-annotation")
 include(":apps:android:common:utils:fragments:fragment-factory")
