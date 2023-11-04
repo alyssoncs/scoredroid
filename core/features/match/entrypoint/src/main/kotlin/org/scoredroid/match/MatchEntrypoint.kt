@@ -3,9 +3,7 @@ package org.scoredroid.match
 import org.scoredroid.infra.dataaccess.InfraEntrypoint
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.match.di.DaggerMatchComponent
-import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.match.domain.usecase.RenameMatchUseCase
-import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 
 interface MatchEntrypoint {
     companion object {
@@ -16,6 +14,4 @@ interface MatchEntrypoint {
     }
 
     val renameMatchUseCase: RenameMatchUseCase
-    val saveMatchUseCase: SaveMatchUseCase
-    val clearTransientMatchDataUseCase: ClearTransientMatchDataUseCase
 }

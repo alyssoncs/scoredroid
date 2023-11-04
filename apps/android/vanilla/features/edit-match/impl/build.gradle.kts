@@ -11,6 +11,7 @@ dependencies {
 
     implementation(projects.core.features.createMatch.public)
     implementation(projects.core.features.getMatch.public)
+    implementation(projects.core.features.persistMatchChanges.public)
     implementation(projects.core.features.match.public)
     implementation(projects.core.features.teams.public)
     implementation(projects.apps.android.vanilla.common.ui.components)

@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.scoredroid.data.response.MatchResponse
-import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 import org.scoredroid.play.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.play.ui.state.PlayUiState
 import org.scoredroid.usecase.DecrementScoreUseCase
 import org.scoredroid.usecase.GetMatchFlowUseCase
 import org.scoredroid.usecase.IncrementScoreUseCase
+import org.scoredroid.usecase.SaveMatchUseCase
 
 class PlayViewModel(
     private val getMatchFlow: GetMatchFlowUseCase,

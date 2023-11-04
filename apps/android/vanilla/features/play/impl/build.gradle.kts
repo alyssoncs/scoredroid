@@ -10,6 +10,6 @@ dependencies {
     api(projects.apps.android.vanilla.features.play.public)
 
     implementation(projects.core.features.getMatch.public)
+    implementation(projects.core.features.persistMatchChanges.public)
     implementation(projects.core.features.playMatch.public)
-    implementation(projects.core.features.match.public)
 }

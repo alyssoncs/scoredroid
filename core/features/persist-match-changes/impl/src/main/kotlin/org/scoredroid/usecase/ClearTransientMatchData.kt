@@ -1,11 +1,11 @@
-package org.scoredroid.match.domain.usecase
+package org.scoredroid.usecase
 
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 
-class SaveMatch(
+class ClearTransientMatchData(
     private val matchRepository: MatchRepository,
-) : SaveMatchUseCase {
+) : ClearTransientMatchDataUseCase {
     override suspend fun invoke(matchId: Long): Result<Unit> {
-        return matchRepository.persist(matchId)
+        return matchRepository.clearTransientData(matchId)
     }
 }

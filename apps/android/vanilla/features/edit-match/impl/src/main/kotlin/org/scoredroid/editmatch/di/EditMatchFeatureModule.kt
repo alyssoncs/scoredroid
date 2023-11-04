@@ -11,13 +11,13 @@ import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
 import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProviderImpl
 import org.scoredroid.editmatch.ui.viewmodel.EditMatchViewModel
 import org.scoredroid.fragment.annotation.FragmentKey
-import org.scoredroid.match.domain.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.match.domain.usecase.RenameMatchUseCase
-import org.scoredroid.match.domain.usecase.SaveMatchUseCase
 import org.scoredroid.teams.domain.usecase.AddTeamUseCase
 import org.scoredroid.teams.domain.usecase.RenameTeamUseCase
+import org.scoredroid.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.usecase.CreateMatchUseCase
 import org.scoredroid.usecase.GetMatchFlowUseCase
+import org.scoredroid.usecase.SaveMatchUseCase
 import org.scoredroid.viewmodel.SavedStateHandleViewModelProvider
 import org.scoredroid.viewmodel.annotation.ViewModelKey
 

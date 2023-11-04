@@ -54,6 +54,7 @@ android {
 dependencies {
     implementation(projects.core.features.createMatch.entrypoint)
     implementation(projects.core.features.getMatch.entrypoint)
+    implementation(projects.core.features.persistMatchChanges.entrypoint)
     implementation(projects.core.features.playMatch.entrypoint)
     implementation(projects.core.features.removeMatch.entrypoint)
     implementation(projects.core.features.match.entrypoint)
