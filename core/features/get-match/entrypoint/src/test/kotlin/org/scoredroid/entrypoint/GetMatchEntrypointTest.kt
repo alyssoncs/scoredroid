@@ -4,7 +4,7 @@ import com.google.common.truth.Truth
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 import org.scoredroid.usecase.GetMatchFlow
-import org.scoredroid.usecase.GetMatches
+import org.scoredroid.usecase.GetMatchesFlow
 
 class GetMatchEntrypointTest {
     private val persistentMatchDataSource = FakePersistentMatchDataSource()
@@ -17,7 +17,7 @@ class GetMatchEntrypointTest {
 
     @Test
     fun `getMatchesUseCase has the correct instance`() {
-        assertCorrectInstance<GetMatches> { getMatchesUseCase }
+        assertCorrectInstance<GetMatchesFlow> { getMatchesFlowUseCase }
     }
 
     private inline fun <reified T>assertCorrectInstance(

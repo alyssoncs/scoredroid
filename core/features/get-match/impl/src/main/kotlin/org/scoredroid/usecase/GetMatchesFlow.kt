@@ -7,7 +7,7 @@ import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.utils.mappers.toMatchResponse
 
-class GetMatches(private val repository: MatchRepository) : GetMatchesUseCase {
+class GetMatchesFlow(private val repository: MatchRepository) : GetMatchesFlowUseCase {
     override suspend fun invoke(): Flow<List<MatchResponse>> {
         return repository.getMatchesFlow()
             .map {

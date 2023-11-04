@@ -15,7 +15,7 @@ import org.scoredroid.infra.test.fixtures.dataaccess.repository.MatchRepositoryF
 class GetMatchesTest {
 
     private val fixture = MatchRepositoryFixtureFactory.create()
-    private val getMatches = GetMatches(fixture.repository)
+    private val getMatches = GetMatchesFlow(fixture.repository)
 
     @Nested
     inner class NoMatchExists {
@@ -136,13 +136,13 @@ class GetMatchesTest {
         @Nested
         inner class ColdStart {
 
-            private lateinit var getMatchesWithColdStart: GetMatches
+            private lateinit var getMatchesWithColdStart: GetMatchesFlow
 
             @BeforeEach
             fun setUp() = runTest {
                 fixture.createMatch(firstMatchRequest)
                 fixture.createMatch(secondMatchRequest)
-                getMatchesWithColdStart = GetMatches(fixture.coldStart().repository)
+                getMatchesWithColdStart = GetMatchesFlow(fixture.coldStart().repository)
             }
 
             @Test

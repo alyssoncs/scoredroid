@@ -4,7 +4,7 @@ import org.scoredroid.entrypoint.di.DaggerGetMatchComponent
 import org.scoredroid.infra.dataaccess.InfraEntrypoint
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.usecase.GetMatchFlowUseCase
-import org.scoredroid.usecase.GetMatchesUseCase
+import org.scoredroid.usecase.GetMatchesFlowUseCase
 
 interface GetMatchEntrypoint {
     companion object {
@@ -15,5 +15,5 @@ interface GetMatchEntrypoint {
     }
 
     val getMatchFlowUseCase: GetMatchFlowUseCase
-    val getMatchesUseCase: GetMatchesUseCase
+    val getMatchesFlowUseCase: GetMatchesFlowUseCase
 }

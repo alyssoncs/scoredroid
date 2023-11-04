@@ -10,15 +10,15 @@ import kotlinx.coroutines.launch
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
-import org.scoredroid.usecase.GetMatchesUseCase
+import org.scoredroid.usecase.GetMatchesFlowUseCase
 
 class MatchHistoryViewModel(
-    private val getMatches: GetMatchesUseCase,
+    private val getMatchesFlow: GetMatchesFlowUseCase,
     private val removeMatch: RemoveMatchUseCase,
 ) : ViewModel() {
 
     val uiModel: StateFlow<MatchHistoryUiModel> = flow {
-        getMatches().collect {
+        getMatchesFlow().collect {
             emit(MatchHistoryUiModel.Content(it.map(::toUiModel)))
         }
     }.stateIn(

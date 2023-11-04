@@ -5,8 +5,8 @@ import dagger.Provides
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.usecase.GetMatchFlow
 import org.scoredroid.usecase.GetMatchFlowUseCase
-import org.scoredroid.usecase.GetMatches
-import org.scoredroid.usecase.GetMatchesUseCase
+import org.scoredroid.usecase.GetMatchesFlow
+import org.scoredroid.usecase.GetMatchesFlowUseCase
 
 @Module
 internal object GetMatchUseCasesModule {
@@ -16,7 +16,7 @@ internal object GetMatchUseCasesModule {
     }
 
     @Provides
-    fun provideGetMatches(repository: MatchRepository): GetMatchesUseCase {
-        return GetMatches(repository)
+    fun provideGetMatchesFlow(repository: MatchRepository): GetMatchesFlowUseCase {
+        return GetMatchesFlow(repository)
     }
 }

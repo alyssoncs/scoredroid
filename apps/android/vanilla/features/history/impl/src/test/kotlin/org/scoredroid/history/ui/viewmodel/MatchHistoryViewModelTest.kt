@@ -13,7 +13,7 @@ import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.match.domain.usecase.RemoveMatchUseCase
-import org.scoredroid.usecase.GetMatchesUseCase
+import org.scoredroid.usecase.GetMatchesFlowUseCase
 import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)
@@ -37,10 +37,10 @@ class MatchHistoryViewModelTest {
         ),
     )
 
-    private val getMatchesUseCaseStub = GetMatchesUseCaseStub(matchResponse)
+    private val getMatchesFlowUseCaseStub = GetMatchesFlowUseCaseStub(matchResponse)
     private val removeMatchUseCaseSpy = RemoveMatchUseCaseSpy()
 
-    private val matchHistoryViewModel = MatchHistoryViewModel(getMatchesUseCaseStub, removeMatchUseCaseSpy)
+    private val matchHistoryViewModel = MatchHistoryViewModel(getMatchesFlowUseCaseStub, removeMatchUseCaseSpy)
 
     @Test
     fun `should fetch matches from use case`() = runTest {
@@ -60,7 +60,7 @@ class MatchHistoryViewModelTest {
             assertThat(awaitItem()).isInstanceOf(MatchHistoryUiModel.Loading::class.java)
             assertThat(awaitItem()).isInstanceOf(MatchHistoryUiModel.Content::class.java)
 
-            getMatchesUseCaseStub.emitNewMatch(
+            getMatchesFlowUseCaseStub.emitNewMatch(
                 MatchResponse(
                     id = 5L,
                     name = "match name",
@@ -80,7 +80,7 @@ class MatchHistoryViewModelTest {
         assertThat(removeMatchUseCaseSpy.removedMatchId).isEqualTo(0L)
     }
 
-    class GetMatchesUseCaseStub(initialValue: List<MatchResponse>) : GetMatchesUseCase {
+    class GetMatchesFlowUseCaseStub(initialValue: List<MatchResponse>) : GetMatchesFlowUseCase {
         private val responseFlow: MutableStateFlow<List<MatchResponse>> = MutableStateFlow(initialValue)
 
         override suspend fun invoke(): Flow<List<MatchResponse>> {
