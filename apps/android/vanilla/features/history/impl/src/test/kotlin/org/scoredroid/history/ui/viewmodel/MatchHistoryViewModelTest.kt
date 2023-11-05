@@ -8,8 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
-import org.scoredroid.usecase.RemoveMatchUseCase
 import org.scoredroid.usecase.doubles.GetMatchesFlowStub
+import org.scoredroid.usecase.doubles.RemoveMatchUseCaseSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)
@@ -74,14 +74,5 @@ class MatchHistoryViewModelTest {
         matchHistoryViewModel.removeMatch(0L)
 
         assertThat(removeMatchUseCaseSpy.removedMatchId).isEqualTo(0L)
-    }
-
-    class RemoveMatchUseCaseSpy : RemoveMatchUseCase {
-        var removedMatchId: Long? = null
-
-        override suspend fun invoke(matchId: Long): Result<Unit> {
-            removedMatchId = matchId
-            return Result.success(Unit)
-        }
     }
 }
