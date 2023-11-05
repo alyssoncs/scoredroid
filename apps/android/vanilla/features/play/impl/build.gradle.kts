@@ -14,4 +14,5 @@ dependencies {
     implementation(projects.core.features.playMatch.public)
 
     testImplementation(testFixtures(projects.core.features.getMatch.public))
+    testImplementation(testFixtures(projects.core.features.persistMatchChanges.public))
 }

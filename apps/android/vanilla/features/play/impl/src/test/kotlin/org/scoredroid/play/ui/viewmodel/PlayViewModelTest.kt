@@ -14,8 +14,8 @@ import org.scoredroid.play.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.play.ui.state.PlayUiState
 import org.scoredroid.usecase.DecrementScoreUseCase
 import org.scoredroid.usecase.IncrementScoreUseCase
-import org.scoredroid.usecase.SaveMatchUseCase
 import org.scoredroid.usecase.doubles.GetMatchFlowStub
+import org.scoredroid.usecase.doubles.SaveMatchSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
 import org.scoredroid.viewmodel.callOnCleared
 
@@ -127,7 +127,7 @@ class PlayViewModelTest {
         fun `onCleared should call SaveMatch`() = runTest {
             viewModel.callOnCleared()
 
-            assertThat(saveMatchSpy.matchId).isEqualTo(1)
+            assertThat(saveMatchSpy.matchWithId(1).wasSaved()).isTrue()
         }
     }
 
@@ -188,16 +188,6 @@ class PlayViewModelTest {
             } else {
                 Result.failure(IllegalStateException("Spy not configured. Call setResponse"))
             }
-        }
-    }
-
-    class SaveMatchSpy : SaveMatchUseCase {
-        var matchId: Long? = null
-            private set
-
-        override suspend fun invoke(matchId: Long): Result<Unit> {
-            this.matchId = matchId
-            return Result.success(Unit)
         }
     }
 }
