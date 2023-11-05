@@ -3,8 +3,6 @@ package org.scoredroid.play.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -15,9 +13,9 @@ import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.play.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.play.ui.state.PlayUiState
 import org.scoredroid.usecase.DecrementScoreUseCase
-import org.scoredroid.usecase.GetMatchFlowUseCase
 import org.scoredroid.usecase.IncrementScoreUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
+import org.scoredroid.usecase.doubles.GetMatchFlowStub
 import org.scoredroid.viewmodel.CoroutineTestExtension
 import org.scoredroid.viewmodel.callOnCleared
 
@@ -66,6 +64,7 @@ class PlayViewModelTest {
         @Test
         fun `should show error`() = runTest {
             viewModel.uiState.test {
+                assertThat(awaitItem()).isEqualTo(PlayUiState.Loading)
                 assertThat(awaitItem()).isEqualTo(PlayUiState.Error)
             }
         }
@@ -93,6 +92,7 @@ class PlayViewModelTest {
         @Test
         fun `should show content`() = runTest {
             viewModel.uiState.test {
+                assertThat(awaitItem()).isEqualTo(PlayUiState.Loading)
                 val content = awaitItem() as PlayUiState.Content
                 assertThat(content.matchName).isEqualTo(matchResponse.name)
                 assertThat(content.teams).hasSize(matchResponse.teams.size)
@@ -128,14 +128,6 @@ class PlayViewModelTest {
             viewModel.callOnCleared()
 
             assertThat(saveMatchSpy.matchId).isEqualTo(1)
-        }
-    }
-
-    class GetMatchFlowStub : GetMatchFlowUseCase {
-        var response: MatchResponse? = null
-
-        override suspend fun invoke(matchId: Long): Flow<MatchResponse?> {
-            return flowOf(response)
         }
     }
 

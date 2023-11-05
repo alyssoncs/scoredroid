@@ -4,8 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -17,10 +15,10 @@ import org.scoredroid.editmatch.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.usecase.AddTeamRequest
 import org.scoredroid.usecase.ClearTransientMatchDataUseCase
-import org.scoredroid.usecase.GetMatchFlowUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
 import org.scoredroid.usecase.doubles.AddTeamSpy
 import org.scoredroid.usecase.doubles.CreateMatchStub
+import org.scoredroid.usecase.doubles.GetMatchFlowStub
 import org.scoredroid.usecase.doubles.RenameMatchSpy
 import org.scoredroid.usecase.doubles.RenameTeamSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
@@ -43,7 +41,7 @@ class EditMatchViewModelTest {
     }
 
     private val createMatchStub = CreateMatchStub()
-    private val getMatchFlow = GetMatchFlowUseCaseStub()
+    private val getMatchFlow = GetMatchFlowStub()
     private val renameMatchSpy = RenameMatchSpy()
     private val renameTeamSpy = RenameTeamSpy()
     private val addTeamSpy = AddTeamSpy()
@@ -207,15 +205,6 @@ class EditMatchViewModelTest {
 
         private fun createViewModel() {
             viewModel.uiState
-        }
-    }
-
-    class GetMatchFlowUseCaseStub : GetMatchFlowUseCase {
-        var response: MatchResponse? = null
-
-        override suspend fun invoke(matchId: Long): Flow<MatchResponse?> {
-            delay(500L)
-            return flowOf(response)
         }
     }
 
