@@ -18,4 +18,5 @@ dependencies {
     testImplementation(testFixtures(projects.core.features.createMatch.public))
     testImplementation(testFixtures(projects.core.features.editMatch.public))
     testImplementation(testFixtures(projects.core.features.getMatch.public))
+    testImplementation(testFixtures(projects.core.features.persistMatchChanges.public))
 }

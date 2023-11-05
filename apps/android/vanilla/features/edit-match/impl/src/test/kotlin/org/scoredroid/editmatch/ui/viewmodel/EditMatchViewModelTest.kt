@@ -14,9 +14,9 @@ import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.editmatch.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.usecase.AddTeamRequest
-import org.scoredroid.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
 import org.scoredroid.usecase.doubles.AddTeamSpy
+import org.scoredroid.usecase.doubles.ClearTransientMatchDataSpy
 import org.scoredroid.usecase.doubles.CreateMatchStub
 import org.scoredroid.usecase.doubles.GetMatchFlowStub
 import org.scoredroid.usecase.doubles.RenameMatchSpy
@@ -35,7 +35,7 @@ class EditMatchViewModelTest {
             renameTeamSpy,
             addTeamSpy,
             saveMatchSpy,
-            clearTransientDataSpy,
+            clearTransientMatchDataSpy,
             savedStateHandle,
         )
     }
@@ -46,7 +46,7 @@ class EditMatchViewModelTest {
     private val renameTeamSpy = RenameTeamSpy()
     private val addTeamSpy = AddTeamSpy()
     private val saveMatchSpy = SaveMatchSpy()
-    private val clearTransientDataSpy = ClearTransientDataSpy()
+    private val clearTransientMatchDataSpy = ClearTransientMatchDataSpy()
     private lateinit var savedStateHandle: SavedStateHandle
 
     @Nested
@@ -200,7 +200,7 @@ class EditMatchViewModelTest {
 
             viewModel.callOnCleared()
 
-            assertThat(clearTransientDataSpy.matchWithId(matchId).wasCleared()).isTrue()
+            assertThat(clearTransientMatchDataSpy.matchWithId(matchId).wasCleared()).isTrue()
         }
 
         private fun createViewModel() {
@@ -225,26 +225,6 @@ class EditMatchViewModelTest {
 
         interface Assertions {
             fun wasSaved(): Boolean
-        }
-    }
-
-    class ClearTransientDataSpy : ClearTransientMatchDataUseCase {
-
-        private val invocations = hashSetOf<Long>()
-
-        override suspend fun invoke(matchId: Long): Result<Unit> {
-            invocations.add(matchId)
-            return Result.success(Unit)
-        }
-
-        fun matchWithId(matchId: Long) = object : Assertions {
-            override fun wasCleared(): Boolean {
-                return invocations.contains(matchId)
-            }
-        }
-
-        interface Assertions {
-            fun wasCleared(): Boolean
         }
     }
 }
