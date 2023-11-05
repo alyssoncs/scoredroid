@@ -12,8 +12,8 @@ import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.play.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.play.ui.state.PlayUiState
-import org.scoredroid.usecase.DecrementScoreUseCase
 import org.scoredroid.usecase.IncrementScoreUseCase
+import org.scoredroid.usecase.doubles.DecrementScoreSpy
 import org.scoredroid.usecase.doubles.GetMatchFlowStub
 import org.scoredroid.usecase.doubles.SaveMatchSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
@@ -152,36 +152,6 @@ class PlayViewModelTest {
             this.matchId = matchId
             this.teamAt = teamAt
             this.increment = increment
-
-            return if (response != null) {
-                Result.success(response!!)
-            } else {
-                Result.failure(IllegalStateException("Spy not configured. Call setResponse"))
-            }
-        }
-    }
-
-    class DecrementScoreSpy : DecrementScoreUseCase {
-        var matchId: Long? = null
-            private set
-        var teamAt: Int? = null
-            private set
-        var decrement: Int? = null
-            private set
-        private var response: MatchResponse? = null
-
-        fun setResponse(response: MatchResponse) {
-            this.response = response
-        }
-
-        override suspend fun invoke(
-            matchId: Long,
-            teamAt: Int,
-            decrement: Int,
-        ): Result<MatchResponse> {
-            this.matchId = matchId
-            this.teamAt = teamAt
-            this.decrement = decrement
 
             return if (response != null) {
                 Result.success(response!!)
