@@ -5,15 +5,13 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.scoredroid.data.response.MatchResponse
-import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.usecase.CreateMatchRequestOptions
-import org.scoredroid.usecase.CreateMatchUseCase
+import org.scoredroid.usecase.doubles.CreateMatchSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)
 class CreateMatchViewModelTest {
-    private val createMatch = CreateMatchUseCaseSpy()
+    private val createMatch = CreateMatchSpy()
     private val viewModel by lazy {
         CreateMatchViewModel(createMatch)
     }
@@ -93,25 +91,6 @@ class CreateMatchViewModelTest {
 
             assertThat(awaitItem().created).isFalse()
             assertThat(awaitItem().created).isTrue()
-        }
-    }
-
-    class CreateMatchUseCaseSpy : CreateMatchUseCase {
-        var request: CreateMatchRequestOptions? = null
-            private set
-
-        private val response: MatchResponse = MatchResponse(
-            id = 0,
-            name = "",
-            teams = listOf(
-                TeamResponse(name = "first team", score = 0),
-                TeamResponse(name = "second team", score = 0),
-            ),
-        )
-
-        override suspend fun invoke(createMatchOptions: CreateMatchRequestOptions): MatchResponse {
-            request = createMatchOptions
-            return response
         }
     }
 }

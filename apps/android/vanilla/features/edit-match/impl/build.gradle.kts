@@ -14,4 +14,6 @@ dependencies {
     implementation(projects.core.features.getMatch.public)
     implementation(projects.core.features.persistMatchChanges.public)
     implementation(projects.apps.android.vanilla.common.ui.components)
+
+    testImplementation(testFixtures(projects.core.features.createMatch.public))
 }

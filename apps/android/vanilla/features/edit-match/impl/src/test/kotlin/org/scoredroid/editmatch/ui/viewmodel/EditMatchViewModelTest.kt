@@ -18,12 +18,11 @@ import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.usecase.AddTeamRequest
 import org.scoredroid.usecase.AddTeamUseCase
 import org.scoredroid.usecase.ClearTransientMatchDataUseCase
-import org.scoredroid.usecase.CreateMatchRequestOptions
-import org.scoredroid.usecase.CreateMatchUseCase
 import org.scoredroid.usecase.GetMatchFlowUseCase
 import org.scoredroid.usecase.RenameMatchUseCase
 import org.scoredroid.usecase.RenameTeamUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
+import org.scoredroid.usecase.doubles.CreateMatchStub
 import org.scoredroid.viewmodel.CoroutineTestExtension
 import org.scoredroid.viewmodel.callOnCleared
 import kotlin.random.Random
@@ -32,7 +31,7 @@ import kotlin.random.Random
 class EditMatchViewModelTest {
     private val viewModel: EditMatchViewModel by lazy {
         EditMatchViewModel(
-            createMatch,
+            createMatchStub,
             getMatchFlow,
             renameMatchSpy,
             renameTeamSpy,
@@ -43,7 +42,7 @@ class EditMatchViewModelTest {
         )
     }
 
-    private val createMatch = CreateMatchUseCaseStub()
+    private val createMatchStub = CreateMatchStub()
     private val getMatchFlow = GetMatchFlowUseCaseStub()
     private val renameMatchSpy = RenameMatchSpy()
     private val renameTeamSpy = RenameTeamSpy()
@@ -67,7 +66,7 @@ class EditMatchViewModelTest {
                 name = "a brand new match",
                 teams = listOf(TeamResponse(name = "a brand new team", score = 2)),
             )
-            createMatch.response = matchResponse
+            createMatchStub.response = matchResponse
             getMatchFlow.response = matchResponse
 
             viewModel.uiState.test {
@@ -83,7 +82,7 @@ class EditMatchViewModelTest {
 
         @Test
         fun `should save the match id in the saved state handle`() = runTest {
-            createMatch.response = MatchResponse(id = 5, name = "", teams = emptyList())
+            createMatchStub.response = MatchResponse(id = 5, name = "", teams = emptyList())
             assertThat(savedStateHandle.contains(MATCH_ID_NAV_ARG)).isFalse()
 
             viewModel.uiState.test {
@@ -140,8 +139,8 @@ class EditMatchViewModelTest {
 
         @BeforeEach
         fun setUp() {
-            val matchResponse = createMatch.response.copy(id = matchId)
-            createMatch.response = matchResponse
+            val matchResponse = createMatchStub.response.copy(id = matchId)
+            createMatchStub.response = matchResponse
             getMatchFlow.response = matchResponse
 
             val shouldCreateNewMatch = Random.nextBoolean()
@@ -208,22 +207,6 @@ class EditMatchViewModelTest {
 
         private fun createViewModel() {
             viewModel.uiState
-        }
-    }
-
-    class CreateMatchUseCaseStub : CreateMatchUseCase {
-        var response: MatchResponse = MatchResponse(
-            id = 0,
-            name = "",
-            teams = listOf(
-                TeamResponse(name = "first team", score = 0),
-                TeamResponse(name = "second team", score = 0),
-            ),
-        )
-
-        override suspend fun invoke(createMatchOptions: CreateMatchRequestOptions): MatchResponse {
-            delay(500L)
-            return response
         }
     }
 
