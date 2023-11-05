@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(projects.core.entities)
-    api(projects.core.features.common.data)
+    api(projects.core.features.common.response)
 }

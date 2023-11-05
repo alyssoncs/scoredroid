@@ -8,7 +8,7 @@ dependencies {
     api(projects.core.infra.matchRepository.dataSources.public)
     api(libs.coroutines.core)
 
-    testFixturesApi(projects.core.features.common.data)
+    testFixturesApi(projects.core.features.common.response)
     testFixturesImplementation(projects.core.features.common.utils)
     testFixturesImplementation(projects.core.infra.matchRepository.dataSources.impl)
     testFixturesImplementation(libs.test.junit.api)
