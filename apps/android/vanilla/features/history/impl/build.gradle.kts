@@ -17,4 +17,6 @@ dependencies {
     implementation(projects.apps.android.common.utils.fragments.transactions)
 
     implementation(libs.immutable.collections)
+
+    testImplementation(testFixtures(projects.core.features.getMatch.public))
 }
