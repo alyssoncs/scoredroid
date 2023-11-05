@@ -18,11 +18,11 @@ import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.usecase.AddTeamRequest
 import org.scoredroid.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.usecase.GetMatchFlowUseCase
-import org.scoredroid.usecase.RenameMatchUseCase
 import org.scoredroid.usecase.RenameTeamUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
 import org.scoredroid.usecase.doubles.AddTeamSpy
 import org.scoredroid.usecase.doubles.CreateMatchStub
+import org.scoredroid.usecase.doubles.RenameMatchSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
 import org.scoredroid.viewmodel.callOnCleared
 import kotlin.random.Random
@@ -216,26 +216,6 @@ class EditMatchViewModelTest {
         override suspend fun invoke(matchId: Long): Flow<MatchResponse?> {
             delay(500L)
             return flowOf(response)
-        }
-    }
-
-    class RenameMatchSpy : RenameMatchUseCase {
-
-        private val invocations = mutableMapOf<Long, String>()
-
-        override suspend fun invoke(matchId: Long, name: String): Result<MatchResponse> {
-            invocations[matchId] = name
-            return Result.success(MatchResponse(id = 0, name = "", teams = emptyList()))
-        }
-
-        fun matchWithId(matchId: Long) = object : Assertions {
-            override fun wasRenamedTo(name: String): Boolean {
-                return invocations[matchId] == name
-            }
-        }
-
-        interface Assertions {
-            fun wasRenamedTo(name: String): Boolean
         }
     }
 
