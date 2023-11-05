@@ -21,3 +21,4 @@
 - [x] create remove-match feature module
 - [x] create persist-match-changes feature module
 - [x] create edit-match feature module
+- [ ] move test doubles to fixtures
