@@ -1,18 +1,17 @@
 package org.scoredroid.infra.dataaccess.datasource.local
 
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.types.shouldBeSameInstanceAs
+import io.kotest.matchers.types.shouldNotBeSameInstanceAs
 import org.junit.jupiter.api.Test
 
 class InMemoryMatchDataSourceTest {
     @Test
     fun `newInstance should create a new instance`() {
-        assertThat(InMemoryMatchDataSource.newInstance())
-            .isNotSameInstanceAs(InMemoryMatchDataSource.newInstance())
+        InMemoryMatchDataSource.newInstance() shouldNotBeSameInstanceAs InMemoryMatchDataSource.newInstance()
     }
 
     @Test
     fun `instance should always get the same instance`() {
-        assertThat(InMemoryMatchDataSource.instance)
-            .isSameInstanceAs(InMemoryMatchDataSource.instance)
+        InMemoryMatchDataSource.instance shouldBeSameInstanceAs InMemoryMatchDataSource.instance
     }
 }
