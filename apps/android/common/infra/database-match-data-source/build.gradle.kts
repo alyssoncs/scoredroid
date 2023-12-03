@@ -19,7 +19,7 @@ dependencies {
     implementation(libs.bundles.room)
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.test.coroutines)
-    androidTestImplementation(libs.test.truth)
+    androidTestImplementation(libs.test.kotest.assertions)
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.espresso.core)
 }

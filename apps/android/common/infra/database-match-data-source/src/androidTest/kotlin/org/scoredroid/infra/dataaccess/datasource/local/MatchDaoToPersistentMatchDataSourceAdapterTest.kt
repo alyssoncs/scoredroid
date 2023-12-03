@@ -4,7 +4,14 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.string.shouldNotBeEmpty
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -48,7 +55,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     fun getMatch_matchNotFound() = runTest {
         val match = dataSourceAdapter.getMatch(1)
 
-        assertThat(match).isNull()
+        match.shouldBeNull()
     }
 
     @Test
@@ -58,15 +65,15 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
         val match = dataSourceAdapter.getMatch(1)
 
-        assertThat(match).isNotNull()
-        assertMatchWasMappedCorrectly(match!!, request)
+        match.shouldNotBeNull()
+        assertMatchWasMappedCorrectly(match, request)
     }
 
     @Test
     fun getAllMatches_noMatches() = runTest {
         val matches = dataSourceAdapter.getAllMatches()
 
-        assertThat(matches).isEmpty()
+        matches.shouldBeEmpty()
     }
 
     @Test
@@ -82,9 +89,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
         val matches = dataSourceAdapter.getAllMatches()
 
-        assertThat(matches).hasSize(2)
-        assertThat(matches.find { it.name == "match 01" }).isNotNull()
-        assertThat(matches.find { it.name == "match 02" }).isNotNull()
+        matches shouldHaveSize 2
+        matches.find { it.name == "match 01" }.shouldNotBeNull()
+        matches.find { it.name == "match 02" }.shouldNotBeNull()
     }
 
     @Test
@@ -99,8 +106,8 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
         val result = dataSourceAdapter.save(match)
 
-        assertThat(result.isFailure).isTrue()
-        assertThat(result.exceptionOrNull()!!.message).isNotEmpty()
+        result.isFailure.shouldBeTrue()
+        result.exceptionOrNull()!!.message.shouldNotBeEmpty()
     }
 
     @Test
@@ -110,7 +117,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val result = dataSourceAdapter.save(oldMatch.copy())
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
-            assertThat(newMatch).isEqualTo(oldMatch)
+            newMatch shouldBe oldMatch
         }
     }
 
@@ -124,7 +131,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val result = dataSourceAdapter.save(oldMatch.copy(name = "new match name"))
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
-            assertThat(newMatch.name).isNotEqualTo(oldMatch.name)
+            newMatch.name shouldNotBe oldMatch.name
         }
     }
 
@@ -144,9 +151,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
-            assertThat(newMatch.teams).hasSize(oldMatch.teams.size)
-            assertThat(newMatch.teams[0].name).isEqualTo("team 0")
-            assertThat(newMatch.teams[1].name).isEqualTo("team 1")
+            newMatch.teams shouldHaveSize oldMatch.teams.size
+            newMatch.teams[0].name shouldBe "team 0"
+            newMatch.teams[1].name shouldBe "team 1"
         }
     }
 
@@ -166,9 +173,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
-            assertThat(newMatch.teams).hasSize(oldMatch.teams.size)
-            assertThat(newMatch.teams[0].score).isEqualTo(1.toScore())
-            assertThat(newMatch.teams[1].score).isEqualTo(2.toScore())
+            newMatch.teams shouldHaveSize oldMatch.teams.size
+            newMatch.teams[0].score shouldBe 1.toScore()
+            newMatch.teams[1].score shouldBe 2.toScore()
         }
     }
 
@@ -186,9 +193,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
-            assertThat(newMatch.teams).hasSize(oldMatch.teams.size)
-            assertThat(newMatch.teams[0]).isEqualTo(oldMatch.teams[1])
-            assertThat(newMatch.teams[1]).isEqualTo(oldMatch.teams[0])
+            newMatch.teams shouldHaveSize oldMatch.teams.size
+            newMatch.teams[0] shouldBe oldMatch.teams[1]
+            newMatch.teams[1] shouldBe oldMatch.teams[0]
         }
     }
 
@@ -211,10 +218,10 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
-            assertThat(newMatch.teams).hasSize(oldMatch.teams.size.inc())
-            assertThat(newMatch.teams[0]).isEqualTo(oldMatch.teams[0])
-            assertThat(newMatch.teams[1]).isEqualTo(additionalTeam)
-            assertThat(newMatch.teams[2]).isEqualTo(oldMatch.teams[1])
+            newMatch.teams shouldHaveSize oldMatch.teams.size.inc()
+            newMatch.teams[0] shouldBe oldMatch.teams[0]
+            newMatch.teams[1] shouldBe additionalTeam
+            newMatch.teams[2] shouldBe oldMatch.teams[1]
         }
     }
 
@@ -232,9 +239,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         )
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
-            assertThat(newMatch.teams).hasSize(oldMatch.teams.size.dec())
-            assertThat(newMatch.teams[0]).isEqualTo(oldMatch.teams[0])
-            assertThat(newMatch.teams[1]).isEqualTo(oldMatch.teams[2])
+            newMatch.teams shouldHaveSize oldMatch.teams.size.dec()
+            newMatch.teams[0] shouldBe oldMatch.teams[0]
+            newMatch.teams[1] shouldBe oldMatch.teams[2]
         }
     }
 
@@ -242,8 +249,8 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     fun removeMatch_matchNotFound() = runTest {
         val result = dataSourceAdapter.removeMatch(1)
 
-        assertThat(result.isFailure).isTrue()
-        assertThat(result.exceptionOrNull()!!.message).isNotEmpty()
+        result.isFailure.shouldBeTrue()
+        result.exceptionOrNull()!!.message.shouldNotBeEmpty()
     }
 
     @Test
@@ -252,20 +259,20 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
         val result = dataSourceAdapter.removeMatch(match.id)
 
-        assertThat(result.isSuccess).isTrue()
-        assertThat(dataSourceAdapter.getMatch(match.id)).isNull()
+        result.isSuccess.shouldBeTrue()
+        dataSourceAdapter.getMatch(match.id).shouldBeNull()
     }
 
     private fun assertMatchWasMappedCorrectly(
         match: Match,
         request: CreateMatchRepositoryRequest,
     ) {
-        assertThat(match.id).isNotNull()
-        assertThat(match.name).isEqualTo(request.name)
-        assertThat(match.teams).hasSize(request.teams.size)
+        match.id.shouldNotBeNull()
+        match.name shouldBe request.name
+        match.teams shouldHaveSize request.teams.size
         request.teams.forEachIndexed { idx, team ->
-            assertThat(match.teams[idx].name).isEqualTo(team.name)
-            assertThat(match.teams[idx].score.intValue).isEqualTo(0)
+            match.teams[idx].name shouldBe team.name
+            match.teams[idx].score.intValue shouldBe 0
         }
     }
 
@@ -275,7 +282,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         assert: (Match) -> Unit,
     ) {
         val newMatch = dataSourceAdapter.getMatch(oldMatch.id)!!
-        assertThat(result.isSuccess).isTrue()
+        result.isSuccess.shouldBeTrue()
         assert(newMatch)
     }
 
