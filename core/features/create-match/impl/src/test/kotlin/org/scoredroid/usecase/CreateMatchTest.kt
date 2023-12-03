@@ -1,6 +1,10 @@
 package org.scoredroid.usecase
 
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldBeEmpty
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -31,7 +35,7 @@ class CreateMatchTest {
             val matchResponse = createMatch()
 
             assertMatchResponse(fixture, matchResponse) { match ->
-                assertThat(match.id).isEqualTo(5)
+                match.id shouldBe 5
             }
         }
 
@@ -40,7 +44,7 @@ class CreateMatchTest {
             val matchResponse = createMatch()
 
             assertMatchResponse(fixture, matchResponse) { match ->
-                assertThat(match.name).isEmpty()
+                match.name.shouldBeEmpty()
             }
         }
 
@@ -49,7 +53,7 @@ class CreateMatchTest {
             val matchResponse = createMatch()
 
             assertMatchResponse(fixture, matchResponse) { match ->
-                assertThat(match.teams).isEmpty()
+                match.teams.shouldBeEmpty()
             }
         }
 
@@ -57,7 +61,7 @@ class CreateMatchTest {
         fun `can get a flow`() = runTest {
             val matchResponse = createMatch()
 
-            assertThat(fixture.getMatchFlow(matchResponse.id).first()).isNotNull()
+            fixture.getMatchFlow(matchResponse.id).first().shouldNotBeNull()
         }
     }
 
@@ -69,7 +73,7 @@ class CreateMatchTest {
             val matchResponse = createMatch(CreateMatchRequestOptions(matchName = "match name"))
 
             assertMatchResponse(fixture, matchResponse) { match ->
-                assertThat(match.name).isEqualTo("match name")
+                match.name shouldBe "match name"
             }
         }
 
@@ -85,9 +89,9 @@ class CreateMatchTest {
             )
 
             assertMatchResponse(fixture, matchResponse) { match ->
-                assertThat(match.teams).hasSize(2)
-                assertThat(match.teams.first().name).isEqualTo("team 1")
-                assertThat(match.teams.last().name).isEqualTo("team 2")
+                match.teams shouldHaveSize 2
+                match.teams.first().name shouldBe "team 1"
+                match.teams.last().name shouldBe "team 2"
             }
         }
     }
