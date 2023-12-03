@@ -1054,15 +1054,21 @@ formatting:
     maxLineLength: 120
 
 Compose:
+  ComposableAnnotationNaming:
+    active: true
   CompositionLocalAllowlist:
     active: true
     # You can optionally define a list of CompositionLocals that are allowed here
     # allowedCompositionLocals: LocalSomething,LocalSomethingElse
+  CompositionLocalNaming:
+    active: true
   ContentEmitterReturningValues:
     active: true
     # You can optionally add your own composables here
     # contentEmitters: MyComposable,MyOtherComposable
   DefaultsVisibility:
+    active: true
+  ModifierClickableOrder:
     active: true
   ModifierComposable:
     active: true
@@ -1099,10 +1105,14 @@ Compose:
     active: true
   RememberMissing:
     active: true
+  RememberContentMissing:
+    active: true
   UnstableCollections:
     active: true
   ViewModelForwarding:
     active: true
+      # You can optionally use this rule on things other than types ending in "ViewModel" or "Presenter" (which are the defaults). You can add your own via a regex here:
+    # allowedStateHolderNames: .*ViewModel,.*Presenter
   ViewModelInjection:
     active: true
     # You can optionally add your own ViewModel factories here
