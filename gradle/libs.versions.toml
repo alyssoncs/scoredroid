@@ -29,7 +29,6 @@ kotest = "5.8.0"
 ksp = "1.9.20-1.0.14"
 material = "1.12.0-alpha01"
 room = "2.6.1"
-truth = "1.1.5"
 turbine = "1.0.0"
 
 [libraries]
@@ -59,7 +58,6 @@ test-junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref =
 test-junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 test-junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
 test-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-test-truth = { module = "com.google.truth:truth", version.ref = "truth" }
 test-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 # :build-logic
@@ -71,7 +69,7 @@ detekt-formatting-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-format
 detekt-compose-plugin = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-compose-plugin"}
 
 [bundles]
-unitTest = ["test-junit-api", "test-junit-params", "test-truth", "test-kotest-assertions", "test-coroutines", "test-turbine"]
+unitTest = ["test-junit-api", "test-junit-params", "test-kotest-assertions", "test-coroutines", "test-turbine"]
 room = ["room-ktx", "room-runtime"]
 
 [plugins]
