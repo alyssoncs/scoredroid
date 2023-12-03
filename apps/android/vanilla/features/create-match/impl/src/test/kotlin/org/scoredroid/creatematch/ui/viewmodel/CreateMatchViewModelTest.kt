@@ -1,7 +1,11 @@
 package org.scoredroid.creatematch.ui.viewmodel
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldBeEmpty
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -21,10 +25,10 @@ class CreateMatchViewModelTest {
         viewModel.uiState.test {
             val uiState = awaitItem()
 
-            assertThat(uiState.matchName).isEmpty()
-            assertThat(uiState.teams).isEmpty()
-            assertThat(uiState.loading).isFalse()
-            assertThat(uiState.created).isFalse()
+            uiState.matchName.shouldBeEmpty()
+            uiState.teams.shouldBeEmpty()
+            uiState.loading.shouldBeFalse()
+            uiState.created.shouldBeFalse()
         }
     }
 
@@ -35,7 +39,7 @@ class CreateMatchViewModelTest {
         viewModel.uiState.test {
             val uiState = awaitItem()
 
-            assertThat(uiState.matchName).isEqualTo("final match")
+            uiState.matchName shouldBe "final match"
         }
     }
 
@@ -47,7 +51,7 @@ class CreateMatchViewModelTest {
         viewModel.uiState.test {
             val uiState = awaitItem()
 
-            assertThat(uiState.teams.first()).isEqualTo("best team")
+            uiState.teams.first() shouldBe "best team"
         }
     }
 
@@ -60,16 +64,13 @@ class CreateMatchViewModelTest {
         viewModel.onTeamNameChange(index = 1, newName = "worst team")
         viewModel.onCreate()
 
-        assertThat(createMatch.request)
-            .isEqualTo(
-                CreateMatchRequestOptions(
-                    matchName = "best match",
-                    teams = listOf(
-                        CreateMatchRequestOptions.InitialTeamRequest(name = "best team"),
-                        CreateMatchRequestOptions.InitialTeamRequest(name = "worst team"),
-                    ),
-                ),
-            )
+        createMatch.request shouldBe CreateMatchRequestOptions(
+            matchName = "best match",
+            teams = listOf(
+                CreateMatchRequestOptions.InitialTeamRequest(name = "best team"),
+                CreateMatchRequestOptions.InitialTeamRequest(name = "worst team"),
+            ),
+        )
     }
 
     @Test
@@ -78,8 +79,8 @@ class CreateMatchViewModelTest {
             skipItems(1)
             viewModel.onCreate()
 
-            assertThat(awaitItem().loading).isTrue()
-            assertThat(awaitItem().loading).isFalse()
+            awaitItem().loading.shouldBeTrue()
+            awaitItem().loading.shouldBeFalse()
         }
     }
 
@@ -89,8 +90,8 @@ class CreateMatchViewModelTest {
             skipItems(1)
             viewModel.onCreate()
 
-            assertThat(awaitItem().created).isFalse()
-            assertThat(awaitItem().created).isTrue()
+            awaitItem().created.shouldBeFalse()
+            awaitItem().created.shouldBeTrue()
         }
     }
 }
