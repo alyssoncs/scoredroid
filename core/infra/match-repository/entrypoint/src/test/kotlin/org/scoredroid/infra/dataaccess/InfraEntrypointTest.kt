@@ -1,6 +1,7 @@
 package org.scoredroid.infra.dataaccess
 
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeSameInstanceAs
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
@@ -14,7 +15,7 @@ class InfraEntrypointTest {
         val firstInstance = InfraEntrypoint.create(persistentDataSource).matchRepository
         val secondInstance = InfraEntrypoint.create(persistentDataSource).matchRepository
 
-        assertThat(firstInstance).isSameInstanceAs(secondInstance)
+        firstInstance shouldBeSameInstanceAs secondInstance
     }
 
     @Test
@@ -24,6 +25,6 @@ class InfraEntrypointTest {
 
         val repository = InfraEntrypoint.create(persistentDataSource).matchRepository
 
-        assertThat(repository.getMatch(0L)!!.name).isEqualTo(matchName)
+        repository.getMatch(0L)!!.name shouldBe matchName
     }
 }
