@@ -2,7 +2,9 @@ package org.scoredroid.play.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -48,7 +50,7 @@ class PlayViewModelTest {
         @Test
         fun `should show error`() = runTest {
             viewModel.uiState.test {
-                assertThat(awaitItem()).isEqualTo(PlayUiState.Error)
+                awaitItem() shouldBe PlayUiState.Error
             }
         }
     }
@@ -64,8 +66,8 @@ class PlayViewModelTest {
         @Test
         fun `should show error`() = runTest {
             viewModel.uiState.test {
-                assertThat(awaitItem()).isEqualTo(PlayUiState.Loading)
-                assertThat(awaitItem()).isEqualTo(PlayUiState.Error)
+                awaitItem() shouldBe PlayUiState.Loading
+                awaitItem() shouldBe PlayUiState.Error
             }
         }
     }
@@ -92,12 +94,12 @@ class PlayViewModelTest {
         @Test
         fun `should show content`() = runTest {
             viewModel.uiState.test {
-                assertThat(awaitItem()).isEqualTo(PlayUiState.Loading)
+                awaitItem() shouldBe PlayUiState.Loading
                 val content = awaitItem() as PlayUiState.Content
-                assertThat(content.matchName).isEqualTo(matchResponse.name)
-                assertThat(content.teams).hasSize(matchResponse.teams.size)
-                assertThat(content.teams.first().name).isEqualTo(matchResponse.teams.first().name)
-                assertThat(content.teams.first().score).isEqualTo(matchResponse.teams.first().score)
+                content.matchName shouldBe matchResponse.name
+                content.teams shouldHaveSize matchResponse.teams.size
+                content.teams.first().name shouldBe matchResponse.teams.first().name
+                content.teams.first().score shouldBe matchResponse.teams.first().score
             }
         }
 
@@ -107,9 +109,9 @@ class PlayViewModelTest {
 
             viewModel.incrementScore(teamAt = 0)
 
-            assertThat(incrementScoreSpy.matchId).isEqualTo(matchResponse.id)
-            assertThat(incrementScoreSpy.teamAt).isEqualTo(0)
-            assertThat(incrementScoreSpy.increment).isEqualTo(1)
+            incrementScoreSpy.matchId shouldBe matchResponse.id
+            incrementScoreSpy.teamAt shouldBe 0
+            incrementScoreSpy.increment shouldBe 1
         }
 
         @Test
@@ -118,16 +120,16 @@ class PlayViewModelTest {
 
             viewModel.decrementScore(teamAt = 0)
 
-            assertThat(decrementScoreSpy.matchId).isEqualTo(matchResponse.id)
-            assertThat(decrementScoreSpy.teamAt).isEqualTo(0)
-            assertThat(decrementScoreSpy.decrement).isEqualTo(1)
+            decrementScoreSpy.matchId shouldBe matchResponse.id
+            decrementScoreSpy.teamAt shouldBe 0
+            decrementScoreSpy.decrement shouldBe 1
         }
 
         @Test
         fun `onCleared should call SaveMatch`() = runTest {
             viewModel.callOnCleared()
 
-            assertThat(saveMatchSpy.matchWithId(1).wasSaved()).isTrue()
+            saveMatchSpy.matchWithId(1).wasSaved().shouldBeTrue()
         }
     }
 }
