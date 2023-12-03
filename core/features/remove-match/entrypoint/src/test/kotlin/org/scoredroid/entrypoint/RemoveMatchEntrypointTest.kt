@@ -1,6 +1,6 @@
 package org.scoredroid.entrypoint
 
-import com.google.common.truth.Truth
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 import org.scoredroid.usecase.RemoveMatch
@@ -14,9 +14,9 @@ class RemoveMatchEntrypointTest {
         assertCorrectInstance<RemoveMatch> { removeMatchUseCase }
     }
 
-    private inline fun <reified T>assertCorrectInstance(
+    private inline fun <reified T : Any>assertCorrectInstance(
         dependency: RemoveMatchEntrypoint.() -> Any,
     ) {
-        Truth.assertThat(entrypoint.dependency()).isInstanceOf(T::class.java)
+        entrypoint.dependency().shouldBeInstanceOf<T>()
     }
 }
