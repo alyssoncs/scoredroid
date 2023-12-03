@@ -1,7 +1,9 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -21,7 +23,7 @@ class RemoveMatchTest {
         fun `return failure`() = runTest {
             val result = removeMatch(0L)
 
-            assertThat(result.isFailure).isTrue()
+            result.isFailure.shouldBeTrue()
         }
     }
 
@@ -38,7 +40,7 @@ class RemoveMatchTest {
         fun `return success`() = runTest {
             val result = removeMatch(matchId)
 
-            assertThat(result.isSuccess).isTrue()
+            result.isSuccess.shouldBeTrue()
         }
 
         @ParameterizedTest
@@ -48,7 +50,7 @@ class RemoveMatchTest {
 
             removeMatch(matchId)
 
-            assertThat(fixture.repository.getMatch(matchId)).isNull()
+            fixture.repository.getMatch(matchId).shouldBeNull()
         }
 
         @Test
@@ -56,8 +58,8 @@ class RemoveMatchTest {
             fixture.getMatchFlow(matchId).test {
                 removeMatch(matchId)
 
-                assertThat(awaitItem()).isNotNull()
-                assertThat(awaitItem()).isNull()
+                awaitItem().shouldNotBeNull()
+                awaitItem().shouldBeNull()
             }
         }
     }
