@@ -1,7 +1,10 @@
 package org.scoredroid.history.ui.viewmodel
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -42,19 +45,19 @@ class MatchHistoryViewModelTest {
     fun `should fetch matches from use case`() = runTest {
         matchHistoryViewModel.uiModel.test {
             val loading = awaitItem()
-            assertThat(loading).isInstanceOf(MatchHistoryUiModel.Loading::class.java)
+            loading.shouldBeInstanceOf<MatchHistoryUiModel.Loading>()
 
             val content = awaitItem()
             val value = content as MatchHistoryUiModel.Content
-            assertThat(value.matches).containsExactlyElementsIn(expectedUiModel.matches)
+            value.matches shouldContainExactly expectedUiModel.matches
         }
     }
 
     @Test
     fun `flow update updates the ui state`() = runTest {
         matchHistoryViewModel.uiModel.test {
-            assertThat(awaitItem()).isInstanceOf(MatchHistoryUiModel.Loading::class.java)
-            assertThat(awaitItem()).isInstanceOf(MatchHistoryUiModel.Content::class.java)
+            awaitItem().shouldBeInstanceOf<MatchHistoryUiModel.Loading>()
+            awaitItem().shouldBeInstanceOf<MatchHistoryUiModel.Content>()
 
             getMatchesFlowUseCaseStub.emitNewMatch(
                 MatchResponse(
@@ -65,7 +68,7 @@ class MatchHistoryViewModelTest {
             )
 
             val content = awaitItem() as MatchHistoryUiModel.Content
-            assertThat(content.matches).hasSize(2)
+            content.matches shouldHaveSize 2
         }
     }
 
@@ -73,6 +76,6 @@ class MatchHistoryViewModelTest {
     fun `remove match calls use case`() = runTest {
         matchHistoryViewModel.removeMatch(0L)
 
-        assertThat(removeMatchUseCaseSpy.removedMatchId).isEqualTo(0L)
+        removeMatchUseCaseSpy.removedMatchId shouldBe 0L
     }
 }
