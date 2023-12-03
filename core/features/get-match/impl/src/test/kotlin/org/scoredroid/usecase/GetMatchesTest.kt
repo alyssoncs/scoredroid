@@ -1,7 +1,9 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -80,9 +82,9 @@ class GetMatchesTest {
 
                 matchesFow.test {
                     val matches = awaitItem()
-                    assertThat(matches).hasSize(2)
-                    assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
-                    assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                    matches shouldHaveSize 2
+                    matches[0] shouldBe expectedSecondMatchResponse
+                    matches[1] shouldBe expectedFirstMatchResponse
                 }
             }
         }
@@ -103,9 +105,9 @@ class GetMatchesTest {
 
                 matchesFlow.test {
                     val matches = awaitItem()
-                    assertThat(matches).hasSize(2)
-                    assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
-                    assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                    matches shouldHaveSize 2
+                    matches[0] shouldBe expectedSecondMatchResponse
+                    matches[1] shouldBe expectedFirstMatchResponse
                 }
             }
         }
@@ -126,9 +128,9 @@ class GetMatchesTest {
 
                 matchesFlow.test {
                     val matches = awaitItem()
-                    assertThat(matches).hasSize(2)
-                    assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
-                    assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                    matches shouldHaveSize 2
+                    matches[0] shouldBe expectedSecondMatchResponse
+                    matches[1] shouldBe expectedFirstMatchResponse
                 }
             }
         }
@@ -151,9 +153,9 @@ class GetMatchesTest {
 
                 matchesFlow.test {
                     val matches = awaitItem()
-                    assertThat(matches).hasSize(2)
-                    assertThat(matches[0]).isEqualTo(expectedSecondMatchResponse)
-                    assertThat(matches[1]).isEqualTo(expectedFirstMatchResponse)
+                    matches shouldHaveSize 2
+                    matches[0] shouldBe expectedSecondMatchResponse
+                    matches[1] shouldBe expectedFirstMatchResponse
                 }
             }
         }
@@ -172,13 +174,13 @@ class GetMatchesTest {
                 val matchesFlow = getMatches()
 
                 matchesFlow.test {
-                    assertThat(awaitItem()).hasSize(2)
+                    awaitItem() shouldHaveSize 2
 
                     fixture.createNamedMatch("third match")
 
                     val newMatches = awaitItem()
-                    assertThat(newMatches).hasSize(3)
-                    assertThat(newMatches[0].name).isEqualTo("third match")
+                    newMatches shouldHaveSize 3
+                    newMatches[0].name shouldBe "third match"
                 }
             }
 
@@ -187,14 +189,14 @@ class GetMatchesTest {
                 val matchesFlow = getMatches()
 
                 matchesFlow.test {
-                    assertThat(awaitItem()).hasSize(2)
+                    awaitItem() shouldHaveSize 2
 
                     fixture.addTeamsToExistingMatch(1L, "team 2")
 
                     val newMatches = awaitItem()
-                    assertThat(newMatches).hasSize(2)
-                    assertThat(newMatches.first().teams).hasSize(2)
-                    assertThat(newMatches.first().teams.last().name).isEqualTo("team 2")
+                    newMatches shouldHaveSize 2
+                    newMatches.first().teams shouldHaveSize 2
+                    newMatches.first().teams.last().name shouldBe "team 2"
                 }
             }
 
@@ -203,13 +205,13 @@ class GetMatchesTest {
                 val matchesFlow = getMatches()
 
                 matchesFlow.test {
-                    assertThat(awaitItem()).hasSize(2)
+                    awaitItem() shouldHaveSize 2
 
                     fixture.removeTeam(1L, 0)
 
                     val newMatches = awaitItem()
-                    assertThat(newMatches).hasSize(2)
-                    assertThat(newMatches.first().teams).isEmpty()
+                    newMatches shouldHaveSize 2
+                    newMatches.first().teams.shouldBeEmpty()
                 }
             }
 
@@ -218,13 +220,13 @@ class GetMatchesTest {
                 val matchesFlow = getMatches()
 
                 matchesFlow.test {
-                    assertThat(awaitItem()).hasSize(2)
+                    awaitItem() shouldHaveSize 2
 
                     fixture.bumpScore(1L, 0)
 
                     val newMatches = awaitItem()
-                    assertThat(newMatches).hasSize(2)
-                    assertThat(newMatches.first().teams.first().score).isEqualTo(1)
+                    newMatches shouldHaveSize 2
+                    newMatches.first().teams.first().score shouldBe 1
                 }
             }
 
@@ -233,13 +235,13 @@ class GetMatchesTest {
                 val matchesFlow = getMatches()
 
                 matchesFlow.test {
-                    assertThat(awaitItem()).hasSize(2)
+                    awaitItem() shouldHaveSize 2
 
                     fixture.renameMatch(1L, "new name")
 
                     val newMatches = awaitItem()
-                    assertThat(newMatches).hasSize(2)
-                    assertThat(newMatches.first().name).isEqualTo("new name")
+                    newMatches shouldHaveSize 2
+                    newMatches.first().name shouldBe "new name"
                 }
             }
 
@@ -248,13 +250,13 @@ class GetMatchesTest {
                 val matchesFlow = getMatches()
 
                 matchesFlow.test {
-                    assertThat(awaitItem()).hasSize(2)
+                    awaitItem() shouldHaveSize 2
 
                     fixture.makeFirstTeam(0L, 1)
 
                     val newMatches = awaitItem()
-                    assertThat(newMatches).hasSize(2)
-                    assertThat(newMatches.last().teams.first().name).isEqualTo("team b")
+                    newMatches shouldHaveSize 2
+                    newMatches.last().teams.first().name shouldBe "team b"
                 }
             }
 
@@ -263,13 +265,13 @@ class GetMatchesTest {
                 val matchesFlow = getMatches()
 
                 matchesFlow.test {
-                    assertThat(awaitItem()).hasSize(2)
+                    awaitItem() shouldHaveSize 2
 
                     fixture.renameTeam(1L, 0, "new name")
 
                     val newMatches = awaitItem()
-                    assertThat(newMatches).hasSize(2)
-                    assertThat(newMatches.first().teams.first().name).isEqualTo("new name")
+                    newMatches shouldHaveSize 2
+                    newMatches.first().teams.first().name shouldBe "new name"
                 }
             }
 
@@ -278,13 +280,13 @@ class GetMatchesTest {
                 val matchesFlow = getMatches()
 
                 matchesFlow.test {
-                    assertThat(awaitItem()).hasSize(2)
+                    awaitItem() shouldHaveSize 2
 
                     fixture.removeMatch(1L)
 
                     val newMatches = awaitItem()
-                    assertThat(newMatches).hasSize(1)
-                    assertThat(newMatches.first().name).isEqualTo("first match")
+                    newMatches shouldHaveSize 1
+                    newMatches.first().name shouldBe "first match"
                 }
             }
         }

@@ -1,7 +1,8 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -21,7 +22,7 @@ class GetMatchFlowTest {
         fun `should return flow with null match`() = runTest {
             val flow = getMatchFlow(matchId = 0L)
 
-            assertThat(flow.first()).isNull()
+            flow.first().shouldBeNull()
         }
     }
 
@@ -37,7 +38,7 @@ class GetMatchFlowTest {
         fun `should have the correct match`() = runTest {
             val flow = getMatchFlow(matchId = 0L)
 
-            assertThat(flow.first()!!.name).isEqualTo("match name")
+            flow.first()!!.name shouldBe "match name"
         }
 
         @Test
@@ -47,7 +48,7 @@ class GetMatchFlowTest {
 
                 fixture.renameMatch(0L, "new name")
 
-                assertThat(awaitItem()!!.name).isEqualTo("new name")
+                awaitItem()!!.name shouldBe "new name"
             }
         }
 
@@ -58,7 +59,7 @@ class GetMatchFlowTest {
 
                 fixture.removeMatch(0L)
 
-                assertThat(awaitItem()).isNull()
+                awaitItem().shouldBeNull()
             }
         }
 
@@ -67,7 +68,7 @@ class GetMatchFlowTest {
             val coldStartGetMatchFlow = GetMatchFlow(fixture.coldStart().repository)
             val flow = coldStartGetMatchFlow(matchId = 0L)
 
-            assertThat(flow.first()!!.name).isEqualTo("match name")
+            flow.first()!!.name shouldBe "match name"
         }
     }
 }
