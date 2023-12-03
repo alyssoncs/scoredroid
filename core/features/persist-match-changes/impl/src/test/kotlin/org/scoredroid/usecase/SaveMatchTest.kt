@@ -1,6 +1,7 @@
 package org.scoredroid.usecase
 
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -19,7 +20,7 @@ class SaveMatchTest {
         fun `return failure`() = runTest {
             val result = saveMatch(0L)
 
-            assertThat(result.isFailure).isTrue()
+            result.isFailure.shouldBeTrue()
         }
     }
 
@@ -48,7 +49,7 @@ class SaveMatchTest {
         fun `return success`() = runTest {
             val result = saveMatch(matchId)
 
-            assertThat(result.isSuccess).isTrue()
+            result.isSuccess.shouldBeTrue()
         }
 
         @Test
@@ -57,7 +58,7 @@ class SaveMatchTest {
             saveMatch(matchId)
             fixture.clearInMemoryData()
 
-            assertThat(fixture.repository.getMatch(matchId)!!.name).isEqualTo("new name")
+            fixture.repository.getMatch(matchId)!!.name shouldBe "new name"
         }
     }
 }

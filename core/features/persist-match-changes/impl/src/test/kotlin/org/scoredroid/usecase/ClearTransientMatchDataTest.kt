@@ -1,7 +1,8 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -19,7 +20,7 @@ class ClearTransientMatchDataTest {
         fun `return failure`() = runTest {
             val result = clearTransientData(0L)
 
-            assertThat(result.isFailure).isTrue()
+            result.isFailure.shouldBeTrue()
         }
     }
 
@@ -37,18 +38,18 @@ class ClearTransientMatchDataTest {
         fun `return success`() = runTest {
             val result = clearTransientData(matchId)
 
-            assertThat(result.isSuccess).isTrue()
+            result.isSuccess.shouldBeTrue()
         }
 
         @Test
         fun `clean the transient data`() = runTest {
             fixture.rebootApplication()
             fixture.repository.renameMatch(matchId, "new name")
-            assertThat(fixture.repository.getMatch(matchId)!!.name).isEqualTo("new name")
+            fixture.repository.getMatch(matchId)!!.name shouldBe "new name"
 
             clearTransientData(matchId)
 
-            assertThat(fixture.repository.getMatch(matchId)!!.name).isEqualTo("old name")
+            fixture.repository.getMatch(matchId)!!.name shouldBe "old name"
         }
 
         @Test
@@ -59,9 +60,9 @@ class ClearTransientMatchDataTest {
 
                 clearTransientData(matchId)
 
-                assertThat(awaitItem()!!.name).isEqualTo("old name")
-                assertThat(awaitItem()!!.name).isEqualTo("new name")
-                assertThat(awaitItem()!!.name).isEqualTo("old name")
+                awaitItem()!!.name shouldBe "old name"
+                awaitItem()!!.name shouldBe "new name"
+                awaitItem()!!.name shouldBe "old name"
             }
         }
     }
