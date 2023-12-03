@@ -1,6 +1,6 @@
 package org.scoredroid.usecase
 
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -34,7 +34,7 @@ class DecrementScoreTest : UpdateScoreTest() {
             val result = updateScore(match.id, 0, 10)
 
             assertMatchResponse(fixture, result) { match ->
-                assertThat(match.teams[0].score).isEqualTo(0)
+                match.teams[0].score shouldBe 0
             }
         }
     }

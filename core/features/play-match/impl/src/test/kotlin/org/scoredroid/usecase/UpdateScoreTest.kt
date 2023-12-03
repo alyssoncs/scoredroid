@@ -1,7 +1,7 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -153,8 +153,7 @@ abstract class UpdateScoreTest {
             match: MatchResponse,
             updateAmount: Int,
         ) {
-            assertThat(match.teams[0].score)
-                .isEqualTo(updateStrategy(currentScore = initialScore, updateAmount = updateAmount))
+            match.teams[0].score shouldBe updateStrategy(currentScore = initialScore, updateAmount = updateAmount)
         }
     }
 }
