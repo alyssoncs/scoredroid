@@ -1,6 +1,6 @@
 package org.scoredroid.entrypoint
 
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.Test
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 import org.scoredroid.usecase.AddTeam
@@ -38,9 +38,9 @@ class EditMatchEntrypointTest {
         assertCorrectInstance<RenameTeam> { renameTeamUseCase }
     }
 
-    private inline fun <reified T>assertCorrectInstance(
+    private inline fun <reified T : Any>assertCorrectInstance(
         dependency: EditMatchEntrypoint.() -> Any,
     ) {
-        assertThat(entrypoint.dependency()).isInstanceOf(T::class.java)
+        entrypoint.dependency().shouldBeInstanceOf<T>()
     }
 }
