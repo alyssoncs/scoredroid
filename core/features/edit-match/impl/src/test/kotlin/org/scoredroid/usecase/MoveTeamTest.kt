@@ -1,7 +1,7 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -131,7 +131,7 @@ class MoveTeamTest {
             }
 
             private fun assertTeamOrder(match: MatchResponse, expectedOrder: String) {
-                assertThat(match.teams.joinToString { it.name }).isEqualTo(expectedOrder)
+                match.teams.joinToString { it.name } shouldBe expectedOrder
             }
         }
     }

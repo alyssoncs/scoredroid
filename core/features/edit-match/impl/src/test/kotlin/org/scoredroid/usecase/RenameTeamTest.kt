@@ -1,7 +1,9 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldBeSameSizeAs
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -77,8 +79,8 @@ class RenameTeamTest {
                 val oldMatch = awaitItem()!!
                 val newMatch = awaitItem()!!
 
-                assertThat(newMatch.teams.size).isEqualTo(oldMatch.teams.size)
-                assertThat(newMatch.teams[1].name).isEqualTo("team name")
+                newMatch.teams shouldBeSameSizeAs oldMatch.teams
+                newMatch.teams[1].name shouldBe "team name"
             }
         }
 
@@ -87,9 +89,9 @@ class RenameTeamTest {
             teamAt: Int,
             expectedName: String,
         ) {
-            assertThat(result.isSuccess).isTrue()
+            result.isSuccess.shouldBeTrue()
             assertMatchResponse(fixture, result) { match ->
-                assertThat(match.teams[teamAt].name).isEqualTo(expectedName)
+                match.teams[teamAt].name shouldBe expectedName
             }
         }
     }

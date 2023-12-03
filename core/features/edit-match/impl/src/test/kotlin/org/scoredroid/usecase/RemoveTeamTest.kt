@@ -1,7 +1,9 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -35,8 +37,8 @@ class RemoveTeamTest {
             val matchResult = removeTeam(match.id, 0)
 
             assertMatchResponse(fixture, matchResult) { match ->
-                assertThat(match.teams).hasSize(1)
-                assertThat(match.teams.first().name).isEqualTo("team 2")
+                match.teams shouldHaveSize 1
+                match.teams.first().name shouldBe "team 2"
             }
         }
 
@@ -48,8 +50,8 @@ class RemoveTeamTest {
             val matchResult = removeTeam(match.id, 1)
 
             assertMatchResponse(fixture, matchResult) { match ->
-                assertThat(match.teams).hasSize(1)
-                assertThat(match.teams.first().name).isEqualTo("team 1")
+                match.teams shouldHaveSize 1
+                match.teams.first().name shouldBe "team 1"
             }
         }
 
@@ -63,7 +65,7 @@ class RemoveTeamTest {
             val matchResult = removeTeam(match.id, 0)
 
             assertMatchResponse(fixture, matchResult) { match ->
-                assertThat(match.teams).isEmpty()
+                match.teams.shouldBeEmpty()
             }
         }
 
@@ -75,7 +77,7 @@ class RemoveTeamTest {
                 val oldMatch = awaitItem()!!
                 val newMatch = awaitItem()!!
 
-                assertThat(newMatch.teams.size).isEqualTo(oldMatch.teams.size.dec())
+                newMatch.teams.size shouldBe oldMatch.teams.size.dec()
             }
         }
     }
@@ -88,7 +90,7 @@ class RemoveTeamTest {
             val matchResult = removeTeam(match.id, index)
 
             assertMatchResponse(fixture, matchResult) { match ->
-                assertThat(match.teams).hasSize(2)
+                match.teams shouldHaveSize 2
             }
         }
     }

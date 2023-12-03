@@ -1,7 +1,8 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -26,7 +27,7 @@ class RenameMatchTest {
 
             val result = renameMatch(nonExistingMatchId, "irrelevant")
 
-            assertThat(result.isFailure).isTrue()
+            result.isFailure.shouldBeTrue()
         }
     }
 
@@ -51,7 +52,7 @@ class RenameMatchTest {
             val result = renameMatch(matchId, newName)
 
             assertMatchResponse(fixture, result) { match ->
-                assertThat(match.name).isEqualTo(newName)
+                match.name shouldBe newName
             }
         }
 
@@ -60,8 +61,8 @@ class RenameMatchTest {
             fixture.getMatchFlow(matchId).test {
                 renameMatch(matchId, newName)
 
-                assertThat(awaitItem()!!.name).isEqualTo(oldName)
-                assertThat(awaitItem()!!.name).isEqualTo(newName)
+                awaitItem()!!.name shouldBe oldName
+                awaitItem()!!.name shouldBe newName
             }
         }
     }

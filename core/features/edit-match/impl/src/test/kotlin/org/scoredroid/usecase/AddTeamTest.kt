@@ -1,7 +1,8 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -63,8 +64,8 @@ class AddTeamTest {
                 val oldMatch = awaitItem()!!
                 val newMatch = awaitItem()!!
 
-                assertThat(newMatch.teams.size).isEqualTo(oldMatch.teams.size.inc())
-                assertThat(newMatch.teams.last().name).isEqualTo("team name")
+                newMatch.teams.size shouldBe oldMatch.teams.size.inc()
+                newMatch.teams.last().name shouldBe "team name"
             }
         }
 
@@ -72,9 +73,9 @@ class AddTeamTest {
             result: Result<MatchResponse>,
             addTeamRequest: AddTeamRequest,
         ) {
-            assertThat(result.isSuccess).isTrue()
+            result.isSuccess.shouldBeTrue()
             assertMatchResponse(fixture, result) { match ->
-                assertThat(match.teams.last().name).isEqualTo(addTeamRequest.name)
+                match.teams.last().name shouldBe addTeamRequest.name
             }
         }
     }
