@@ -2,7 +2,10 @@ package org.scoredroid.editmatch.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -69,26 +72,26 @@ class EditMatchViewModelTest {
 
             viewModel.uiState.test {
                 val loadingState = awaitItem()
-                assertThat(loadingState).isInstanceOf(EditMatchUiState.Loading::class.java)
+                loadingState.shouldBeInstanceOf<EditMatchUiState.Loading>()
                 val contentState = awaitItem() as EditMatchUiState.Content
-                assertThat(contentState).isInstanceOf(EditMatchUiState.Content::class.java)
-                assertThat(contentState.matchName).isEqualTo("a brand new match")
-                assertThat(contentState.teams.first().name).isEqualTo("a brand new team")
-                assertThat(contentState.teams.first().score).isEqualTo(2)
+                contentState.shouldBeInstanceOf<EditMatchUiState.Content>()
+                contentState.matchName shouldBe "a brand new match"
+                contentState.teams.first().name shouldBe "a brand new team"
+                contentState.teams.first().score shouldBe 2
             }
         }
 
         @Test
         fun `should save the match id in the saved state handle`() = runTest {
             createMatchStub.response = MatchResponse(id = 5, name = "", teams = emptyList())
-            assertThat(savedStateHandle.contains(MATCH_ID_NAV_ARG)).isFalse()
+            savedStateHandle.contains(MATCH_ID_NAV_ARG).shouldBeFalse()
 
             viewModel.uiState.test {
                 awaitItem()
                 awaitItem()
             }
 
-            assertThat(savedStateHandle.get<Long>(MATCH_ID_NAV_ARG)).isEqualTo(5)
+            savedStateHandle.get<Long>(MATCH_ID_NAV_ARG) shouldBe 5
         }
     }
 
@@ -105,8 +108,8 @@ class EditMatchViewModelTest {
             getMatchFlow.response = null
 
             viewModel.uiState.test {
-                assertThat(awaitItem()).isInstanceOf(EditMatchUiState.Loading::class.java)
-                assertThat(awaitItem()).isInstanceOf(EditMatchUiState.MatchNotFound::class.java)
+                awaitItem().shouldBeInstanceOf<EditMatchUiState.Loading>()
+                awaitItem().shouldBeInstanceOf<EditMatchUiState.MatchNotFound>()
             }
         }
 
@@ -120,12 +123,12 @@ class EditMatchViewModelTest {
 
             viewModel.uiState.test {
                 val loadingState = awaitItem()
-                assertThat(loadingState).isInstanceOf(EditMatchUiState.Loading::class.java)
+                loadingState.shouldBeInstanceOf<EditMatchUiState.Loading>()
                 val contentState = awaitItem() as EditMatchUiState.Content
-                assertThat(contentState).isInstanceOf(EditMatchUiState.Content::class.java)
-                assertThat(contentState.matchName).isEqualTo("good old match")
-                assertThat(contentState.teams.first().name).isEqualTo("old team")
-                assertThat(contentState.teams.first().score).isEqualTo(3)
+                contentState.shouldBeInstanceOf<EditMatchUiState.Content>()
+                contentState.matchName shouldBe "good old match"
+                contentState.teams.first().name shouldBe "old team"
+                contentState.teams.first().score shouldBe 3
             }
         }
     }
@@ -153,7 +156,7 @@ class EditMatchViewModelTest {
 
             delay(500)
 
-            assertThat(renameMatchSpy.matchWithId(matchId).wasRenamedTo("new name")).isTrue()
+            renameMatchSpy.matchWithId(matchId).wasRenamedTo("new name").shouldBeTrue()
         }
 
         @Test
@@ -162,7 +165,7 @@ class EditMatchViewModelTest {
 
             delay(500)
 
-            assertThat(renameTeamSpy.team(matchId, 0).wasRenamedTo("new name")).isTrue()
+            renameTeamSpy.team(matchId, 0).wasRenamedTo("new name").shouldBeTrue()
         }
 
         @Test
@@ -171,7 +174,7 @@ class EditMatchViewModelTest {
 
             delay(500)
 
-            assertThat(addTeamSpy.matchWithId(matchId).hasNewTeam(AddTeamRequest(""))).isTrue()
+            addTeamSpy.matchWithId(matchId).hasNewTeam(AddTeamRequest("")).shouldBeTrue()
         }
 
         @Test
@@ -180,7 +183,7 @@ class EditMatchViewModelTest {
 
             delay(500)
 
-            assertThat(saveMatchSpy.matchWithId(matchId).wasSaved()).isTrue()
+            saveMatchSpy.matchWithId(matchId).wasSaved().shouldBeTrue()
         }
 
         @Test
@@ -189,7 +192,7 @@ class EditMatchViewModelTest {
 
             viewModel.uiState.test {
                 skipItems(1)
-                assertThat(awaitItem().shouldNavigateBack).isTrue()
+                awaitItem().shouldNavigateBack.shouldBeTrue()
             }
         }
 
@@ -200,7 +203,7 @@ class EditMatchViewModelTest {
 
             viewModel.callOnCleared()
 
-            assertThat(clearTransientMatchDataSpy.matchWithId(matchId).wasCleared()).isTrue()
+            clearTransientMatchDataSpy.matchWithId(matchId).wasCleared().shouldBeTrue()
         }
 
         private fun createViewModel() {
