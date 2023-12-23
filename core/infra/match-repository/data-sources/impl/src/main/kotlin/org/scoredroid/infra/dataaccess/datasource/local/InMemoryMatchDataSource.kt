@@ -61,11 +61,9 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
 
     override suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
         return updateMatch(matchId, onUpdateError = TeamOperationError.TeamNotFound) { match ->
-            if (match.containsTeam(teamAt)) {
-                match.copy(teams = match.moveTeam(teamAt, moveTo))
-            } else {
-                null
-            }
+            runCatching {
+                match.moveTeam(teamAt, moveTo)
+            }.getOrNull()
         }
     }
 
@@ -91,17 +89,6 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
         return updateMatch(matchId) { match ->
             match.copy(name = name)
         }
-    }
-
-    private fun Match.moveTeam(
-        teamAt: Int,
-        moveTo: Int,
-    ): List<Team> {
-        val teams = teams.toMutableList()
-        val indexToMove = moveTo.coerceIn(teams.indices)
-        val removed = teams.removeAt(teamAt)
-        teams.add(indexToMove, removed)
-        return teams.toList()
     }
 
     private suspend fun updateMatch(
