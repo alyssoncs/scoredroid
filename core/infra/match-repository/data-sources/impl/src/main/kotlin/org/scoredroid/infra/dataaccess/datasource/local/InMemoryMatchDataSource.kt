@@ -61,7 +61,7 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
 
     override suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
         return updateMatch(matchId, onUpdateError = TeamOperationError.TeamNotFound) { match ->
-            if (teamAt in match.teams.indices) {
+            if (match.containsTeam(teamAt)) {
                 match.copy(teams = match.moveTeam(teamAt, moveTo))
             } else {
                 null

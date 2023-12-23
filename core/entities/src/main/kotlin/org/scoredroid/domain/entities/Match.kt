@@ -5,11 +5,15 @@ data class Match(
     val name: String,
     val teams: List<Team>,
 ) {
+    fun containsTeam(teamAt: Int): Boolean {
+        return teamAt in teams.indices
+    }
+
     fun updateScore(
         teamAt: Int,
         newScore: Score,
     ): Match {
-        if (teamAt !in teams.indices)
+        if (!containsTeam(teamAt))
             throw IndexOutOfBoundsException(updateScoreErrorMessage(teamAt))
 
         return copy(
