@@ -21,9 +21,7 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
 
     override suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
         return updateMatch(matchId) { match ->
-            match.copy(
-                teams = match.teams + Team(name = team.name, score = 0.toScore()),
-            )
+            match.addTeam(Team(name = team.name, score = 0.toScore()))
         }
     }
 
