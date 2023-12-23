@@ -53,7 +53,9 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
         newScore: Score,
     ): Result<Match> {
         return updateMatch(matchId, onUpdateError = TeamOperationError.TeamNotFound) { match ->
-            match.updateScore(teamAt, newScore).takeIf { teamAt in match.teams.indices }
+            match.runCatching {
+                match.updateScore(teamAt, newScore)
+            }.getOrNull()
         }
     }
 
@@ -89,21 +91,6 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
         return updateMatch(matchId) { match ->
             match.copy(name = name)
         }
-    }
-
-    private fun Match.updateScore(
-        teamAt: Int,
-        newScore: Score,
-    ): Match {
-        return copy(
-            teams = teams.mapIndexed { idx, team ->
-                if (idx == teamAt) {
-                    team.copy(score = newScore)
-                } else {
-                    team
-                }
-            },
-        )
     }
 
     private fun Match.moveTeam(
