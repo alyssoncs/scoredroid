@@ -12,6 +12,12 @@ data class Match(
         )
     }
 
+    fun removeTeam(teamAt: Int): Match {
+        return copy(
+            teams = teams.filterIndexed { idx, _ -> idx != teamAt },
+        )
+    }
+
     fun moveTeam(
         teamAt: Int,
         moveTo: Int,

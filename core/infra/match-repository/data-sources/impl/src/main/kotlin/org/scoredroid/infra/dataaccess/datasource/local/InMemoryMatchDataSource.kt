@@ -27,9 +27,7 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
 
     override suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
         return updateMatch(matchId) { match ->
-            match.copy(
-                teams = match.teams.filterIndexed { idx, _ -> idx != teamAt },
-            )
+            match.removeTeam(teamAt)
         }
     }
 
