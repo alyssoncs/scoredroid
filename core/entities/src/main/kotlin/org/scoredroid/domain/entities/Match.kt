@@ -8,11 +8,14 @@ data class Match(
 
     fun addTeam(team: Team): Match {
         return copy(
-            teams = teams + team
+            teams = teams + team,
         )
     }
 
     fun removeTeam(teamAt: Int): Match {
+        if (!containsTeam(teamAt))
+            throw IndexOutOfBoundsException(removeTeamErrorMessage(teamAt))
+
         return copy(
             teams = teams.filterIndexed { idx, _ -> idx != teamAt },
         )
@@ -54,12 +57,16 @@ data class Match(
         return teamAt in teams.indices
     }
 
-    private fun updateScoreErrorMessage(teamAt: Int): String {
-        return teamIndexNotFoundErrorMessage(teamAt, "Tried to update score of ")
+    private fun removeTeamErrorMessage(teamAt: Int): String {
+        return teamIndexNotFoundErrorMessage(teamAt, "Tried to remove")
     }
 
     private fun moveTeamErrorMessage(teamAt: Int): String {
         return teamIndexNotFoundErrorMessage(teamAt, "Tried to move")
+    }
+
+    private fun updateScoreErrorMessage(teamAt: Int): String {
+        return teamIndexNotFoundErrorMessage(teamAt, "Tried to update score of")
     }
 
     private fun teamIndexNotFoundErrorMessage(teamAt: Int, operation: String): String {
@@ -67,6 +74,6 @@ data class Match(
         fun numberOfTeams(): String = "${if (teams.isEmpty()) "no" else "only ${teams.size}"} teams"
 
         return "$operation team with index $teamAt on match ${matchIdentifier()}" +
-                ", but there are ${numberOfTeams()} in this match"
+            ", but there are ${numberOfTeams()} in this match"
     }
 }

@@ -27,7 +27,9 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
 
     override suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
         return updateMatch(matchId) { match ->
-            match.removeTeam(teamAt)
+            runCatching { match.removeTeam(teamAt) }
+                .recover { match }
+                .getOrNull()
         }
     }
 
@@ -49,17 +51,15 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
         newScore: Score,
     ): Result<Match> {
         return updateMatch(matchId, onUpdateError = TeamOperationError.TeamNotFound) { match ->
-            match.runCatching {
-                match.updateScore(teamAt, newScore)
-            }.getOrNull()
+            match.runCatching { match.updateScore(teamAt, newScore) }
+                .getOrNull()
         }
     }
 
     override suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
         return updateMatch(matchId, onUpdateError = TeamOperationError.TeamNotFound) { match ->
-            runCatching {
-                match.moveTeam(teamAt, moveTo)
-            }.getOrNull()
+            runCatching { match.moveTeam(teamAt, moveTo) }
+                .getOrNull()
         }
     }
 
