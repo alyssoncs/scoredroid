@@ -2,8 +2,6 @@ package org.scoredroid.usecase
 
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
-import org.scoredroid.domain.entities.Score.Companion.toScore
-import org.scoredroid.domain.entities.Team
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
 import org.scoredroid.utils.mappers.toMatchResponse
 
@@ -14,7 +12,7 @@ class AddTeam(
         return repository
             .getMatch(matchId)
             .mapCatching { match ->
-                repository.updateMatch(match.addTeam(Team(team.name, 0.toScore()))).getOrThrow()
+                repository.updateMatch(match.addTeam(team.name)).getOrThrow()
             }
             .map(Match::toMatchResponse)
     }
