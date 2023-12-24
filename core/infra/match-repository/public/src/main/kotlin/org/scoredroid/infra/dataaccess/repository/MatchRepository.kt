@@ -54,6 +54,12 @@ class MatchRepository(
         return matchesFlow
     }
 
+    suspend fun updateMatch(match: Match): Result<Match> {
+        return updateAndEmitMatch(match.id) {
+            Result.success(saveMatch(match))
+        }
+    }
+
     suspend fun createMatch(createMatchRequest: CreateMatchRepositoryRequest): Match {
         return dataSourceAggregator.createMatch(createMatchRequest)
             .also { newMatch ->
