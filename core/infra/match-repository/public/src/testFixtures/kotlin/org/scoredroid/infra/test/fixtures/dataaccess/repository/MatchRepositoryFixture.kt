@@ -7,11 +7,9 @@ import org.scoredroid.domain.entities.Match
 import org.scoredroid.infra.dataaccess.datasource.local.InMemoryMatchDataSource
 import org.scoredroid.infra.dataaccess.datasource.local.TransientMatchDataSource
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
-import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 import org.scoredroid.utils.mappers.toMatchResponse
-import java.lang.IllegalStateException
 
 
 class MatchRepositoryFixture(
@@ -38,10 +36,7 @@ class MatchRepositoryFixture(
     }
 
     suspend fun renameMatch(matchId: Long, name: String) {
-        val match = repository.getMatch(matchId)
-        check(match != null) { "Match not found" }
-
-        repository.updateMatch(match.rename(name))
+        repository.updateMatch(getMatch(matchId).rename(name))
     }
 
     suspend fun removeMatch(matchId: Long) {
@@ -50,7 +45,7 @@ class MatchRepositoryFixture(
 
     suspend fun addTeamsToExistingMatch(matchId: Long, vararg teamNames: String) {
         teamNames.forEach { name ->
-            repository.addTeam(matchId = matchId, AddTeamRepositoryRequest(name))
+            repository.updateMatch(getMatch(matchId).addTeam(name))
         }
     }
 
@@ -101,5 +96,12 @@ class MatchRepositoryFixture(
             inMemoryDataSource,
             this.persistentMatchDataSource,
         )
+    }
+
+    private suspend fun getMatch(matchId: Long): Match {
+        val match = repository.getMatch(matchId)
+        check(match != null) { "Match not found" }
+
+        return match
     }
 }

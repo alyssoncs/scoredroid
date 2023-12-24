@@ -2,10 +2,7 @@ package org.scoredroid.infra.dataaccess.datasource.local
 
 import org.scoredroid.domain.entities.Match
 import org.scoredroid.domain.entities.Score
-import org.scoredroid.domain.entities.Score.Companion.toScore
-import org.scoredroid.domain.entities.Team
 import org.scoredroid.infra.dataaccess.error.TeamOperationError
-import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 
 class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
     companion object {
@@ -17,12 +14,6 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
 
     override suspend fun saveMatch(match: Match): Match {
         return saveOnCache(match)
-    }
-
-    override suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        return updateMatch(matchId) { match ->
-            match.addTeam(Team(name = team.name, score = 0.toScore()))
-        }
     }
 
     override suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {

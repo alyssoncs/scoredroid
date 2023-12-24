@@ -9,7 +9,6 @@ import org.scoredroid.domain.entities.Score
 import org.scoredroid.domain.entities.orZero
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.infra.dataaccess.datasource.local.TransientMatchDataSource
-import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
 class MatchRepository(
@@ -67,10 +66,6 @@ class MatchRepository(
                     currentMatches + newMatch
                 }
             }
-    }
-
-    suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match> {
-        return updateAndEmitMatch(matchId) { addTeam(matchId, team) }
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {

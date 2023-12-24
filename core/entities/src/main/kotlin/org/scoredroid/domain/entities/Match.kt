@@ -15,6 +15,10 @@ data class Match(
         )
     }
 
+    fun addTeam(teamName: String): Match {
+        return addTeam(Team(teamName))
+    }
+
     fun removeTeam(teamAt: Int): Match {
         if (!containsTeam(teamAt))
             throw IndexOutOfBoundsException(removeTeamErrorMessage(teamAt))
