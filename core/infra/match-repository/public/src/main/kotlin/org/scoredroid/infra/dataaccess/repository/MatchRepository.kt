@@ -72,10 +72,6 @@ class MatchRepository(
             }
     }
 
-    suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match> {
-        return updateAndEmitMatch(matchId) { removeTeam(matchId, teamAt) }
-    }
-
     suspend fun updateScore(
         matchId: Long,
         teamAt: Int,

@@ -54,7 +54,7 @@ class MatchRepositoryFixture(
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int) {
-        repository.removeTeam(matchId = matchId, teamAt = teamAt)
+        repository.updateMatch(getMatch(matchId).removeTeam(teamAt))
     }
 
     suspend fun renameTeam(matchId: Long, teamAt: Int, name: String) {
