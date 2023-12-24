@@ -7,9 +7,11 @@ import org.scoredroid.utils.mappers.toMatchResponse
 
 class RenameMatch(private val repository: MatchRepository) : RenameMatchUseCase {
     override suspend fun invoke(matchId: Long, name: String): Result<MatchResponse> {
-        val match = repository.getMatch(matchId) ?: return Result.failure(Throwable("Match not found"))
-
-        return repository.updateMatch(match.rename(name))
+        return repository
+            .getMatch(matchId)
+            .mapCatching { match ->
+                repository.updateMatch(match.rename(name)).getOrThrow()
+            }
             .map(Match::toMatchResponse)
     }
 }

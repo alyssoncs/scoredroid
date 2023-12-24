@@ -98,10 +98,11 @@ class MatchRepositoryFixture(
         )
     }
 
-    private suspend fun getMatch(matchId: Long): Match {
-        val match = repository.getMatch(matchId)
-        check(match != null) { "Match not found" }
+    suspend fun getMatch(matchId: Long): Match {
+        return repository.getMatch(matchId).getOrThrow()
+    }
 
-        return match
+    suspend fun hasMatch(matchId: Long): Boolean {
+        return repository.getMatch(matchId).isSuccess
     }
 }

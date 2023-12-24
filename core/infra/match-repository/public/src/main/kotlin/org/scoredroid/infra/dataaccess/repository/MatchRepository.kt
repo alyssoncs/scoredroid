@@ -42,8 +42,12 @@ class MatchRepository(
         return getMatchesFlow().map { matches -> matches.find { match -> match.id == matchId } }
     }
 
-    suspend fun getMatch(matchId: Long): Match? {
-        return dataSourceAggregator.getMatch(matchId)
+    suspend fun getMatch(matchId: Long): Result<Match> {
+        val match = dataSourceAggregator.getMatch(matchId)
+        return if (match != null)
+            Result.success(match)
+        else
+            Result.failure(Throwable("Match not found"))
     }
 
     suspend fun getMatchesFlow(): Flow<List<Match>> {
@@ -131,7 +135,7 @@ class MatchRepository(
     }
 
     private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
-        return getMatch(matchId)?.teams?.getOrNull(teamAt)?.score.orZero()
+        return getMatch(matchId).getOrNull()?.teams?.getOrNull(teamAt)?.score.orZero()
     }
 
     private class DataSourceAggregator(

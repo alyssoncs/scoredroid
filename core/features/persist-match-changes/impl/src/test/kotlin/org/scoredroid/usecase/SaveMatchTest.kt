@@ -58,7 +58,7 @@ class SaveMatchTest {
             saveMatch(matchId)
             fixture.clearInMemoryData()
 
-            fixture.repository.getMatch(matchId)!!.name shouldBe "new name"
+            fixture.getMatch(matchId).name shouldBe "new name"
         }
     }
 }

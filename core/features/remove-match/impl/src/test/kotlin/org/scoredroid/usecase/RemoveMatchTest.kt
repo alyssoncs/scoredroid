@@ -1,6 +1,7 @@
 package org.scoredroid.usecase
 
 import app.cash.turbine.test
+import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -50,7 +51,7 @@ class RemoveMatchTest {
 
             removeMatch(matchId)
 
-            fixture.repository.getMatch(matchId).shouldBeNull()
+            fixture.hasMatch(matchId).shouldBeFalse()
         }
 
         @Test

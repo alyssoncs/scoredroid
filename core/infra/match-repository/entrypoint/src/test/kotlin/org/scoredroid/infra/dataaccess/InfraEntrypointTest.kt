@@ -25,6 +25,6 @@ class InfraEntrypointTest {
 
         val repository = InfraEntrypoint.create(persistentDataSource).matchRepository
 
-        repository.getMatch(0L)!!.name shouldBe matchName
+        repository.getMatch(0L).getOrNull()!!.name shouldBe matchName
     }
 }

@@ -11,9 +11,11 @@ class AddTeam(
     private val repository: MatchRepository,
 ) : AddTeamUseCase {
     override suspend fun invoke(matchId: Long, team: AddTeamRequest): Result<MatchResponse> {
-        val match = repository.getMatch(matchId) ?: return Result.failure(Throwable("Match not found"))
-
-        return repository.updateMatch(match.addTeam(Team(team.name, 0.toScore())))
+        return repository
+            .getMatch(matchId)
+            .mapCatching { match ->
+                repository.updateMatch(match.addTeam(Team(team.name, 0.toScore()))).getOrThrow()
+            }
             .map(Match::toMatchResponse)
     }
 }
