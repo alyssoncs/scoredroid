@@ -11,6 +11,7 @@ import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 import org.scoredroid.utils.mappers.toMatchResponse
+import java.lang.IllegalStateException
 
 
 class MatchRepositoryFixture(
@@ -37,7 +38,10 @@ class MatchRepositoryFixture(
     }
 
     suspend fun renameMatch(matchId: Long, name: String) {
-        repository.renameMatch(matchId, name)
+        val match = repository.getMatch(matchId)
+        check(match != null) { "Match not found" }
+
+        repository.updateMatch(match.rename(name))
     }
 
     suspend fun removeMatch(matchId: Long) {

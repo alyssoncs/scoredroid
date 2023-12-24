@@ -88,10 +88,6 @@ class MatchRepository(
         }
     }
 
-    suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        return updateAndEmitMatch(matchId) { renameMatch(matchId, name) }
-    }
-
     suspend fun moveTeam(matchId: Long, teamAt: Int, moveTo: Int): Result<Match> {
         return updateAndEmitMatch(matchId) { moveTeam(matchId, teamAt, moveTo) }
     }

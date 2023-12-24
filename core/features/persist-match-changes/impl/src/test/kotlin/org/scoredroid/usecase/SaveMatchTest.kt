@@ -54,7 +54,7 @@ class SaveMatchTest {
 
         @Test
         fun `saves the match`() = runTest {
-            fixture.repository.renameMatch(matchId, "new name")
+            fixture.renameMatch(matchId, "new name")
             saveMatch(matchId)
             fixture.clearInMemoryData()
 

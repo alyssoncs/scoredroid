@@ -44,7 +44,7 @@ class ClearTransientMatchDataTest {
         @Test
         fun `clean the transient data`() = runTest {
             fixture.rebootApplication()
-            fixture.repository.renameMatch(matchId, "new name")
+            fixture.renameMatch(matchId, "new name")
             fixture.repository.getMatch(matchId)!!.name shouldBe "new name"
 
             clearTransientData(matchId)
@@ -56,7 +56,7 @@ class ClearTransientMatchDataTest {
         fun `flow is updated to persistent value`() = runTest {
             fixture.getMatchFlow(matchId).test {
                 fixture.rebootApplication()
-                fixture.repository.renameMatch(matchId, "new name")
+                fixture.renameMatch(matchId, "new name")
 
                 clearTransientData(matchId)
 

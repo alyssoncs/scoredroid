@@ -6,7 +6,6 @@ import org.scoredroid.infra.dataaccess.requestmodel.AddTeamRepositoryRequest
 
 interface TransientMatchDataSource {
     suspend fun saveMatch(match: Match): Match
-    suspend fun renameMatch(matchId: Long, name: String): Result<Match>
     suspend fun getMatch(matchId: Long): Match?
     suspend fun addTeam(matchId: Long, team: AddTeamRepositoryRequest): Result<Match>
     suspend fun removeTeam(matchId: Long, teamAt: Int): Result<Match>

@@ -81,12 +81,6 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
         }
     }
 
-    override suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
-        return updateMatch(matchId) { match ->
-            match.rename(name = name)
-        }
-    }
-
     private suspend fun updateMatch(
         matchId: Long,
         onUpdateError: Throwable = Throwable("an error occurred while updating the match"),
