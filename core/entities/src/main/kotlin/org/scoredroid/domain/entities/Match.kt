@@ -66,7 +66,7 @@ data class Match(
         return copy(
             teams = teams.mapIndexed { idx, team ->
                 if (idx == teamAt) team.rename(name) else team
-            }
+            },
         )
     }
 
@@ -95,6 +95,6 @@ data class Match(
         fun numberOfTeams(): String = "${if (teams.isEmpty()) "no" else "only ${teams.size}"} teams"
 
         return "$operation team with index $teamAt on match ${matchIdentifier()}" +
-                ", but there are ${numberOfTeams()} in this match"
+            ", but there are ${numberOfTeams()} in this match"
     }
 }
