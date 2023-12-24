@@ -58,7 +58,7 @@ class MatchRepositoryFixture(
     }
 
     suspend fun renameTeam(matchId: Long, teamAt: Int, name: String) {
-        repository.renameTeam(matchId, teamAt, name)
+        repository.updateMatch(getMatch(matchId).renameTeam(teamAt, name))
     }
 
     suspend fun bumpScore(matchId: Long, teamAt: Int) {

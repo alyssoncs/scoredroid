@@ -83,12 +83,6 @@ class MatchRepository(
         }
     }
 
-    suspend fun renameTeam(matchId: Long, teamAt: Int, newName: String): Result<Match> {
-        return updateAndEmitMatch(matchId) {
-            renameTeam(matchId, teamAt, newName)
-        }
-    }
-
     suspend fun persist(matchId: Long): Result<Unit> {
         return dataSourceAggregator.persist(matchId)
     }
