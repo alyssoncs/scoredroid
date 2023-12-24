@@ -83,7 +83,7 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
 
     override suspend fun renameMatch(matchId: Long, name: String): Result<Match> {
         return updateMatch(matchId) { match ->
-            match.copy(name = name)
+            match.rename(name = name)
         }
     }
 

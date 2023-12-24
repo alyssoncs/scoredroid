@@ -5,6 +5,9 @@ data class Match(
     val name: String,
     val teams: List<Team>,
 ) {
+    fun rename(name: String): Match {
+        return copy(name = name)
+    }
 
     fun addTeam(team: Team): Match {
         return copy(
