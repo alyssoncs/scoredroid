@@ -50,7 +50,7 @@ class MatchRepositoryFixture(
     }
 
     suspend fun makeFirstTeam(matchId: Long, teamAt: Int) {
-        repository.moveTeam(matchId, teamAt, 0)
+        repository.updateMatch(getMatch(matchId).moveTeam(teamAt, 0))
     }
 
     suspend fun removeTeam(matchId: Long, teamAt: Int) {
