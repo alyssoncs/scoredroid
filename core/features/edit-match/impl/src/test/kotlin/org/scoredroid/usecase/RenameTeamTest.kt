@@ -52,46 +52,82 @@ class RenameTeamTest {
             fixture.createMatchWithTeams(*teamNames)
         }
 
-        @TestFactory
-        fun `team is renamed`(): List<DynamicTest> {
-            val renameWithoutRebooting = List(numberOfTeams) { it to false }
-            val renameRebooting = List(numberOfTeams) { it to true }
+        @Nested
+        inner class TeamExists {
 
-            return (renameWithoutRebooting + renameRebooting).map {
-                dynamicTest("renaming team #${it.first} ${if (!it.second) "without" else ""} rebooting") {
-                    runTest {
-                        if (it.second) fixture.rebootApplication()
-                        val expectedName = if (it.second) "rebooting name" else "non rebooting name"
+            @TestFactory
+            fun `team is renamed`(): List<DynamicTest> {
+                val renameWithoutRebooting = List(numberOfTeams) { it to false }
+                val renameRebooting = List(numberOfTeams) { it to true }
 
-                        val result = renameTeam(matchId, it.first, expectedName)
+                return (renameWithoutRebooting + renameRebooting).map {
+                    dynamicTest("renaming team #${it.first} ${if (!it.second) "without" else ""} rebooting") {
+                        runTest {
+                            if (it.second) fixture.rebootApplication()
+                            val expectedName =
+                                if (it.second) "rebooting name" else "non rebooting name"
 
-                        assertTeamWasRenamed(result, it.first, expectedName)
+                            val result = renameTeam(matchId, it.first, expectedName)
+
+                            assertTeamWasRenamed(result, it.first, expectedName)
+                        }
                     }
+                }
+            }
+
+            @Test
+            fun `flow is updated`() = runTest {
+                fixture.getMatchFlow(matchId).test {
+                    renameTeam(matchId, 1, "team name")
+
+                    val oldMatch = awaitItem()!!
+                    val newMatch = awaitItem()!!
+
+                    newMatch.teams shouldBeSameSizeAs oldMatch.teams
+                    newMatch.teams[1].name shouldBe "team name"
+                }
+            }
+
+            private suspend fun assertTeamWasRenamed(
+                result: Result<MatchResponse>,
+                teamAt: Int,
+                expectedName: String,
+            ) {
+                result.isSuccess.shouldBeTrue()
+                assertMatchResponse(fixture, result) { match ->
+                    match.teams[teamAt].name shouldBe expectedName
                 }
             }
         }
 
-        @Test
-        fun `flow is updated`() = runTest {
-            fixture.getMatchFlow(matchId).test {
-                renameTeam(matchId, 1, "team name")
+        @Nested
+        inner class TeamDoesNotExists {
 
-                val oldMatch = awaitItem()!!
-                val newMatch = awaitItem()!!
+            @Test
+            fun `do nothing`() = runTest {
+                val result = renameTeam(matchId, numberOfTeams, "irrelevant")
 
-                newMatch.teams shouldBeSameSizeAs oldMatch.teams
-                newMatch.teams[1].name shouldBe "team name"
+                assertTeamWasNotRenamed(result)
             }
-        }
 
-        private suspend fun assertTeamWasRenamed(
-            result: Result<MatchResponse>,
-            teamAt: Int,
-            expectedName: String,
-        ) {
-            result.isSuccess.shouldBeTrue()
-            assertMatchResponse(fixture, result) { match ->
-                match.teams[teamAt].name shouldBe expectedName
+            @Test
+            fun `flow is not updated`() = runTest {
+                fixture.getMatchFlow(matchId).test {
+                    renameTeam(matchId, numberOfTeams, "irrelevant")
+
+                    awaitItem()
+                    ensureAllEventsConsumed()
+                }
+            }
+
+            private suspend fun assertTeamWasNotRenamed(
+                result: Result<MatchResponse>,
+            ) {
+                result.isSuccess.shouldBeTrue()
+
+                assertMatchResponse(fixture, result) { match ->
+                    match.teams.all { it.name == "generic name" }.shouldBeTrue()
+                }
             }
         }
     }

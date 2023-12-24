@@ -53,6 +53,20 @@ data class Match(
         )
     }
 
+    fun renameTeam(
+        teamAt: Int,
+        name: String,
+    ): Match {
+        if (!containsTeam(teamAt))
+            throw IndexOutOfBoundsException(renameTeamErrorMessage(teamAt))
+
+        return copy(
+            teams = teams.mapIndexed { idx, team ->
+                if (idx == teamAt) team.rename(name) else team
+            }
+        )
+    }
+
     private fun containsTeam(teamAt: Int): Boolean {
         return teamAt in teams.indices
     }
@@ -69,11 +83,15 @@ data class Match(
         return teamIndexNotFoundErrorMessage(teamAt, "Tried to update score of")
     }
 
+    private fun renameTeamErrorMessage(teamAt: Int): String {
+        return teamIndexNotFoundErrorMessage(teamAt, "Tried to rename")
+    }
+
     private fun teamIndexNotFoundErrorMessage(teamAt: Int, operation: String): String {
         fun matchIdentifier(): String = if (name.isNotBlank()) "named \"$name\"" else "with id $id"
         fun numberOfTeams(): String = "${if (teams.isEmpty()) "no" else "only ${teams.size}"} teams"
 
         return "$operation team with index $teamAt on match ${matchIdentifier()}" +
-            ", but there are ${numberOfTeams()} in this match"
+                ", but there are ${numberOfTeams()} in this match"
     }
 }

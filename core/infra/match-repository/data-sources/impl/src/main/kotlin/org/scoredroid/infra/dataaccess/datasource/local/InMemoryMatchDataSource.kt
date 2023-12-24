@@ -35,9 +35,9 @@ class InMemoryMatchDataSource private constructor() : TransientMatchDataSource {
 
     override suspend fun renameTeam(matchId: Long, teamAt: Int, newName: String): Result<Match> {
         return updateMatch(matchId) { match ->
-            match.copy(
-                teams = match.teams.mapIndexed { idx, team -> if (idx == teamAt) team.copy(name = newName) else team },
-            )
+            runCatching { match.renameTeam(teamAt, newName) }
+                .recover { match }
+                .getOrNull()
         }
     }
 
