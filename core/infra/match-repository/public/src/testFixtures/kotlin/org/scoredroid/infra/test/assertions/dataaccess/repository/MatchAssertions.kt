@@ -26,7 +26,7 @@ suspend fun assertMatchResponse(
 
 private suspend fun MatchRepositoryFixture.getPersistedMatch(matchId: Long): Match {
     this.rebootApplication()
-    val match = this.repository.getMatch(matchId)
+    val match = this.getMatch(matchId)
     assertNotNull(match, "the match with id $matchId was not persisted correctly")
     return match!!
 }

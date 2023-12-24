@@ -36,7 +36,7 @@ class MatchRepositoryFixture(
     }
 
     suspend fun renameMatch(matchId: Long, name: String) {
-        repository.updateMatch(getMatch(matchId).rename(name))
+        repository.updateMatch(getMatch(matchId)!!.rename(name))
     }
 
     suspend fun removeMatch(matchId: Long) {
@@ -45,7 +45,7 @@ class MatchRepositoryFixture(
 
     suspend fun addTeamsToExistingMatch(matchId: Long, vararg teamNames: String) {
         teamNames.forEach { name ->
-            repository.updateMatch(getMatch(matchId).addTeam(name))
+            repository.updateMatch(getMatch(matchId)!!.addTeam(name))
         }
     }
 
@@ -98,10 +98,7 @@ class MatchRepositoryFixture(
         )
     }
 
-    private suspend fun getMatch(matchId: Long): Match {
-        val match = repository.getMatch(matchId)
-        check(match != null) { "Match not found" }
-
-        return match
+    suspend fun getMatch(matchId: Long): Match? {
+        return repository.getMatch(matchId).getOrNull()
     }
 }

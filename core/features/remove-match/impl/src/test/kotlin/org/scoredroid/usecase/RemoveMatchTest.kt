@@ -50,7 +50,7 @@ class RemoveMatchTest {
 
             removeMatch(matchId)
 
-            fixture.repository.getMatch(matchId).shouldBeNull()
+            fixture.getMatch(matchId).shouldBeNull()
         }
 
         @Test

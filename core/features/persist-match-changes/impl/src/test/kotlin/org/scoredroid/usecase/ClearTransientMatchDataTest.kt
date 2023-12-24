@@ -45,11 +45,11 @@ class ClearTransientMatchDataTest {
         fun `clean the transient data`() = runTest {
             fixture.rebootApplication()
             fixture.renameMatch(matchId, "new name")
-            fixture.repository.getMatch(matchId)!!.name shouldBe "new name"
+            fixture.getMatch(matchId)?.name shouldBe "new name"
 
             clearTransientData(matchId)
 
-            fixture.repository.getMatch(matchId)!!.name shouldBe "old name"
+            fixture.getMatch(matchId)?.name shouldBe "old name"
         }
 
         @Test

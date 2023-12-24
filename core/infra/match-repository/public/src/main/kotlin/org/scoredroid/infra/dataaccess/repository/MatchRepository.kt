@@ -42,7 +42,7 @@ class MatchRepository(
         return getMatchesFlow().map { matches -> matches.find { match -> match.id == matchId } }
     }
 
-    suspend fun getMatch(matchId: Long): Match? {
+    suspend fun getMatch(matchId: Long): Result<Match> {
         return dataSourceAggregator.getMatch(matchId)
     }
 
@@ -131,16 +131,16 @@ class MatchRepository(
     }
 
     private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
-        return getMatch(matchId)?.teams?.getOrNull(teamAt)?.score.orZero()
+        return getMatch(matchId).getOrNull()?.teams?.getOrNull(teamAt)?.score.orZero()
     }
 
     private class DataSourceAggregator(
         private val transientDataSource: TransientMatchDataSource,
         private val persistentDataSource: PersistentMatchDataSource,
     ) {
-        suspend fun getMatch(matchId: Long): Match? {
+        suspend fun getMatch(matchId: Long): Result<Match> {
             return transientDataSource.getMatch(matchId)
-                ?: updateTransient(matchId)
+                .recoverCatching { updateTransient(matchId).getOrThrow() }
         }
 
         suspend fun getMatches(): List<Match> {
@@ -187,7 +187,7 @@ class MatchRepository(
         }
 
         suspend fun persist(matchId: Long): Result<Unit> {
-            val match = getMatch(matchId)
+            val match = getMatch(matchId).getOrNull()
             return if (match != null) {
                 persistentDataSource.save(match)
             } else {
@@ -198,13 +198,17 @@ class MatchRepository(
         suspend fun clearTransientData(matchId: Long): Result<Match> {
             transientDataSource.removeMatch(matchId)
 
-            return runCatching { getMatch(matchId) ?: error("match with id $matchId not found") }
+            return getMatch(matchId)
         }
 
-        private suspend fun updateTransient(matchId: Long): Match? {
-            return persistentDataSource.getMatch(matchId)?.also {
+        private suspend fun updateTransient(matchId: Long): Result<Match> {
+            val match = persistentDataSource.getMatch(matchId)?.also {
                 transientDataSource.saveMatch(it)
             }
+            return if (match == null)
+                Result.failure(Throwable("Match not found"))
+            else
+                Result.success(match)
         }
     }
 }
