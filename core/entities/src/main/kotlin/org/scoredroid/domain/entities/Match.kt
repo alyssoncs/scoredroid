@@ -47,15 +47,21 @@ data class Match(
         teamAt: Int,
         newScore: Score,
     ): Match {
+        return updateScore(teamAt) { newScore }
+    }
+
+    fun updateScore(
+        teamAt: Int,
+        update: (Score) -> Score,
+    ): Match {
         if (!containsTeam(teamAt))
             throw IndexOutOfBoundsException(updateScoreErrorMessage(teamAt))
 
+        val identity = { currentScore: Score -> currentScore }
         return copy(
             teams = teams.mapIndexed { idx, team ->
-                if (idx == teamAt)
-                    team.updateScore(newScore)
-                else
-                    team
+                val theUpdate = if (idx == teamAt) update else identity
+                team.updateScore(theUpdate)
             },
         )
     }

@@ -11,6 +11,10 @@ data class Team(
     }
 
     fun updateScore(newScore: Score): Team {
-        return copy(score = newScore)
+        return updateScore { newScore }
+    }
+
+    fun updateScore(update: (Score) -> Score): Team {
+        return copy(score = update(score))
     }
 }

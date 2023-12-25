@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.domain.entities.Match
+import org.scoredroid.domain.entities.Score
 import org.scoredroid.infra.dataaccess.datasource.local.InMemoryMatchDataSource
 import org.scoredroid.infra.dataaccess.datasource.local.TransientMatchDataSource
 import org.scoredroid.infra.dataaccess.repository.MatchRepository
@@ -62,9 +63,7 @@ class MatchRepositoryFixture(
     }
 
     suspend fun bumpScore(matchId: Long, teamAt: Int) {
-        repository.updateScore(matchId, teamAt) { currentScore ->
-            currentScore + 1
-        }
+        repository.updateMatch(getMatch(matchId).updateScore(teamAt, Score::inc))
     }
 
     suspend fun getMatchFlow(matchId: Long): Flow<MatchResponse?> {

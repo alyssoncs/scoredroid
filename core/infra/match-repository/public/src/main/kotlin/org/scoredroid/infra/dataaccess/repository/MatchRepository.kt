@@ -5,8 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import org.scoredroid.domain.entities.Match
-import org.scoredroid.domain.entities.Score
-import org.scoredroid.domain.entities.orZero
 import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSource
 import org.scoredroid.infra.dataaccess.datasource.local.TransientMatchDataSource
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
@@ -72,17 +70,6 @@ class MatchRepository(
             }
     }
 
-    suspend fun updateScore(
-        matchId: Long,
-        teamAt: Int,
-        update: (currentScore: Score) -> Score,
-    ): Result<Match> {
-        return updateAndEmitMatch(matchId) {
-            val currentScore = getCurrentScore(matchId, teamAt)
-            updateScoreTo(matchId, teamAt, update(currentScore))
-        }
-    }
-
     suspend fun persist(matchId: Long): Result<Unit> {
         return dataSourceAggregator.persist(matchId)
     }
@@ -118,10 +105,6 @@ class MatchRepository(
         matchesFlow.update { currentMatches ->
             currentMatches.filter { match -> match.id != matchId }
         }
-    }
-
-    private suspend fun getCurrentScore(matchId: Long, teamAt: Int): Score {
-        return getMatch(matchId).getOrNull()?.teams?.getOrNull(teamAt)?.score.orZero()
     }
 
     private class DataSourceAggregator(

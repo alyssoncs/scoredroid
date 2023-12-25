@@ -9,6 +9,8 @@ value class Score private constructor(val intValue: Int) {
         require(intValue >= 0) { "A ${this::class.simpleName} cannot be negative, but was $intValue" }
     }
 
+    operator fun inc() = this + 1
+    operator fun dec() = this - 1
     operator fun plus(that: Int) = this + that.toScore()
     operator fun plus(that: Score) = (this.intValue + that.intValue).toScore()
     operator fun minus(that: Int) = this - that.toScore()
