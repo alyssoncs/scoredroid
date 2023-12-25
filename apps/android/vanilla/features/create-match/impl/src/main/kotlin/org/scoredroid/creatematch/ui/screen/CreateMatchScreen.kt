@@ -29,22 +29,12 @@ fun CreateMatchScreen(
 
     if (uiState.created) onCreated()
 
-    CreateMatchScreenContent(
-        uiState = uiState,
-        onMatchNameChange = viewModel::onMatchNameChange,
-        onTeamNameChange = viewModel::onTeamNameChange,
-        onAddTeamClick = viewModel::onAddTeam,
-        onCreateClick = viewModel::onCreate,
-    )
+    CreateMatchScreenContent(uiState = uiState)
 }
 
 @Composable
 private fun CreateMatchScreenContent(
     uiState: CreateMatchUiState,
-    onMatchNameChange: (String) -> Unit,
-    onTeamNameChange: (idx: Int, name: String) -> Unit,
-    onAddTeamClick: () -> Unit,
-    onCreateClick: () -> Unit,
 ) {
     Surface {
         Box {
@@ -52,10 +42,10 @@ private fun CreateMatchScreenContent(
                 matchName = uiState.matchName,
                 teams = uiState.teams.toImmutableList(),
                 saveButtonText = stringResource(id = R.string.create_match),
-                onMatchNameChange = onMatchNameChange,
-                onTeamNameChange = onTeamNameChange,
-                onAddTeamClick = onAddTeamClick,
-                onSaveClick = onCreateClick,
+                onMatchNameChange = uiState.onMatchNameChange,
+                onTeamNameChange = uiState.onTeamNameChange,
+                onAddTeamClick = uiState.onAddTeam,
+                onSaveClick = uiState.onCreate,
             )
             if (uiState.loading) {
                 Loading()
@@ -89,10 +79,6 @@ private fun EditMatchScreenPreview() {
                 loading = false,
                 created = false,
             ),
-            onMatchNameChange = {},
-            onTeamNameChange = { _, _ -> },
-            onAddTeamClick = {},
-            onCreateClick = {},
         )
     }
 }

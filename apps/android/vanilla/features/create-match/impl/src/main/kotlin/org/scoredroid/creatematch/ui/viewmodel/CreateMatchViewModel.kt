@@ -15,30 +15,30 @@ class CreateMatchViewModel(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         CreateMatchUiState(
-            matchName = "",
-            teams = listOf(),
-            loading = false,
-            created = false,
+            onAddTeam = ::onAddTeam,
+            onMatchNameChange = ::onMatchNameChange,
+            onTeamNameChange = ::onTeamNameChange,
+            onCreate = ::onCreate,
         ),
     )
 
     val uiState = _uiState.asStateFlow()
 
-    fun onMatchNameChange(newName: String) {
+    private fun onMatchNameChange(newName: String) {
         _uiState.update { currentState -> currentState.copy(matchName = newName) }
     }
 
-    fun onTeamNameChange(index: Int, newName: String) {
+    private fun onTeamNameChange(teamAt: Int, newName: String) {
         _uiState.update { currentState ->
             currentState.copy(
                 teams = currentState.teams.mapIndexed { currentIndex, currentName ->
-                    if (currentIndex == index) newName else currentName
+                    if (currentIndex == teamAt) newName else currentName
                 },
             )
         }
     }
 
-    fun onAddTeam() {
+    private fun onAddTeam() {
         _uiState.update { currentState ->
             currentState.copy(
                 teams = currentState.teams + "",
@@ -46,7 +46,7 @@ class CreateMatchViewModel(
         }
     }
 
-    fun onCreate() {
+    private fun onCreate() {
         _uiState.update { currentState -> currentState.copy(loading = true) }
         viewModelScope.launch {
             createMatch(uiState.value.toCreateMatchRequest())

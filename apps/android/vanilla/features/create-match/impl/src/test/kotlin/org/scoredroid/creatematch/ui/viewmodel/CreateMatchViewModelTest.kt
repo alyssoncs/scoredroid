@@ -34,21 +34,19 @@ class CreateMatchViewModelTest {
 
     @Test
     fun `on match name change, should update uiState`() = runTest {
-        viewModel.onMatchNameChange("final match")
-
         viewModel.uiState.test {
-            val uiState = awaitItem()
+            awaitItem().onMatchNameChange("final match")
 
-            uiState.matchName shouldBe "final match"
+            awaitItem().matchName shouldBe "final match"
         }
     }
 
     @Test
     fun `on team name change, should update uiState`() = runTest {
-        viewModel.onAddTeam()
-        viewModel.onTeamNameChange(index = 0, newName = "best team")
-
         viewModel.uiState.test {
+            awaitItem().onAddTeam()
+            awaitItem().onTeamNameChange(0, "best team")
+
             val uiState = awaitItem()
 
             uiState.teams.first() shouldBe "best team"
@@ -57,12 +55,15 @@ class CreateMatchViewModelTest {
 
     @Test
     fun `on create, should call use case`() = runTest {
-        viewModel.onMatchNameChange("best match")
-        viewModel.onAddTeam()
-        viewModel.onAddTeam()
-        viewModel.onTeamNameChange(index = 0, newName = "best team")
-        viewModel.onTeamNameChange(index = 1, newName = "worst team")
-        viewModel.onCreate()
+        viewModel.uiState.test {
+            awaitItem().onMatchNameChange("best match")
+            awaitItem().onAddTeam()
+            awaitItem().onAddTeam()
+            awaitItem().onTeamNameChange(0, "best team")
+            awaitItem().onTeamNameChange(1, "worst team")
+            awaitItem().onCreate()
+            cancelAndIgnoreRemainingEvents()
+        }
 
         createMatch.request shouldBe CreateMatchRequestOptions(
             matchName = "best match",
@@ -76,8 +77,7 @@ class CreateMatchViewModelTest {
     @Test
     fun `on create, should load while creating`() = runTest {
         viewModel.uiState.test {
-            skipItems(1)
-            viewModel.onCreate()
+            awaitItem().onCreate()
 
             awaitItem().loading.shouldBeTrue()
             awaitItem().loading.shouldBeFalse()
@@ -87,8 +87,7 @@ class CreateMatchViewModelTest {
     @Test
     fun `on create, should update uiState to created`() = runTest {
         viewModel.uiState.test {
-            skipItems(1)
-            viewModel.onCreate()
+            awaitItem().onCreate()
 
             awaitItem().created.shouldBeFalse()
             awaitItem().created.shouldBeTrue()
