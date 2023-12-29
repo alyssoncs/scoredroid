@@ -48,9 +48,9 @@ fun MatchHistoryScreen(
     onCreateMatchClick: () -> Unit,
     onEditMatchClick: (matchId: Long) -> Unit,
 ) {
-    val uiModel by viewModel.uiModel.collectAsState()
+    val uiModel by viewModel.uiState.collectAsState()
 
-    MatchHistoryScreenContent(uiModel, onCreateMatchClick, onMatchClick, onEditMatchClick, viewModel::removeMatch)
+    MatchHistoryScreenContent(uiModel, onCreateMatchClick, onMatchClick, onEditMatchClick)
 }
 
 @Composable
@@ -59,7 +59,6 @@ private fun MatchHistoryScreenContent(
     onCreateMatchClick: () -> Unit,
     onMatchClick: (Long) -> Unit,
     onEditClick: (Long) -> Unit,
-    onDeleteClick: (Long) -> Unit,
 ) {
     Scaffold(
         floatingActionButton = { Fab(uiModel, onCreateMatchClick) },
@@ -73,7 +72,6 @@ private fun MatchHistoryScreenContent(
                         uiModel.matches.toImmutableList(),
                         onMatchClick,
                         onEditClick,
-                        onDeleteClick,
                         Modifier.padding(paddingValue),
                     )
                 }
@@ -118,7 +116,6 @@ private fun Matches(
     matches: ImmutableList<MatchHistoryUiModel.Content.Match>,
     onMatchClick: (Long) -> Unit,
     onEditClick: (Long) -> Unit,
-    onDeleteClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -134,7 +131,6 @@ private fun Matches(
                 match,
                 onMatchClick,
                 onEditClick,
-                onDeleteClick,
                 Modifier.animateItemPlacement(
                     animationSpec = tween(
                         durationMillis = 500,
@@ -166,7 +162,6 @@ private fun MatchItem(
     match: MatchHistoryUiModel.Content.Match,
     onMatchClick: (Long) -> Unit,
     onEditClick: (Long) -> Unit,
-    onDeleteClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -202,7 +197,7 @@ private fun MatchItem(
                 )
             }
             IconButton(
-                onClick = { onDeleteClick(match.id) },
+                onClick = match.onRemove,
             ) {
                 Icon(
                     painterResource(id = R.drawable.delete_24),
@@ -253,9 +248,7 @@ private fun MatchHistoryScreenPreview() {
             ),
             onCreateMatchClick = {},
             onMatchClick = {},
-            onEditClick = {},
-            onDeleteClick = {},
-        )
+        ) {}
     }
 }
 
@@ -267,9 +260,7 @@ private fun MatchHistoryScreenEmptyStatePreview() {
             uiModel = MatchHistoryUiModel.Content(emptyList()),
             onCreateMatchClick = {},
             onMatchClick = {},
-            onEditClick = {},
-            onDeleteClick = {},
-        )
+        ) {}
     }
 }
 
@@ -281,8 +272,6 @@ private fun MatchHistoryScreenLoadingPreview() {
             uiModel = MatchHistoryUiModel.Loading,
             onCreateMatchClick = {},
             onMatchClick = {},
-            onEditClick = {},
-            onDeleteClick = {},
-        )
+        ) {}
     }
 }

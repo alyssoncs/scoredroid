@@ -1,7 +1,6 @@
 package org.scoredroid.history.ui.viewmodel
 
 import app.cash.turbine.test
-import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -39,23 +38,27 @@ class MatchHistoryViewModelTest {
     private val getMatchesFlowUseCaseStub = GetMatchesFlowStub(matchResponse)
     private val removeMatchUseCaseSpy = RemoveMatchUseCaseSpy()
 
-    private val matchHistoryViewModel = MatchHistoryViewModel(getMatchesFlowUseCaseStub, removeMatchUseCaseSpy)
+    private val matchHistoryViewModel =
+        MatchHistoryViewModel(getMatchesFlowUseCaseStub, removeMatchUseCaseSpy)
 
     @Test
     fun `should fetch matches from use case`() = runTest {
-        matchHistoryViewModel.uiModel.test {
+        matchHistoryViewModel.uiState.test {
             val loading = awaitItem()
             loading.shouldBeInstanceOf<MatchHistoryUiModel.Loading>()
 
-            val content = awaitItem()
-            val value = content as MatchHistoryUiModel.Content
-            value.matches shouldContainExactly expectedUiModel.matches
+            val content = awaitItem() as MatchHistoryUiModel.Content
+            val actualMatch = content.matches.first()
+            val expectedMatch = expectedUiModel.matches.first()
+            actualMatch.matchName shouldBe expectedMatch.matchName
+            actualMatch.id shouldBe expectedMatch.id
+            actualMatch.numberOfTeams shouldBe expectedMatch.numberOfTeams
         }
     }
 
     @Test
     fun `flow update updates the ui state`() = runTest {
-        matchHistoryViewModel.uiModel.test {
+        matchHistoryViewModel.uiState.test {
             awaitItem().shouldBeInstanceOf<MatchHistoryUiModel.Loading>()
             awaitItem().shouldBeInstanceOf<MatchHistoryUiModel.Content>()
 
@@ -74,8 +77,12 @@ class MatchHistoryViewModelTest {
 
     @Test
     fun `remove match calls use case`() = runTest {
-        matchHistoryViewModel.removeMatch(0L)
+        matchHistoryViewModel.uiState.test {
+            skipItems(1)
+            (awaitItem() as MatchHistoryUiModel.Content).matches[0].onRemove()
+            cancelAndIgnoreRemainingEvents()
+        }
 
-        removeMatchUseCaseSpy.removedMatchId shouldBe 0L
+        removeMatchUseCaseSpy.removedMatchId shouldBe 5L
     }
 }

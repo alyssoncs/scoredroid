@@ -4,8 +4,13 @@ sealed interface MatchHistoryUiModel {
     data class Content(
         val matches: List<Match>,
     ) : MatchHistoryUiModel {
-        data class Match(val matchName: String, val numberOfTeams: Int, val id: Long)
+        data class Match(
+            val matchName: String,
+            val numberOfTeams: Int,
+            val id: Long,
+            val onRemove: () -> Unit = {},
+        )
     }
 
-    object Loading : MatchHistoryUiModel
+    data object Loading : MatchHistoryUiModel
 }

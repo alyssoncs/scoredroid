@@ -17,7 +17,7 @@ class MatchHistoryViewModel(
     private val removeMatch: RemoveMatchUseCase,
 ) : ViewModel() {
 
-    val uiModel: StateFlow<MatchHistoryUiModel> = flow {
+    val uiState: StateFlow<MatchHistoryUiModel> = flow {
         getMatchesFlow().collect {
             emit(MatchHistoryUiModel.Content(it.map(::toUiModel)))
         }
@@ -27,7 +27,7 @@ class MatchHistoryViewModel(
         initialValue = MatchHistoryUiModel.Loading,
     )
 
-    fun removeMatch(matchId: Long) {
+    private fun removeMatch(matchId: Long) {
         viewModelScope.launch {
             removeMatch.invoke(matchId)
         }
@@ -37,5 +37,6 @@ class MatchHistoryViewModel(
         matchName = it.name,
         numberOfTeams = it.teams.count(),
         id = it.id,
+        onRemove = { removeMatch(it.id) },
     )
 }
