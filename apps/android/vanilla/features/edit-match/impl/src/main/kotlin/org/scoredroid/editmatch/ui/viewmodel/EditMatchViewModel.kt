@@ -61,25 +61,25 @@ class EditMatchViewModel(
         }
     }
 
-    fun onMatchNameChange(newName: String) {
+    private fun onMatchNameChange(newName: String) {
         viewModelScope.launch {
             renameMatch(getMatchId(), newName)
         }
     }
 
-    fun onTeamNameChange(teamAt: Int, newName: String) {
+    private fun onTeamNameChange(teamAt: Int, newName: String) {
         viewModelScope.launch {
             renameTeam(getMatchId(), teamAt, newName)
         }
     }
 
-    fun onAddTeam() {
+    private fun onAddTeam() {
         viewModelScope.launch {
             addTeam(getMatchId(), AddTeamRequest(""))
         }
     }
 
-    fun onSave() {
+    private fun onSave() {
         viewModelScope.launch {
             saveMatch(getMatchId())
             shouldNavigateBack.update { true }
@@ -106,19 +106,27 @@ class EditMatchViewModel(
         } else {
             EditMatchUiState.Content(
                 matchName = matchResponse.name,
-                teams = matchResponse.teams.map { teamResponse ->
+                teams = matchResponse.teams.mapIndexed { idx, teamResponse ->
                     EditMatchUiState.Content.Team(
                         name = teamResponse.name,
                         score = teamResponse.score,
+                        onNameChange = { name ->
+                            onTeamNameChange(idx, name)
+                        },
                     )
                 },
                 shouldNavigateBack = shouldNavigateBack,
+                onMatchNameChange = ::onMatchNameChange,
+                onAddTeam = ::onAddTeam,
+                onSave = ::onSave,
             )
         }
     }
 
     private suspend fun getMatchId(): Long {
-        return getMatchIdSafe()!!
+        val matchId = getMatchIdSafe()
+        check(matchId != null) { "Could not find a match id" }
+        return matchId
     }
 
     private suspend fun getMatchIdSafe(): Long? {

@@ -33,20 +33,12 @@ fun EditMatchScreen(
 
     EditMatchScreenContent(
         uiState = uiState,
-        onMatchNameChange = viewModel::onMatchNameChange,
-        onTeamNameChange = viewModel::onTeamNameChange,
-        onAddTeamClick = viewModel::onAddTeam,
-        onSaveClick = viewModel::onSave,
     )
 }
 
 @Composable
 private fun EditMatchScreenContent(
     uiState: EditMatchUiState,
-    onMatchNameChange: (String) -> Unit,
-    onTeamNameChange: (idx: Int, name: String) -> Unit,
-    onAddTeamClick: () -> Unit,
-    onSaveClick: () -> Unit,
 ) {
     Surface {
         when (uiState) {
@@ -56,10 +48,12 @@ private fun EditMatchScreenContent(
                     teams = uiState.teams.map(EditMatchUiState.Content.Team::name)
                         .toImmutableList(),
                     saveButtonText = stringResource(id = R.string.save_match),
-                    onMatchNameChange = onMatchNameChange,
-                    onTeamNameChange = onTeamNameChange,
-                    onAddTeamClick = onAddTeamClick,
-                    onSaveClick = onSaveClick,
+                    onMatchNameChange = uiState.onMatchNameChange,
+                    onTeamNameChange = { idx, name ->
+                        uiState.teams[idx].onNameChange(name)
+                    },
+                    onAddTeamClick = uiState.onAddTeam,
+                    onSaveClick = uiState.onSave,
                 )
             }
 
@@ -116,10 +110,6 @@ private fun EditMatchScreenPreview() {
                 ),
                 shouldNavigateBack = false,
             ),
-            onMatchNameChange = {},
-            onTeamNameChange = { _, _ -> },
-            onAddTeamClick = {},
-            onSaveClick = {},
         )
     }
 }
@@ -130,10 +120,6 @@ private fun EditMatchScreenLoadingPreview() {
     ScoredroidTheme {
         EditMatchScreenContent(
             uiState = EditMatchUiState.Loading(shouldNavigateBack = false),
-            onMatchNameChange = {},
-            onTeamNameChange = { _, _ -> },
-            onAddTeamClick = {},
-            onSaveClick = {},
         )
     }
 }
@@ -144,10 +130,6 @@ private fun EditMatchScreenMatchNotFoundPreview() {
     ScoredroidTheme {
         EditMatchScreenContent(
             uiState = EditMatchUiState.MatchNotFound(shouldNavigateBack = false),
-            onMatchNameChange = {},
-            onTeamNameChange = { _, _ -> },
-            onAddTeamClick = {},
-            onSaveClick = {},
         )
     }
 }

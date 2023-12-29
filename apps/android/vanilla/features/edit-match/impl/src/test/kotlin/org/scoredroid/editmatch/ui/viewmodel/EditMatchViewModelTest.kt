@@ -1,6 +1,7 @@
 package org.scoredroid.editmatch.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.TurbineTestContext
 import app.cash.turbine.test
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -26,7 +27,6 @@ import org.scoredroid.usecase.doubles.RenameTeamSpy
 import org.scoredroid.usecase.doubles.SaveMatchSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
 import org.scoredroid.viewmodel.callOnCleared
-import kotlin.random.Random
 
 @ExtendWith(CoroutineTestExtension::class)
 class EditMatchViewModelTest {
@@ -53,7 +53,7 @@ class EditMatchViewModelTest {
     private lateinit var savedStateHandle: SavedStateHandle
 
     @Nested
-    inner class NewMatch {
+    inner class NewMatch : OldOrNewMatchTests() {
 
         @BeforeEach
         fun setUp() {
@@ -96,11 +96,11 @@ class EditMatchViewModelTest {
     }
 
     @Nested
-    inner class ExistingMatch {
+    inner class ExistingMatch : OldOrNewMatchTests() {
 
         @BeforeEach
         fun setUp() {
-            savedStateHandle = SavedStateHandle(mapOf(MATCH_ID_NAV_ARG to 4L))
+            savedStateHandle = SavedStateHandle(mapOf(MATCH_ID_NAV_ARG to matchId))
         }
 
         @Test
@@ -133,65 +133,63 @@ class EditMatchViewModelTest {
         }
     }
 
-    @Nested
-    inner class OldOrNewMatch {
+    abstract inner class OldOrNewMatchTests {
 
-        private val matchId = 6L
+        protected val matchId = 4L
 
         @BeforeEach
-        fun setUp() {
+        fun setUpCreateMatchAndGetMatchFlow() {
             val matchResponse = createMatchStub.response.copy(id = matchId)
             createMatchStub.response = matchResponse
             getMatchFlow.response = matchResponse
-
-            val shouldCreateNewMatch = Random.nextBoolean()
-            val initialValue =
-                if (shouldCreateNewMatch) emptyMap() else mapOf(MATCH_ID_NAV_ARG to matchId)
-            savedStateHandle = SavedStateHandle(initialValue)
         }
 
         @Test
         fun `on match name change, call rename match`() = runTest {
-            viewModel.onMatchNameChange("new name")
-
-            delay(500)
+            viewModel.uiState.test {
+                skipLoading()
+                awaitItem().asContent().onMatchNameChange("new name")
+            }
 
             renameMatchSpy.matchWithId(matchId).wasRenamedTo("new name").shouldBeTrue()
         }
 
         @Test
         fun `on team name change, call rename team`() = runTest {
-            viewModel.onTeamNameChange(0, "new name")
-
-            delay(500)
+            viewModel.uiState.test {
+                skipLoading()
+                awaitItem().asContent().teams[0].onNameChange("new name")
+            }
 
             renameTeamSpy.team(matchId, 0).wasRenamedTo("new name").shouldBeTrue()
         }
 
         @Test
         fun `on add team, call add team`() = runTest {
-            viewModel.onAddTeam()
-
-            delay(500)
+            viewModel.uiState.test {
+                skipLoading()
+                awaitItem().asContent().onAddTeam()
+            }
 
             addTeamSpy.matchWithId(matchId).hasNewTeam(AddTeamRequest("")).shouldBeTrue()
         }
 
         @Test
         fun `on save, call save match`() = runTest {
-            viewModel.onSave()
-
-            delay(500)
+            viewModel.uiState.test {
+                skipLoading()
+                awaitItem().asContent().onSave()
+                cancelAndIgnoreRemainingEvents()
+            }
 
             saveMatchSpy.matchWithId(matchId).wasSaved().shouldBeTrue()
         }
 
         @Test
         fun `on save, navigate back`() = runTest {
-            viewModel.onSave()
-
             viewModel.uiState.test {
-                skipItems(1)
+                skipLoading()
+                awaitItem().asContent().onSave()
                 awaitItem().shouldNavigateBack.shouldBeTrue()
             }
         }
@@ -209,5 +207,11 @@ class EditMatchViewModelTest {
         private fun createViewModel() {
             viewModel.uiState
         }
+
+        private suspend fun TurbineTestContext<EditMatchUiState>.skipLoading() {
+            skipItems(1)
+        }
+
+        private fun EditMatchUiState.asContent() = this as EditMatchUiState.Content
     }
 }
