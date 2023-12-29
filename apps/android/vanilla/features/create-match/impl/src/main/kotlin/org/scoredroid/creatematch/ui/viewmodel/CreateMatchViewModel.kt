@@ -17,7 +17,6 @@ class CreateMatchViewModel(
         CreateMatchUiState(
             onAddTeam = ::onAddTeam,
             onMatchNameChange = ::onMatchNameChange,
-            onTeamNameChange = ::onTeamNameChange,
             onCreate = ::onCreate,
         ),
     )
@@ -31,8 +30,8 @@ class CreateMatchViewModel(
     private fun onTeamNameChange(teamAt: Int, newName: String) {
         _uiState.update { currentState ->
             currentState.copy(
-                teams = currentState.teams.mapIndexed { currentIndex, currentName ->
-                    if (currentIndex == teamAt) newName else currentName
+                teams = currentState.teams.mapIndexed { currentIndex, currentTeam ->
+                    if (currentIndex == teamAt) currentTeam.copy(name = newName) else currentTeam
                 },
             )
         }
@@ -41,7 +40,12 @@ class CreateMatchViewModel(
     private fun onAddTeam() {
         _uiState.update { currentState ->
             currentState.copy(
-                teams = currentState.teams + "",
+                teams = currentState.teams +
+                    CreateMatchUiState.Team(
+                        onNameChange = { name ->
+                            onTeamNameChange(currentState.teams.size, name)
+                        },
+                    ),
             )
         }
     }
@@ -57,8 +61,8 @@ class CreateMatchViewModel(
     private fun CreateMatchUiState.toCreateMatchRequest(): CreateMatchRequestOptions {
         return CreateMatchRequestOptions(
             matchName = matchName,
-            teams = teams.map { teamName ->
-                CreateMatchRequestOptions.InitialTeamRequest(name = teamName)
+            teams = teams.map { team ->
+                CreateMatchRequestOptions.InitialTeamRequest(name = team.name)
             },
         )
     }

@@ -45,11 +45,11 @@ class CreateMatchViewModelTest {
     fun `on team name change, should update uiState`() = runTest {
         viewModel.uiState.test {
             awaitItem().onAddTeam()
-            awaitItem().onTeamNameChange(0, "best team")
+            awaitItem().teams[0].onNameChange("best team")
 
             val uiState = awaitItem()
 
-            uiState.teams.first() shouldBe "best team"
+            uiState.teams.first().name shouldBe "best team"
         }
     }
 
@@ -59,8 +59,8 @@ class CreateMatchViewModelTest {
             awaitItem().onMatchNameChange("best match")
             awaitItem().onAddTeam()
             awaitItem().onAddTeam()
-            awaitItem().onTeamNameChange(0, "best team")
-            awaitItem().onTeamNameChange(1, "worst team")
+            awaitItem().teams[0].onNameChange("best team")
+            awaitItem().teams[1].onNameChange("worst team")
             awaitItem().onCreate()
             cancelAndIgnoreRemainingEvents()
         }

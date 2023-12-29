@@ -40,10 +40,12 @@ private fun CreateMatchScreenContent(
         Box {
             EditMatchForm(
                 matchName = uiState.matchName,
-                teams = uiState.teams.toImmutableList(),
+                teams = uiState.teams.map(CreateMatchUiState.Team::name).toImmutableList(),
                 saveButtonText = stringResource(id = R.string.create_match),
                 onMatchNameChange = uiState.onMatchNameChange,
-                onTeamNameChange = uiState.onTeamNameChange,
+                onTeamNameChange = { teamAt, name ->
+                    uiState.teams[teamAt].onNameChange(name)
+                },
                 onAddTeamClick = uiState.onAddTeam,
                 onSaveClick = uiState.onCreate,
             )
@@ -73,8 +75,8 @@ private fun EditMatchScreenPreview() {
             uiState = CreateMatchUiState(
                 matchName = "Ultimate match",
                 teams = listOf(
-                    "Champions",
-                    "Losers",
+                    CreateMatchUiState.Team("Champions"),
+                    CreateMatchUiState.Team("Losers"),
                 ),
                 loading = false,
                 created = false,
