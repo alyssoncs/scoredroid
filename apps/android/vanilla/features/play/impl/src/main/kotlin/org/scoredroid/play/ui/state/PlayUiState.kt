@@ -10,6 +10,8 @@ sealed interface PlayUiState {
         data class Team(
             val name: String,
             val score: Int,
+            val onIncrement: () -> Unit = {},
+            val onDecrement: () -> Unit = {},
         )
     }
 }

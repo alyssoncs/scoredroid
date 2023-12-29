@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
@@ -48,8 +48,6 @@ fun PlayScreen(
 
     PlayScreenContent(
         uiState = uiState,
-        decrementScore = viewModel::decrementScore,
-        incrementScore = viewModel::incrementScore,
         modifier = modifier,
     )
 }
@@ -57,13 +55,11 @@ fun PlayScreen(
 @Composable
 private fun PlayScreenContent(
     uiState: PlayUiState,
-    decrementScore: (teamAt: Int) -> Unit,
-    incrementScore: (teamAt: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(modifier) {
         when (uiState) {
-            is PlayUiState.Content -> TeamList(uiState, decrementScore, incrementScore)
+            is PlayUiState.Content -> TeamList(uiState)
             PlayUiState.Loading -> Loading()
             PlayUiState.Error -> MatchNotFound()
         }
@@ -73,8 +69,6 @@ private fun PlayScreenContent(
 @Composable
 private fun TeamList(
     uiState: PlayUiState.Content,
-    decrementScore: (teamAt: Int) -> Unit,
-    incrementScore: (teamAt: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -82,11 +76,9 @@ private fun TeamList(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier,
     ) {
-        itemsIndexed(uiState.teams) { index, team ->
+        items(items = uiState.teams) { team ->
             TeamTile(
                 team = team,
-                decrementScore = { decrementScore(index) },
-                incrementScore = { incrementScore(index) },
             )
         }
     }
@@ -112,12 +104,10 @@ fun MatchNotFound(
 @Composable
 private fun TeamTile(
     team: PlayUiState.Content.Team,
-    decrementScore: () -> Unit,
-    incrementScore: () -> Unit,
 ) {
     val accessibilityActions = listOf(
-        decrementScoreAccessibilityAction(decrementScore),
-        incrementScoreAccessibilityAction(incrementScore),
+        decrementScoreAccessibilityAction(team.onDecrement),
+        incrementScoreAccessibilityAction(team.onIncrement),
     )
 
     Card(
@@ -136,9 +126,9 @@ private fun TeamTile(
         ) {
             val noSemantics = Modifier.clearAndSetSemantics { }
 
-            DecrementScoreButton(noSemantics, decrementScore)
+            DecrementScoreButton(noSemantics, team.onDecrement)
             TeamInfo(team)
-            IncrementScoreButton(noSemantics, incrementScore)
+            IncrementScoreButton(noSemantics, team.onIncrement)
         }
     }
 }
@@ -242,8 +232,6 @@ private fun PlayScreenPreview() {
                     ),
                 ),
             ),
-            decrementScore = {},
-            incrementScore = {},
         )
     }
 }
@@ -254,8 +242,6 @@ private fun PlayScreenLoadingPreview() {
     ScoredroidTheme {
         PlayScreenContent(
             uiState = PlayUiState.Loading,
-            decrementScore = {},
-            incrementScore = {},
         )
     }
 }

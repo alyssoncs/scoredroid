@@ -39,7 +39,7 @@ class PlayViewModel(
         }
     }
 
-    fun incrementScore(teamAt: Int) {
+    private fun incrementScore(teamAt: Int) {
         viewModelScope.launch {
             withMatchId { matchId ->
                 incrementScore(matchId = matchId, teamAt = teamAt, increment = 1)
@@ -47,7 +47,7 @@ class PlayViewModel(
         }
     }
 
-    fun decrementScore(teamAt: Int) {
+    private fun decrementScore(teamAt: Int) {
         viewModelScope.launch {
             withMatchId { matchId ->
                 decrementScore(matchId = matchId, teamAt = teamAt, decrement = 1)
@@ -75,10 +75,12 @@ class PlayViewModel(
         } else {
             PlayUiState.Content(
                 matchName = name,
-                teams = teams.map {
+                teams = teams.mapIndexed { idx, team ->
                     PlayUiState.Content.Team(
-                        name = it.name,
-                        score = it.score,
+                        name = team.name,
+                        score = team.score,
+                        onIncrement = { incrementScore(idx) },
+                        onDecrement = { decrementScore(idx) },
                     )
                 },
             )

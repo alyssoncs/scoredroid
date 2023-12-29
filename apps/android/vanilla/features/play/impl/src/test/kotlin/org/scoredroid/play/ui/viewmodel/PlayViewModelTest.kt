@@ -89,6 +89,8 @@ class PlayViewModelTest {
         fun setup() {
             savedStateHandle = SavedStateHandle(mapOf(MATCH_ID_NAV_ARG to 1L))
             getMatchFlowStub.response = matchResponse
+            incrementScoreSpy.setResponse(matchResponse)
+            decrementScoreSpy.setResponse(matchResponse)
         }
 
         @Test
@@ -105,9 +107,10 @@ class PlayViewModelTest {
 
         @Test
         fun `incrementScore should call IncrementScore`() = runTest {
-            incrementScoreSpy.setResponse(matchResponse)
-
-            viewModel.incrementScore(teamAt = 0)
+            viewModel.uiState.test {
+                skipItems(1)
+                (awaitItem() as PlayUiState.Content).teams[0].onIncrement()
+            }
 
             incrementScoreSpy.matchId shouldBe matchResponse.id
             incrementScoreSpy.teamAt shouldBe 0
@@ -116,9 +119,10 @@ class PlayViewModelTest {
 
         @Test
         fun `decrementScore should call DecrementScore`() = runTest {
-            decrementScoreSpy.setResponse(matchResponse)
-
-            viewModel.decrementScore(teamAt = 0)
+            viewModel.uiState.test {
+                skipItems(1)
+                (awaitItem() as PlayUiState.Content).teams[0].onDecrement()
+            }
 
             decrementScoreSpy.matchId shouldBe matchResponse.id
             decrementScoreSpy.teamAt shouldBe 0
