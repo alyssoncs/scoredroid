@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -127,17 +128,19 @@ private fun TeamItem(
 @PreviewThemes
 private fun EditMatchFormPreview() {
     ScoredroidTheme {
-        EditMatchForm(
-            matchName = "Ultimate match",
-            teams = persistentListOf(
-                "Champions",
-                "Losers",
-            ),
-            saveButtonText = "Save",
-            onMatchNameChange = {},
-            onTeamNameChange = { _, _ -> },
-            onAddTeamClick = {},
-            onSaveClick = {},
-        )
+        Surface {
+            EditMatchForm(
+                matchName = "Ultimate match",
+                teams = persistentListOf(
+                    "Champions",
+                    "Losers",
+                ),
+                saveButtonText = "Save",
+                onMatchNameChange = {},
+                onTeamNameChange = { _, _ -> },
+                onAddTeamClick = {},
+                onSaveClick = {},
+            )
+        }
     }
 }
