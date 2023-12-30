@@ -22,6 +22,5 @@
 - [x] create persist-match-changes feature module
 - [x] create edit-match feature module
 - [x] move test doubles to fixtures
-- [ ] create test data builders
 - [ ] add empty screen in play feature when there is no teams
 - [ ] allow to delete and move teams in edit and create feature
