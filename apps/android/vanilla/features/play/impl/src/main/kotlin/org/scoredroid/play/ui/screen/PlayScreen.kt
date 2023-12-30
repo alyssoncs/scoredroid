@@ -1,6 +1,8 @@
 package org.scoredroid.play.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,7 +32,10 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import org.scoredroid.play.impl.R
 import org.scoredroid.play.ui.state.PlayUiState
@@ -43,11 +48,13 @@ import org.scoredroid.ui.tooling.PreviewThemes
 fun PlayScreen(
     viewModel: PlayViewModel,
     modifier: Modifier = Modifier,
+    onEditMatchClick: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     PlayScreenContent(
         uiState = uiState,
+        onEditMatchClick = onEditMatchClick,
         modifier = modifier,
     )
 }
@@ -55,11 +62,12 @@ fun PlayScreen(
 @Composable
 private fun PlayScreenContent(
     uiState: PlayUiState,
+    onEditMatchClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(modifier) {
         when (uiState) {
-            is PlayUiState.Content -> TeamList(uiState)
+            is PlayUiState.Content -> TeamList(uiState, onEditMatchClick)
             PlayUiState.Loading -> Loading()
             PlayUiState.Error -> MatchNotFound()
         }
@@ -69,18 +77,48 @@ private fun PlayScreenContent(
 @Composable
 private fun TeamList(
     uiState: PlayUiState.Content,
+    onEditMatchClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier,
-    ) {
-        items(items = uiState.teams) { team ->
-            TeamTile(
-                team = team,
-            )
+    if (uiState.teams.isEmpty()) {
+        EmptyTeam(modifier, onEditMatchClick)
+    } else {
+        LazyColumn(
+            contentPadding = PaddingValues(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = modifier,
+        ) {
+            items(items = uiState.teams) { team ->
+                TeamTile(
+                    team = team,
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun EmptyTeam(modifier: Modifier = Modifier, onEditMatchClick: () -> Unit) {
+    val annotatedString = buildAnnotatedString {
+        append("There are no teams in this match, ")
+        pushStringAnnotation(tag = "edit_match", annotation = "edit_match")
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+            append("create one :)")
+        }
+        pop()
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(8.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = annotatedString,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.clickable(onClick = onEditMatchClick),
+        )
     }
 }
 
@@ -135,7 +173,8 @@ private fun TeamTile(
 
 @Composable
 private fun decrementScoreAccessibilityAction(decrementScore: () -> Unit): CustomAccessibilityAction {
-    val decrementScoreActionLabel = stringResource(R.string.decrement_score_button_content_description)
+    val decrementScoreActionLabel =
+        stringResource(R.string.decrement_score_button_content_description)
     return CustomAccessibilityAction(decrementScoreActionLabel) {
         decrementScore()
         true
@@ -144,7 +183,8 @@ private fun decrementScoreAccessibilityAction(decrementScore: () -> Unit): Custo
 
 @Composable
 private fun incrementScoreAccessibilityAction(incrementScore: () -> Unit): CustomAccessibilityAction {
-    val incrementScoreActionLabel = stringResource(R.string.increment_score_button_content_description)
+    val incrementScoreActionLabel =
+        stringResource(R.string.increment_score_button_content_description)
     return CustomAccessibilityAction(incrementScoreActionLabel) {
         incrementScore()
         true
@@ -170,7 +210,8 @@ private fun DecrementScoreButton(modifier: Modifier = Modifier, onClick: () -> U
 @Composable
 private fun TeamInfo(team: PlayUiState.Content.Team) {
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .semantics { liveRegion = LiveRegionMode.Polite },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -221,6 +262,21 @@ private fun PlayScreenPreview() {
                     ),
                 ),
             ),
+            onEditMatchClick = {},
+        )
+    }
+}
+
+@PreviewThemes
+@Composable
+private fun EmptyPlayScreenPreview() {
+    ScoredroidTheme {
+        PlayScreenContent(
+            uiState = PlayUiState.Content(
+                matchName = "The match",
+                teams = emptyList(),
+            ),
+            onEditMatchClick = {},
         )
     }
 }
@@ -231,6 +287,7 @@ private fun PlayScreenLoadingPreview() {
     ScoredroidTheme {
         PlayScreenContent(
             uiState = PlayUiState.Loading,
+            onEditMatchClick = {},
         )
     }
 }

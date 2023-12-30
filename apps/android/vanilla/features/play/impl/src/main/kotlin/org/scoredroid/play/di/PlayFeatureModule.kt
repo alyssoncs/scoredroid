@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
 import org.scoredroid.fragment.annotation.FragmentKey
 import org.scoredroid.play.ui.controller.PlayFragment
 import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
@@ -50,8 +51,11 @@ object PlayFeatureModule {
     @Module
     object FragmentModule {
         @[Provides IntoMap FragmentKey(PlayFragment::class)]
-        fun providePlayFragment(vmFactory: ViewModelProvider.Factory): Fragment {
-            return PlayFragment(vmFactory)
+        fun providePlayFragment(
+            vmFactory: ViewModelProvider.Factory,
+            editMatchNavigationTargetProvider: EditMatchNavigationTargetProvider,
+        ): Fragment {
+            return PlayFragment(vmFactory, editMatchNavigationTargetProvider)
         }
     }
 

@@ -24,3 +24,4 @@
 - [x] move test doubles to fixtures
 - [ ] add empty screen in play feature when there is no teams
 - [ ] allow to delete and move teams in edit and create feature
+- [ ] move empty match message in play feature to string resource
