@@ -71,7 +71,7 @@ class MatchRepositoryFixture(
             .map { it?.toMatchResponse() }
     }
 
-    suspend fun rebootApplication() {
+    suspend fun allDataInPersistence() {
         transientMatchDataSource.getAllMatches()
             .map { match -> match.id }
             .forEach { matchId -> repository.persist(matchId) }

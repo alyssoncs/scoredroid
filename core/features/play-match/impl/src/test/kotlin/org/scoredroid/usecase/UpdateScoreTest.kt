@@ -129,10 +129,10 @@ abstract class UpdateScoreTest {
         }
 
         @Nested
-        inner class ApplicationRebooted {
+        inner class CacheMiss {
             @BeforeEach
             fun setUp() = runTest {
-                fixture.rebootApplication()
+                fixture.allDataInPersistence()
             }
 
             @Test

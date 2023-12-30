@@ -96,7 +96,7 @@ class GetMatchesTest {
             fun setUp() = runTest {
                 fixture.createMatch(firstMatchRequest)
                 fixture.createMatch(secondMatchRequest)
-                fixture.rebootApplication()
+                fixture.allDataInPersistence()
             }
 
             @Test
@@ -118,7 +118,7 @@ class GetMatchesTest {
             @BeforeEach
             fun setUp() = runTest {
                 fixture.createMatch(firstMatchRequest)
-                fixture.rebootApplication()
+                fixture.allDataInPersistence()
                 fixture.createMatch(secondMatchRequest)
             }
 

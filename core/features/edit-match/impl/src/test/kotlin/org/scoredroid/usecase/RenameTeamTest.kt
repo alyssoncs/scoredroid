@@ -61,9 +61,9 @@ class RenameTeamTest {
                 val renameRebooting = List(numberOfTeams) { it to true }
 
                 return (renameWithoutRebooting + renameRebooting).map {
-                    dynamicTest("renaming team #${it.first} ${if (!it.second) "without" else ""} rebooting") {
+                    dynamicTest("renaming team #${it.first} ${if (it.second) "with" else "without"} cache miss") {
                         runTest {
-                            if (it.second) fixture.rebootApplication()
+                            if (it.second) fixture.allDataInPersistence()
                             val expectedName =
                                 if (it.second) "rebooting name" else "non rebooting name"
 

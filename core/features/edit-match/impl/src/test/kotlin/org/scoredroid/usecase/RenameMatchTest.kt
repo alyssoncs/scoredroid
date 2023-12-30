@@ -46,8 +46,8 @@ class RenameMatchTest {
 
         @ParameterizedTest
         @ValueSource(booleans = [true, false])
-        fun `return renamed match`(rebootApplication: Boolean) = runTest {
-            if (rebootApplication) fixture.rebootApplication()
+        fun `return renamed match`(cacheMiss: Boolean) = runTest {
+            if (cacheMiss) fixture.allDataInPersistence()
 
             val result = renameMatch(matchId, newName)
 

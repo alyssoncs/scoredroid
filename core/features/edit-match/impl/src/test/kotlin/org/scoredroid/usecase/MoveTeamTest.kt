@@ -73,8 +73,8 @@ class MoveTeamTest {
 
             @ParameterizedTest
             @ValueSource(booleans = [true, false])
-            fun `moveTo equals to teamAt, keep the teams in the same order`(rebootApplication: Boolean) = runTest {
-                if (rebootApplication) fixture.rebootApplication()
+            fun `moveTo equals to teamAt, keep the teams in the same order`(cacheMiss: Boolean) = runTest {
+                if (cacheMiss) fixture.allDataInPersistence()
 
                 val matchResult = moveTeam(matchId = matchId, teamAt = 1, moveTo = 1)
 
@@ -83,8 +83,8 @@ class MoveTeamTest {
 
             @ParameterizedTest
             @ValueSource(booleans = [true, false])
-            fun `moveTo within bounds, move the team to the correct position`(rebootApplication: Boolean) = runTest {
-                if (rebootApplication) fixture.rebootApplication()
+            fun `moveTo within bounds, move the team to the correct position`(cacheMiss: Boolean) = runTest {
+                if (cacheMiss) fixture.allDataInPersistence()
 
                 val matchResult = moveTeam(matchId = matchId, teamAt = 0, moveTo = 1)
 
@@ -93,8 +93,8 @@ class MoveTeamTest {
 
             @ParameterizedTest
             @ValueSource(booleans = [true, false])
-            fun `moveTo underflows, move the team to the initial position`(rebootApplication: Boolean) = runTest {
-                if (rebootApplication) fixture.rebootApplication()
+            fun `moveTo underflows, move the team to the initial position`(cacheMiss: Boolean) = runTest {
+                if (cacheMiss) fixture.allDataInPersistence()
 
                 val matchResult = moveTeam(matchId = matchId, teamAt = 2, moveTo = -2)
 
@@ -103,8 +103,8 @@ class MoveTeamTest {
 
             @ParameterizedTest
             @ValueSource(booleans = [true, false])
-            fun `moveTo overflows, move the team to the last position`(rebootApplication: Boolean) = runTest {
-                if (rebootApplication) fixture.rebootApplication()
+            fun `moveTo overflows, move the team to the last position`(cacheMiss: Boolean) = runTest {
+                if (cacheMiss) fixture.allDataInPersistence()
 
                 val matchResult = moveTeam(matchId = matchId, teamAt = 1, moveTo = 6)
 

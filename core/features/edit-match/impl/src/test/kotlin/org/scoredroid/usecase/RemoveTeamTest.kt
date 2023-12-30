@@ -31,8 +31,8 @@ class RemoveTeamTest {
     inner class ValidIndex {
         @ParameterizedTest
         @ValueSource(booleans = [true, false])
-        fun `remove first team`(rebootApplication: Boolean) = runTest {
-            if (rebootApplication) fixture.rebootApplication()
+        fun `remove first team`(cacheMiss: Boolean) = runTest {
+            if (cacheMiss) fixture.allDataInPersistence()
 
             val matchResult = removeTeam(match.id, 0)
 
@@ -44,8 +44,8 @@ class RemoveTeamTest {
 
         @ParameterizedTest
         @ValueSource(booleans = [true, false])
-        fun `remove last team`(rebootApplication: Boolean) = runTest {
-            if (rebootApplication) fixture.rebootApplication()
+        fun `remove last team`(cacheMiss: Boolean) = runTest {
+            if (cacheMiss) fixture.allDataInPersistence()
 
             val matchResult = removeTeam(match.id, 1)
 
@@ -57,8 +57,8 @@ class RemoveTeamTest {
 
         @ParameterizedTest
         @ValueSource(booleans = [true, false])
-        fun `remove all teams`(rebootApplication: Boolean) = runTest {
-            if (rebootApplication) fixture.rebootApplication()
+        fun `remove all teams`(cacheMiss: Boolean) = runTest {
+            if (cacheMiss) fixture.allDataInPersistence()
 
             removeTeam(match.id, 0).getOrThrow()
 

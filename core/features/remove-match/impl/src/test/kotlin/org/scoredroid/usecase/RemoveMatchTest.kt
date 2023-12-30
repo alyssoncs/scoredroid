@@ -46,8 +46,8 @@ class RemoveMatchTest {
 
         @ParameterizedTest
         @ValueSource(booleans = [true, false])
-        fun `removes the match`(rebootApplication: Boolean) = runTest {
-            if (rebootApplication) fixture.rebootApplication()
+        fun `removes the match`(cacheMiss: Boolean) = runTest {
+            if (cacheMiss) fixture.allDataInPersistence()
 
             removeMatch(matchId)
 

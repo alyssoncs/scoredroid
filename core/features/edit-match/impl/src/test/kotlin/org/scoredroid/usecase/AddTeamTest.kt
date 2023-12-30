@@ -47,8 +47,8 @@ class AddTeamTest {
 
         @ParameterizedTest
         @ValueSource(booleans = [true, false])
-        fun `team is added`(rebootApplication: Boolean) = runTest {
-            if (rebootApplication) fixture.rebootApplication()
+        fun `team is added`(cacheMiss: Boolean) = runTest {
+            if (cacheMiss) fixture.allDataInPersistence()
             val addTeamRequest = AddTeamRequest(name = "team name")
 
             val result = addTeam(matchId, addTeamRequest)
