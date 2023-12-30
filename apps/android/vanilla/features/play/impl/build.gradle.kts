@@ -9,6 +9,7 @@ android {
 dependencies {
     api(projects.apps.android.vanilla.features.play.public)
 
+    implementation(projects.apps.android.vanilla.common.ui.components)
     implementation(projects.core.features.getMatch.public)
     implementation(projects.core.features.persistMatchChanges.public)
     implementation(projects.core.features.playMatch.public)

@@ -1,22 +1,17 @@
 package org.scoredroid.creatematch.ui.screen
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.toImmutableList
 import org.scoredroid.creatematch.impl.R
 import org.scoredroid.creatematch.ui.state.CreateMatchUiState
 import org.scoredroid.creatematch.ui.viewmodel.CreateMatchViewModel
 import org.scoredroid.ui.components.EditMatchForm
+import org.scoredroid.ui.components.Loading
 import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
 
@@ -53,17 +48,6 @@ private fun CreateMatchScreenContent(
                 Loading()
             }
         }
-    }
-}
-
-@Composable
-private fun Loading() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        CircularProgressIndicator()
     }
 }
 

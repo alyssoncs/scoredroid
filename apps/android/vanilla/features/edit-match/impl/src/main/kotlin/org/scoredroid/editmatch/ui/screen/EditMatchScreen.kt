@@ -3,7 +3,6 @@ package org.scoredroid.editmatch.ui.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,6 +17,7 @@ import org.scoredroid.editmatch.impl.R
 import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.editmatch.ui.viewmodel.EditMatchViewModel
 import org.scoredroid.ui.components.EditMatchForm
+import org.scoredroid.ui.components.Loading
 import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
 
@@ -60,17 +60,6 @@ private fun EditMatchScreenContent(
             is EditMatchUiState.Loading -> Loading()
             is EditMatchUiState.MatchNotFound -> MatchNotFound()
         }
-    }
-}
-
-@Composable
-private fun Loading(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        CircularProgressIndicator()
     }
 }
 

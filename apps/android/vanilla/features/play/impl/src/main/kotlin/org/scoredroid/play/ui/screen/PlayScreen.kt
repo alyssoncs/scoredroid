@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import org.scoredroid.play.impl.R
 import org.scoredroid.play.ui.state.PlayUiState
 import org.scoredroid.play.ui.viewmodel.PlayViewModel
+import org.scoredroid.ui.components.Loading
 import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
 
@@ -148,17 +148,6 @@ private fun incrementScoreAccessibilityAction(incrementScore: () -> Unit): Custo
     return CustomAccessibilityAction(incrementScoreActionLabel) {
         incrementScore()
         true
-    }
-}
-
-@Composable
-private fun Loading(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        CircularProgressIndicator()
     }
 }
 

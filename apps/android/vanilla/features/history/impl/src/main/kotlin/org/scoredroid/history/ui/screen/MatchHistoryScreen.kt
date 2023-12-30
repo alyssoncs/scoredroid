@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +37,7 @@ import kotlinx.collections.immutable.toImmutableList
 import org.scoredroid.history.impl.R
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
+import org.scoredroid.ui.components.Loading
 import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
 
@@ -96,17 +96,6 @@ private fun Fab(
                 contentDescription = stringResource(R.string.create_match_fab_content_description),
             )
         }
-    }
-}
-
-@Composable
-private fun Loading() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        CircularProgressIndicator()
     }
 }
 

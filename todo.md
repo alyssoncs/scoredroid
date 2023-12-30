@@ -13,7 +13,7 @@
 - [x] update flow when deleting and clearing transient data from a match
 - [ ] make things internal
 - [x] change MatchHistoryFragment and MatchHistoryViewModel to listen navigation on uiState
-- [ ] create a common loading component
+- [x] create a common loading component
 - [ ] create a common match not found component
 - [x] create create-match feature module
 - [x] create get-match feature module
