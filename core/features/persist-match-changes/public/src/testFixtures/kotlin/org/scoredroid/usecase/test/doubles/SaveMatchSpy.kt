@@ -1,8 +1,8 @@
-package org.scoredroid.usecase.doubles
+package org.scoredroid.usecase.test.doubles
 
-import org.scoredroid.usecase.ClearTransientMatchDataUseCase
+import org.scoredroid.usecase.SaveMatchUseCase
 
-class ClearTransientMatchDataSpy : ClearTransientMatchDataUseCase {
+class SaveMatchSpy : SaveMatchUseCase {
 
     private val invocations = hashSetOf<Long>()
 
@@ -12,12 +12,12 @@ class ClearTransientMatchDataSpy : ClearTransientMatchDataUseCase {
     }
 
     fun matchWithId(matchId: Long) = object : Assertions {
-        override fun wasCleared(): Boolean {
+        override fun wasSaved(): Boolean {
             return invocations.contains(matchId)
         }
     }
 
     interface Assertions {
-        fun wasCleared(): Boolean
+        fun wasSaved(): Boolean
     }
 }

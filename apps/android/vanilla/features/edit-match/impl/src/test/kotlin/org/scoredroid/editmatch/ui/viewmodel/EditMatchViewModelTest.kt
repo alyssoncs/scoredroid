@@ -18,13 +18,13 @@ import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.editmatch.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.editmatch.ui.state.EditMatchUiState
 import org.scoredroid.usecase.AddTeamRequest
-import org.scoredroid.usecase.doubles.AddTeamSpy
-import org.scoredroid.usecase.doubles.ClearTransientMatchDataSpy
-import org.scoredroid.usecase.doubles.CreateMatchStub
-import org.scoredroid.usecase.doubles.GetMatchFlowStub
-import org.scoredroid.usecase.doubles.RenameMatchSpy
-import org.scoredroid.usecase.doubles.RenameTeamSpy
-import org.scoredroid.usecase.doubles.SaveMatchSpy
+import org.scoredroid.usecase.test.doubles.AddTeamSpy
+import org.scoredroid.usecase.test.doubles.ClearTransientMatchDataSpy
+import org.scoredroid.usecase.test.doubles.CreateMatchStub
+import org.scoredroid.usecase.test.doubles.GetMatchFlowStub
+import org.scoredroid.usecase.test.doubles.RenameMatchSpy
+import org.scoredroid.usecase.test.doubles.RenameTeamSpy
+import org.scoredroid.usecase.test.doubles.SaveMatchSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
 import org.scoredroid.viewmodel.callOnCleared
 

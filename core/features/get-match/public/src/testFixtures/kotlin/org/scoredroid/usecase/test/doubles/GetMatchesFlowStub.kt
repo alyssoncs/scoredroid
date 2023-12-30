@@ -1,4 +1,4 @@
-package org.scoredroid.usecase.doubles
+package org.scoredroid.usecase.test.doubles
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -22,4 +22,3 @@ class GetMatchesFlowStub(initialValue: List<MatchResponse>) : GetMatchesFlowUseC
         }
     }
 }
-

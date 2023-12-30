@@ -10,8 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.history.ui.model.MatchHistoryUiModel
-import org.scoredroid.usecase.doubles.GetMatchesFlowStub
 import org.scoredroid.usecase.doubles.RemoveMatchUseCaseSpy
+import org.scoredroid.usecase.test.doubles.GetMatchesFlowStub
 import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)

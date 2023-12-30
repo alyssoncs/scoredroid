@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.scoredroid.usecase.CreateMatchRequestOptions
-import org.scoredroid.usecase.doubles.CreateMatchSpy
+import org.scoredroid.usecase.test.doubles.CreateMatchSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
 
 @ExtendWith(CoroutineTestExtension::class)

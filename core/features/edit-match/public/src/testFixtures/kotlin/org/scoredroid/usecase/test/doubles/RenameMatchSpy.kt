@@ -1,4 +1,4 @@
-package org.scoredroid.usecase.doubles
+package org.scoredroid.usecase.test.doubles
 
 import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.usecase.RenameMatchUseCase

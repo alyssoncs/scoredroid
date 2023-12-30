@@ -14,10 +14,10 @@ import org.scoredroid.data.response.MatchResponse
 import org.scoredroid.data.response.TeamResponse
 import org.scoredroid.play.ui.navigation.MATCH_ID_NAV_ARG
 import org.scoredroid.play.ui.state.PlayUiState
-import org.scoredroid.usecase.doubles.DecrementScoreSpy
-import org.scoredroid.usecase.doubles.GetMatchFlowStub
-import org.scoredroid.usecase.doubles.IncrementScoreSpy
-import org.scoredroid.usecase.doubles.SaveMatchSpy
+import org.scoredroid.usecase.test.doubles.DecrementScoreSpy
+import org.scoredroid.usecase.test.doubles.GetMatchFlowStub
+import org.scoredroid.usecase.test.doubles.IncrementScoreSpy
+import org.scoredroid.usecase.test.doubles.SaveMatchSpy
 import org.scoredroid.viewmodel.CoroutineTestExtension
 import org.scoredroid.viewmodel.callOnCleared
 
