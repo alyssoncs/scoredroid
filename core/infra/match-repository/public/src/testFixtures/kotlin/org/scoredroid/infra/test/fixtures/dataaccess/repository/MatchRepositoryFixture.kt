@@ -12,7 +12,6 @@ import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.test.doubles.dataaccess.repository.FakePersistentMatchDataSource
 import org.scoredroid.utils.mappers.toMatchResponse
 
-
 class MatchRepositoryFixture(
     val repository: MatchRepository,
     private val transientMatchDataSource: TransientMatchDataSource,
