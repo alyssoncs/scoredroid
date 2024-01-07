@@ -40,6 +40,7 @@ import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 import org.scoredroid.ui.components.Loading
 import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
+import org.scoredroid.ui.components.R as CommonResources
 
 @Composable
 fun MatchHistoryScreen(
@@ -189,7 +190,7 @@ private fun MatchItem(
                 onClick = match.onRemove,
             ) {
                 Icon(
-                    painterResource(id = R.drawable.delete_24),
+                    painterResource(id = CommonResources.drawable.delete_24),
                     contentDescription = stringResource(R.string.delete_match_button_content_description),
                 )
             }
