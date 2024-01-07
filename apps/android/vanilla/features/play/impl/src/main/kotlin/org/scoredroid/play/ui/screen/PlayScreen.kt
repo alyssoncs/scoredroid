@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +34,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,6 +46,7 @@ import org.scoredroid.play.ui.viewmodel.PlayViewModel
 import org.scoredroid.ui.components.Loading
 import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
+import kotlin.text.Regex.Companion.escape
 
 @Composable
 fun PlayScreen(
@@ -98,15 +102,12 @@ private fun TeamList(
 }
 
 @Composable
-private fun EmptyTeam(modifier: Modifier = Modifier, onEditMatchClick: () -> Unit) {
-    val annotatedString = buildAnnotatedString {
-        append("There are no teams in this match, ")
-        pushStringAnnotation(tag = "edit_match", annotation = "edit_match")
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-            append("create one :)")
-        }
-        pop()
-    }
+private fun EmptyTeam(
+    modifier: Modifier = Modifier,
+    onEditMatchClick: () -> Unit,
+) {
+    val editMatchAnnotation = "edit_match"
+    val annotatedString = buildEmptyMessage(editMatchAnnotation)
 
     Box(
         modifier = modifier
@@ -114,12 +115,38 @@ private fun EmptyTeam(modifier: Modifier = Modifier, onEditMatchClick: () -> Uni
             .padding(8.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(
+        ClickableText(
             text = annotatedString,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.clickable(onClick = onEditMatchClick),
-        )
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .clickable(onClick = onEditMatchClick)
+                .padding(16.dp),
+        ) { offset ->
+            if (annotatedString.hasStringAnnotations(editMatchAnnotation, offset, offset)) {
+                onEditMatchClick()
+            }
+        }
     }
+}
+
+@Composable
+private fun buildEmptyMessage(linkAnnotation: String): AnnotatedString {
+    val addTeamLink = stringResource(id = R.string.add_team_link)
+    val message = stringResource(id = R.string.empty_match_message_template, addTeamLink)
+    val linkOccurrences = escape(addTeamLink).toRegex().findAll(message)
+    val annotatedString = buildAnnotatedString {
+        withStyle(style = SpanStyle(color = LocalContentColor.current)) {
+            append(message)
+        }
+        linkOccurrences.forEach { occurrence ->
+            val start = occurrence.range.first
+            val end = occurrence.range.last.inc()
+            val linkStyle = SpanStyle(color = MaterialTheme.colorScheme.primary)
+            addStyle(style = linkStyle, start = start, end = end)
+            addStringAnnotation(tag = linkAnnotation, annotation = linkAnnotation, start = start, end = end)
+        }
+    }
+    return annotatedString
 }
 
 @Composable

@@ -7,4 +7,6 @@
     <string name="decrement_score_button_content_description">Decrement score</string>
     <string name="increment_score_button_content_description">Increment score</string>
     <string name="match_not_found">Match not found.</string>
+    <string name="add_team_link">add one :)</string>
+    <string name="empty_match_message_template">There are no teams in this match, %1$s</string>
 </resources>
