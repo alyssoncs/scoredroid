@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="number_of_teams">
+        <item quantity="one">%d time</item>
+        <item quantity="other">%d times</item>
+    </plurals>
+    <string name="no_matches">Sem partidas por enquanto.</string>
+    <string name="match_tile_click_label">Jogar</string>
+    <string name="create_match_fab_content_description">Criar partida</string>
+    <string name="edit_match_button_content_description">Editar partida</string>
+    <string name="delete_match_button_content_description">Excluir partida</string>
+</resources>
