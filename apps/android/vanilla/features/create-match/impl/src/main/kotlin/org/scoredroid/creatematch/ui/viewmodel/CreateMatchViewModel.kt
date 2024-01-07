@@ -37,17 +37,33 @@ class CreateMatchViewModel(
         }
     }
 
+    private fun onRemoveTeam(teamAt: Int) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                teams = currentState.teams.filterIndexed { index, _ ->
+                    index != teamAt
+                }.setupCallbacks(),
+            )
+        }
+    }
+
     private fun onAddTeam() {
         _uiState.update { currentState ->
             currentState.copy(
-                teams = currentState.teams +
-                    CreateMatchUiState.Team(
-                        onNameChange = { name ->
-                            onTeamNameChange(currentState.teams.size, name)
-                        },
-                    ),
+                teams = (currentState.teams + CreateMatchUiState.Team()).setupCallbacks(),
             )
         }
+    }
+
+    private fun List<CreateMatchUiState.Team>.setupCallbacks() = mapIndexed { idx, team ->
+        team.copy(
+            onNameChange = { name ->
+                onTeamNameChange(idx, name)
+            },
+            onRemove = {
+                onRemoveTeam(idx)
+            },
+        )
     }
 
     private fun onCreate() {

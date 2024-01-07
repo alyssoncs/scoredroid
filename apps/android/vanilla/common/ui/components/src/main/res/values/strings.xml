@@ -3,4 +3,5 @@
     <string name="match_name_label">Match name (optional)</string>
     <string name="team_name_label">Team name</string>
     <string name="add_team">Add team</string>
+    <string name="remove_team_button_content_description">Remove team</string>
 </resources>

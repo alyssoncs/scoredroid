@@ -15,6 +15,7 @@ import org.scoredroid.usecase.AddTeamUseCase
 import org.scoredroid.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.usecase.CreateMatchUseCase
 import org.scoredroid.usecase.GetMatchFlowUseCase
+import org.scoredroid.usecase.RemoveTeamUseCase
 import org.scoredroid.usecase.RenameMatchUseCase
 import org.scoredroid.usecase.RenameTeamUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
@@ -38,6 +39,7 @@ object EditMatchFeatureModule {
             getMatchFlow: GetMatchFlowUseCase,
             renameMatch: RenameMatchUseCase,
             renameTeam: RenameTeamUseCase,
+            removeTeam: RemoveTeamUseCase,
             addTeam: AddTeamUseCase,
             saveMatch: SaveMatchUseCase,
             clearTransientData: ClearTransientMatchDataUseCase,
@@ -49,6 +51,7 @@ object EditMatchFeatureModule {
                     renameMatch = renameMatch,
                     renameTeam = renameTeam,
                     addTeam = addTeam,
+                    removeTeam = removeTeam,
                     saveMatch = saveMatch,
                     clearTransientData = clearTransientData,
                     savedStateHandle = savedStateHandle,

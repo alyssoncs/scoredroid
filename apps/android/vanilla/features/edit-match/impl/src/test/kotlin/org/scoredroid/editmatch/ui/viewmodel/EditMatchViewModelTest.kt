@@ -22,6 +22,7 @@ import org.scoredroid.usecase.test.doubles.AddTeamSpy
 import org.scoredroid.usecase.test.doubles.ClearTransientMatchDataSpy
 import org.scoredroid.usecase.test.doubles.CreateMatchStub
 import org.scoredroid.usecase.test.doubles.GetMatchFlowStub
+import org.scoredroid.usecase.test.doubles.RemoveTeamSpy
 import org.scoredroid.usecase.test.doubles.RenameMatchSpy
 import org.scoredroid.usecase.test.doubles.RenameTeamSpy
 import org.scoredroid.usecase.test.doubles.SaveMatchSpy
@@ -37,6 +38,7 @@ class EditMatchViewModelTest {
             renameMatchSpy,
             renameTeamSpy,
             addTeamSpy,
+            removeTeamSpy,
             saveMatchSpy,
             clearTransientMatchDataSpy,
             savedStateHandle,
@@ -48,6 +50,7 @@ class EditMatchViewModelTest {
     private val renameMatchSpy = RenameMatchSpy()
     private val renameTeamSpy = RenameTeamSpy()
     private val addTeamSpy = AddTeamSpy()
+    private val removeTeamSpy = RemoveTeamSpy()
     private val saveMatchSpy = SaveMatchSpy()
     private val clearTransientMatchDataSpy = ClearTransientMatchDataSpy()
     private lateinit var savedStateHandle: SavedStateHandle
@@ -172,6 +175,16 @@ class EditMatchViewModelTest {
             }
 
             addTeamSpy.matchWithId(matchId).hasNewTeam(AddTeamRequest("")).shouldBeTrue()
+        }
+
+        @Test
+        fun `on remove team, call remove team`() = runTest {
+            viewModel.uiState.test {
+                skipLoading()
+                awaitItem().asContent().teams[0].onRemove()
+            }
+
+            removeTeamSpy.matchWithId(matchId).hadTeamRemoved(0).shouldBeTrue()
         }
 
         @Test

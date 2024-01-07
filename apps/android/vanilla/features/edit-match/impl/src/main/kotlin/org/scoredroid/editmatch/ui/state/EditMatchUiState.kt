@@ -16,6 +16,7 @@ sealed interface EditMatchUiState {
             val name: String,
             val score: Int,
             val onNameChange: (name: String) -> Unit = {},
+            val onRemove: () -> Unit = {},
         )
     }
 

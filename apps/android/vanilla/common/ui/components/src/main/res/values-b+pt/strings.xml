@@ -3,4 +3,5 @@
     <string name="match_name_label">Nome da partida (opcional)</string>
     <string name="team_name_label">Nome do time</string>
     <string name="add_team">Adicionar time</string>
+    <string name="remove_team_button_content_description">Remover time</string>
 </resources>

@@ -12,5 +12,6 @@ data class CreateMatchUiState(
     data class Team(
         val name: String = "",
         val onNameChange: (name: String) -> Unit = {},
+        val onRemove: () -> Unit = {},
     )
 }

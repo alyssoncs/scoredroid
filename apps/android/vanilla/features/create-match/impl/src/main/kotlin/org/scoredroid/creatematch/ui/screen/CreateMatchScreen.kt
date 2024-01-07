@@ -41,6 +41,9 @@ private fun CreateMatchScreenContent(
                 onTeamNameChange = { teamAt, name ->
                     uiState.teams[teamAt].onNameChange(name)
                 },
+                onRemoveTeamClick = { teamAt ->
+                    uiState.teams[teamAt].onRemove()
+                },
                 onAddTeamClick = uiState.onAddTeam,
                 onSaveClick = uiState.onCreate,
             )

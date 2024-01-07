@@ -23,6 +23,7 @@ import org.scoredroid.usecase.ClearTransientMatchDataUseCase
 import org.scoredroid.usecase.CreateMatchRequestOptions
 import org.scoredroid.usecase.CreateMatchUseCase
 import org.scoredroid.usecase.GetMatchFlowUseCase
+import org.scoredroid.usecase.RemoveTeamUseCase
 import org.scoredroid.usecase.RenameMatchUseCase
 import org.scoredroid.usecase.RenameTeamUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
@@ -33,6 +34,7 @@ class EditMatchViewModel(
     private val renameMatch: RenameMatchUseCase,
     private val renameTeam: RenameTeamUseCase,
     private val addTeam: AddTeamUseCase,
+    private val removeTeam: RemoveTeamUseCase,
     private val saveMatch: SaveMatchUseCase,
     private val clearTransientData: ClearTransientMatchDataUseCase,
     private val savedStateHandle: SavedStateHandle,
@@ -70,6 +72,12 @@ class EditMatchViewModel(
     private fun onTeamNameChange(teamAt: Int, newName: String) {
         viewModelScope.launch {
             renameTeam(getMatchId(), teamAt, newName)
+        }
+    }
+
+    private fun onTeamRemoved(teamAt: Int) {
+        viewModelScope.launch {
+            removeTeam(getMatchId(), teamAt)
         }
     }
 
@@ -112,6 +120,9 @@ class EditMatchViewModel(
                         score = teamResponse.score,
                         onNameChange = { name ->
                             onTeamNameChange(idx, name)
+                        },
+                        onRemove = {
+                            onTeamRemoved(idx)
                         },
                     )
                 },

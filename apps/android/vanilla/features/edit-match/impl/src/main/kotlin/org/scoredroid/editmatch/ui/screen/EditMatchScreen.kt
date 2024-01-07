@@ -53,6 +53,9 @@ private fun EditMatchScreenContent(
                         uiState.teams[idx].onNameChange(name)
                     },
                     onAddTeamClick = uiState.onAddTeam,
+                    onRemoveTeamClick = { teamAt ->
+                        uiState.teams[teamAt].onRemove()
+                    },
                     onSaveClick = uiState.onSave,
                 )
             }

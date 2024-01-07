@@ -54,6 +54,33 @@ class CreateMatchViewModelTest {
     }
 
     @Test
+    fun `on remove team, should update uiState`() = runTest {
+        viewModel.uiState.test {
+            awaitItem().onAddTeam()
+            awaitItem().teams[0].onRemove()
+
+            val uiState = awaitItem()
+
+            uiState.teams.shouldBeEmpty()
+        }
+    }
+
+    @Test
+    fun `remove team does not affect rename`() = runTest {
+        viewModel.uiState.test {
+            awaitItem().onAddTeam()
+            awaitItem().onAddTeam()
+            awaitItem().onAddTeam()
+            awaitItem().teams[1].onRemove()
+            awaitItem().teams[1].onNameChange("new name")
+
+            val uiState = awaitItem()
+
+            uiState.teams[1].name shouldBe "new name"
+        }
+    }
+
+    @Test
     fun `on create, should call use case`() = runTest {
         viewModel.uiState.test {
             awaitItem().onMatchNameChange("best match")
