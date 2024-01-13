@@ -26,3 +26,4 @@
 - [x] allow to delete teams in edit and create feature
 - [ ] allow to move teams in edit and create feature
 - [x] move empty match message in play feature to string resource
+- [ ] support different types of increments
