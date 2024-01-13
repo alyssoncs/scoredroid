@@ -11,7 +11,7 @@
 - [x] create a module to expose the CoroutineTestExtension
 - [x] create a fragment compose utils module
 - [x] update flow when deleting and clearing transient data from a match
-- [ ] make things internal
+- [x] make things internal
 - [x] change MatchHistoryFragment and MatchHistoryViewModel to listen navigation on uiState
 - [x] create a common loading component
 - [ ] create a common match not found component
