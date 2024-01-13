@@ -10,6 +10,8 @@ import org.scoredroid.creatematch.ui.navigation.CreateMatchNavigationTargetProvi
 import org.scoredroid.editmatch.ui.navigation.EditMatchNavigationTargetProvider
 import org.scoredroid.fragment.annotation.FragmentKey
 import org.scoredroid.history.ui.controller.MatchHistoryFragment
+import org.scoredroid.history.ui.navigation.HistoryNavigationTargetProvider
+import org.scoredroid.history.ui.navigation.HistoryNavigationTargetProviderImpl
 import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
 import org.scoredroid.usecase.GetMatchesFlowUseCase
@@ -20,6 +22,7 @@ import org.scoredroid.viewmodel.annotation.ViewModelKey
     includes = [
         HistoryFeatureModule.ViewModelModule::class,
         HistoryFeatureModule.FragmentModule::class,
+        HistoryFeatureModule.NavigationModule::class,
     ],
 )
 object HistoryFeatureModule {
@@ -50,6 +53,14 @@ object HistoryFeatureModule {
                 createMatchNavigationTargetProvider,
                 playNavigationTargetProvider,
             )
+        }
+    }
+
+    @Module
+    object NavigationModule {
+        @Provides
+        fun provideHistoryNavigationTargetProvider(): HistoryNavigationTargetProvider {
+            return HistoryNavigationTargetProviderImpl
         }
     }
 }

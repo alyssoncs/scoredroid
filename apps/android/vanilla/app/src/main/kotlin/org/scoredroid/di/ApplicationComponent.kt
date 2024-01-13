@@ -7,6 +7,7 @@ import dagger.Component
 import org.scoredroid.di.modules.FeaturesModule
 import org.scoredroid.di.modules.UseCasesModule
 import org.scoredroid.fragment.di.FragmentFactoryModule
+import org.scoredroid.history.ui.navigation.HistoryNavigationTargetProvider
 import org.scoredroid.infra.dataaccess.di.RoomMatchDataSourceModule
 import org.scoredroid.viewmodel.di.ViewModelFactoryModule
 
@@ -27,6 +28,7 @@ interface ApplicationComponent {
     }
 
     val fragmentFactory: FragmentFactory
+    val historyNavigationTargetProvider: HistoryNavigationTargetProvider
 
     @Component.Factory
     interface Factory {

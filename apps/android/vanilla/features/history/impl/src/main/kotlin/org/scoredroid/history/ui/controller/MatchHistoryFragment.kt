@@ -16,7 +16,7 @@ import org.scoredroid.history.ui.viewmodel.MatchHistoryViewModel
 import org.scoredroid.play.ui.navigation.PlayNavigationTargetProvider
 import org.scoredroid.ui.theme.ScoredroidTheme
 
-class MatchHistoryFragment(
+internal class MatchHistoryFragment(
     vmFactory: ViewModelProvider.Factory,
     private val editMatchNavigationTargetProvider: EditMatchNavigationTargetProvider,
     private val createMatchNavigationTargetProvider: CreateMatchNavigationTargetProvider,

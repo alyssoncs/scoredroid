@@ -2,10 +2,8 @@ package org.scoredroid
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.add
 import org.scoredroid.di.ApplicationComponent
 import org.scoredroid.fragment.transactions.commitWithReordering
-import org.scoredroid.history.ui.controller.MatchHistoryFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,7 +17,8 @@ class MainActivity : AppCompatActivity() {
     private fun addFragment(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             supportFragmentManager.commitWithReordering {
-                add<MatchHistoryFragment>(R.id.fragment_container)
+                val historyNavigationTargetProvider = ApplicationComponent.instance.historyNavigationTargetProvider
+                add(R.id.fragment_container, historyNavigationTargetProvider.getNavigationTarget(), null)
             }
         }
     }
