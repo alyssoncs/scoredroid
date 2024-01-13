@@ -85,7 +85,7 @@ private fun TeamList(
     modifier: Modifier = Modifier,
 ) {
     if (uiState.teams.isEmpty()) {
-        EmptyTeam(modifier, onEditMatchClick)
+        EmptyMatch(modifier, onEditMatchClick)
     } else {
         LazyColumn(
             contentPadding = PaddingValues(8.dp),
@@ -102,7 +102,7 @@ private fun TeamList(
 }
 
 @Composable
-private fun EmptyTeam(
+private fun EmptyMatch(
     modifier: Modifier = Modifier,
     onEditMatchClick: () -> Unit,
 ) {
