@@ -22,7 +22,7 @@ import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
 
 @Composable
-fun EditMatchScreen(
+internal fun EditMatchScreen(
     viewModel: EditMatchViewModel,
     onNavigateBack: () -> Unit,
 ) {

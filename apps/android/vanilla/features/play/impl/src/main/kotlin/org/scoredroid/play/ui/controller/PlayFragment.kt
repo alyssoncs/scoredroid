@@ -15,7 +15,7 @@ import org.scoredroid.play.ui.screen.PlayScreen
 import org.scoredroid.play.ui.viewmodel.PlayViewModel
 import org.scoredroid.ui.theme.ScoredroidTheme
 
-class PlayFragment(
+internal class PlayFragment(
     vmFactory: ViewModelProvider.Factory,
     private val editMatchNavigationTargetProvider: EditMatchNavigationTargetProvider,
 ) : Fragment() {

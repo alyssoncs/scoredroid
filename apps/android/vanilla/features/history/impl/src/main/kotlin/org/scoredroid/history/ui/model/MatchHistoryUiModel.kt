@@ -1,6 +1,6 @@
 package org.scoredroid.history.ui.model
 
-sealed interface MatchHistoryUiModel {
+internal sealed interface MatchHistoryUiModel {
     data class Content(
         val matches: List<Match>,
     ) : MatchHistoryUiModel {

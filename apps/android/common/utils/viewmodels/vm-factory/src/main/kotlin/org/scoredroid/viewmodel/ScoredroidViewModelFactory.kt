@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 
-class ScoredroidViewModelFactory(
+internal class ScoredroidViewModelFactory(
     private val factories: Map<Class<out ViewModel>, (SavedStateHandle) -> ViewModel>,
 ) : ViewModelProvider.Factory {
 

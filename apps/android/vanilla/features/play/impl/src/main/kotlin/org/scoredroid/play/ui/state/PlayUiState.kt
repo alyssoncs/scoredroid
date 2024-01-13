@@ -1,6 +1,6 @@
 package org.scoredroid.play.ui.state
 
-sealed interface PlayUiState {
+internal sealed interface PlayUiState {
     data object Error : PlayUiState
     data object Loading : PlayUiState
     data class Content(

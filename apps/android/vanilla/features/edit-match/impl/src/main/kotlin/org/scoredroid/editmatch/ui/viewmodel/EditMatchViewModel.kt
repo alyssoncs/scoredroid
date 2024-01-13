@@ -28,7 +28,7 @@ import org.scoredroid.usecase.RenameMatchUseCase
 import org.scoredroid.usecase.RenameTeamUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
 
-class EditMatchViewModel(
+internal class EditMatchViewModel(
     private val createMatch: CreateMatchUseCase,
     private val getMatchFlow: GetMatchFlowUseCase,
     private val renameMatch: RenameMatchUseCase,

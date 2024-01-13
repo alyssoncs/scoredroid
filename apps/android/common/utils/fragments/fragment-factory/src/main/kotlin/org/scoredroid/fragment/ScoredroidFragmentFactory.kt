@@ -3,7 +3,7 @@ package org.scoredroid.fragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 
-class ScoredroidFragmentFactory(
+internal class ScoredroidFragmentFactory(
     private val factories: Map<Class<out Fragment>, () -> Fragment>,
 ) : FragmentFactory() {
 

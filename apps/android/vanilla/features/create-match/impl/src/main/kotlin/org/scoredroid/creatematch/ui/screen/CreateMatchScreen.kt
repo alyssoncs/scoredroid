@@ -16,7 +16,7 @@ import org.scoredroid.ui.theme.ScoredroidTheme
 import org.scoredroid.ui.tooling.PreviewThemes
 
 @Composable
-fun CreateMatchScreen(
+internal fun CreateMatchScreen(
     viewModel: CreateMatchViewModel,
     onCreated: () -> Unit,
 ) {

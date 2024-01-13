@@ -12,7 +12,7 @@ import org.scoredroid.creatematch.ui.viewmodel.CreateMatchViewModel
 import org.scoredroid.fragment.compose.composeView
 import org.scoredroid.ui.theme.ScoredroidTheme
 
-class CreateMatchFragment(
+internal class CreateMatchFragment(
     vmFactory: ViewModelProvider.Factory,
 ) : Fragment() {
 

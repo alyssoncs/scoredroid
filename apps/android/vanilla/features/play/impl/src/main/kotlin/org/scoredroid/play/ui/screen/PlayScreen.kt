@@ -49,7 +49,7 @@ import org.scoredroid.ui.tooling.PreviewThemes
 import kotlin.text.Regex.Companion.escape
 
 @Composable
-fun PlayScreen(
+internal fun PlayScreen(
     viewModel: PlayViewModel,
     modifier: Modifier = Modifier,
     onEditMatchClick: () -> Unit,

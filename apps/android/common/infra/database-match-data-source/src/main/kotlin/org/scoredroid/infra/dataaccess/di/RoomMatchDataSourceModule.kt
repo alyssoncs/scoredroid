@@ -7,10 +7,10 @@ import org.scoredroid.infra.dataaccess.datasource.local.PersistentMatchDataSourc
 import org.scoredroid.infra.dataaccess.datasource.local.RoomMatchDataSource
 
 @Module(includes = [DatabaseModule::class])
-object InfraImplModule {
+object RoomMatchDataSourceModule {
 
     @Provides
-    fun provideMatchDaoToPersistentMatchDataSourceAdapter(
+    fun provideRoomMatchDataSource(
         matchDao: MatchDao,
     ): PersistentMatchDataSource {
         return RoomMatchDataSource(matchDao)

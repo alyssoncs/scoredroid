@@ -7,12 +7,12 @@ import dagger.Component
 import org.scoredroid.di.modules.FeaturesModule
 import org.scoredroid.di.modules.UseCasesModule
 import org.scoredroid.fragment.di.FragmentFactoryModule
-import org.scoredroid.infra.dataaccess.di.InfraImplModule
+import org.scoredroid.infra.dataaccess.di.RoomMatchDataSourceModule
 import org.scoredroid.viewmodel.di.ViewModelFactoryModule
 
 @Component(
     modules = [
-        InfraImplModule::class,
+        RoomMatchDataSourceModule::class,
         FragmentFactoryModule::class,
         ViewModelFactoryModule::class,
         UseCasesModule::class,

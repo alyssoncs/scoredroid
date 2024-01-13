@@ -12,7 +12,7 @@ import org.scoredroid.history.ui.model.MatchHistoryUiModel
 import org.scoredroid.usecase.GetMatchesFlowUseCase
 import org.scoredroid.usecase.RemoveMatchUseCase
 
-class MatchHistoryViewModel(
+internal class MatchHistoryViewModel(
     private val getMatchesFlow: GetMatchesFlowUseCase,
     private val removeMatch: RemoveMatchUseCase,
 ) : ViewModel() {

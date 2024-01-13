@@ -1,6 +1,6 @@
 package org.scoredroid.creatematch.ui.state
 
-data class CreateMatchUiState(
+internal data class CreateMatchUiState(
     val matchName: String = "",
     val teams: List<Team> = emptyList(),
     val loading: Boolean = false,

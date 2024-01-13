@@ -10,7 +10,7 @@ import org.scoredroid.creatematch.ui.state.CreateMatchUiState
 import org.scoredroid.usecase.CreateMatchRequestOptions
 import org.scoredroid.usecase.CreateMatchUseCase
 
-class CreateMatchViewModel(
+internal class CreateMatchViewModel(
     private val createMatch: CreateMatchUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(

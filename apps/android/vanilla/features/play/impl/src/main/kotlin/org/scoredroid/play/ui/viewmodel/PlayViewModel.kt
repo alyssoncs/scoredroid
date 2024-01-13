@@ -15,7 +15,7 @@ import org.scoredroid.usecase.GetMatchFlowUseCase
 import org.scoredroid.usecase.IncrementScoreUseCase
 import org.scoredroid.usecase.SaveMatchUseCase
 
-class PlayViewModel(
+internal class PlayViewModel(
     private val getMatchFlow: GetMatchFlowUseCase,
     private val incrementScore: IncrementScoreUseCase,
     private val decrementScore: DecrementScoreUseCase,

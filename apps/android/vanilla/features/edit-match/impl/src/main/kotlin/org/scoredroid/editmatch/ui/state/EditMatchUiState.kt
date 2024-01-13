@@ -1,6 +1,6 @@
 package org.scoredroid.editmatch.ui.state
 
-sealed interface EditMatchUiState {
+internal sealed interface EditMatchUiState {
 
     val shouldNavigateBack: Boolean
 

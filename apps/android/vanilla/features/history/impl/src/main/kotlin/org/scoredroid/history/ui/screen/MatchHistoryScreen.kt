@@ -43,7 +43,7 @@ import org.scoredroid.ui.tooling.PreviewThemes
 import org.scoredroid.ui.components.R as CommonResources
 
 @Composable
-fun MatchHistoryScreen(
+internal fun MatchHistoryScreen(
     viewModel: MatchHistoryViewModel,
     onMatchClick: (matchId: Long) -> Unit,
     onCreateMatchClick: () -> Unit,
