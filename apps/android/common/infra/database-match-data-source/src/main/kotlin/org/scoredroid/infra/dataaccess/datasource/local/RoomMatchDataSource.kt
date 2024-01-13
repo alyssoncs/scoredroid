@@ -12,7 +12,7 @@ import org.scoredroid.infra.dataaccess.entities.MatchEntity
 import org.scoredroid.infra.dataaccess.entities.TeamEntity
 import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 
-class MatchDaoToPersistentMatchDataSourceAdapter(
+class RoomMatchDataSource(
     private val matchDao: MatchDao,
 ) : PersistentMatchDataSource {
 

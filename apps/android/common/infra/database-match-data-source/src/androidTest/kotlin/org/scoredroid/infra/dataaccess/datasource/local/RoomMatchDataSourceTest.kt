@@ -25,16 +25,16 @@ import org.scoredroid.infra.dataaccess.requestmodel.CreateMatchRepositoryRequest
 import org.scoredroid.infra.dataaccess.requestmodel.TeamRequest
 
 @RunWith(AndroidJUnit4::class)
-class MatchDaoToPersistentMatchDataSourceAdapterTest {
+class RoomMatchDataSourceTest {
     private lateinit var db: MatchDatabase
-    private lateinit var dataSourceAdapter: MatchDaoToPersistentMatchDataSourceAdapter
+    private lateinit var dataSource: RoomMatchDataSource
 
     @Before
     fun setUp() {
         fun getContext() = ApplicationProvider.getApplicationContext<Context>()
 
         db = Room.inMemoryDatabaseBuilder(getContext(), MatchDatabase::class.java).build()
-        dataSourceAdapter = MatchDaoToPersistentMatchDataSourceAdapter(db.matchDao())
+        dataSource = RoomMatchDataSource(db.matchDao())
     }
 
     @After
@@ -46,14 +46,14 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     fun createMatch_createsMatchCorrectly() = runTest {
         val request = createMatchRequest().build()
 
-        val match = dataSourceAdapter.createMatch(request)
+        val match = dataSource.createMatch(request)
 
         assertMatchWasMappedCorrectly(match, request)
     }
 
     @Test
     fun getMatch_matchNotFound() = runTest {
-        val match = dataSourceAdapter.getMatch(1)
+        val match = dataSource.getMatch(1)
 
         match.shouldBeNull()
     }
@@ -61,9 +61,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
     @Test
     fun getMatch_matchFound() = runTest {
         val request = createMatchRequest().build()
-        dataSourceAdapter.createMatch(request)
+        dataSource.createMatch(request)
 
-        val match = dataSourceAdapter.getMatch(1)
+        val match = dataSource.getMatch(1)
 
         match.shouldNotBeNull()
         assertMatchWasMappedCorrectly(match, request)
@@ -71,7 +71,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
     @Test
     fun getAllMatches_noMatches() = runTest {
-        val matches = dataSourceAdapter.getAllMatches()
+        val matches = dataSource.getAllMatches()
 
         matches.shouldBeEmpty()
     }
@@ -81,13 +81,13 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val match01Request = createMatchRequest()
             .withMatchName("match 01")
             .build()
-        dataSourceAdapter.createMatch(match01Request)
+        dataSource.createMatch(match01Request)
         val match02Request = createMatchRequest()
             .withMatchName("match 02")
             .build()
-        dataSourceAdapter.createMatch(match02Request)
+        dataSource.createMatch(match02Request)
 
-        val matches = dataSourceAdapter.getAllMatches()
+        val matches = dataSource.getAllMatches()
 
         matches shouldHaveSize 2
         matches.find { it.name == "match 01" }.shouldNotBeNull()
@@ -104,7 +104,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
             ),
         )
 
-        val result = dataSourceAdapter.save(match)
+        val result = dataSource.save(match)
 
         result.isFailure.shouldBeTrue()
         result.exceptionOrNull()!!.message.shouldNotBeEmpty()
@@ -112,9 +112,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
     @Test
     fun save_noRealUpdate() = runTest {
-        val oldMatch = dataSourceAdapter.createMatch(createMatchRequest().build())
+        val oldMatch = dataSource.createMatch(createMatchRequest().build())
 
-        val result = dataSourceAdapter.save(oldMatch.copy())
+        val result = dataSource.save(oldMatch.copy())
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
             newMatch shouldBe oldMatch
@@ -126,9 +126,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val request = createMatchRequest()
             .withMatchName("old match name")
             .build()
-        val oldMatch = dataSourceAdapter.createMatch(request)
+        val oldMatch = dataSource.createMatch(request)
 
-        val result = dataSourceAdapter.save(oldMatch.copy(name = "new match name"))
+        val result = dataSource.save(oldMatch.copy(name = "new match name"))
 
         assertMatchWasUpdatedCorrectly(oldMatch, result) { newMatch ->
             newMatch.name shouldNotBe oldMatch.name
@@ -140,9 +140,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val request = createMatchRequest()
             .withTeams("team a", "team b")
             .build()
-        val oldMatch = dataSourceAdapter.createMatch(request)
+        val oldMatch = dataSource.createMatch(request)
 
-        val result = dataSourceAdapter.save(
+        val result = dataSource.save(
             oldMatch.copy(
                 teams = oldMatch.teams.mapIndexed { idx, team ->
                     team.copy(name = "team $idx")
@@ -162,9 +162,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val request = createMatchRequest()
             .withTeams("team a", "team b")
             .build()
-        val oldMatch = dataSourceAdapter.createMatch(request)
+        val oldMatch = dataSource.createMatch(request)
 
-        val result = dataSourceAdapter.save(
+        val result = dataSource.save(
             oldMatch.copy(
                 teams = oldMatch.teams.mapIndexed { idx, team ->
                     team.copy(score = idx.inc().toScore())
@@ -184,9 +184,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val request = createMatchRequest()
             .withTeams("team a", "team b")
             .build()
-        val oldMatch = dataSourceAdapter.createMatch(request)
+        val oldMatch = dataSource.createMatch(request)
 
-        val result = dataSourceAdapter.save(
+        val result = dataSource.save(
             oldMatch.copy(
                 teams = oldMatch.teams.reversed(),
             ),
@@ -204,10 +204,10 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val request = createMatchRequest()
             .withTeams("team 1", "team 2")
             .build()
-        val oldMatch = dataSourceAdapter.createMatch(request)
+        val oldMatch = dataSource.createMatch(request)
 
         val additionalTeam = Team(name = "team 1.5", score = 2.toScore())
-        val result = dataSourceAdapter.save(
+        val result = dataSource.save(
             oldMatch.copy(
                 teams = listOf(
                     oldMatch.teams.first(),
@@ -230,9 +230,9 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         val request = createMatchRequest()
             .withTeams("team 1", "team to be deleted", "team 2")
             .build()
-        val oldMatch = dataSourceAdapter.createMatch(request)
+        val oldMatch = dataSource.createMatch(request)
 
-        val result = dataSourceAdapter.save(
+        val result = dataSource.save(
             oldMatch.copy(
                 teams = listOf(oldMatch.teams.first(), oldMatch.teams.last()),
             ),
@@ -247,7 +247,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
     @Test
     fun removeMatch_matchNotFound() = runTest {
-        val result = dataSourceAdapter.removeMatch(1)
+        val result = dataSource.removeMatch(1)
 
         result.isFailure.shouldBeTrue()
         result.exceptionOrNull()!!.message.shouldNotBeEmpty()
@@ -255,12 +255,12 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
 
     @Test
     fun removeMatch_existingMatch() = runTest {
-        val match = dataSourceAdapter.createMatch(createMatchRequest().build())
+        val match = dataSource.createMatch(createMatchRequest().build())
 
-        val result = dataSourceAdapter.removeMatch(match.id)
+        val result = dataSource.removeMatch(match.id)
 
         result.isSuccess.shouldBeTrue()
-        dataSourceAdapter.getMatch(match.id).shouldBeNull()
+        dataSource.getMatch(match.id).shouldBeNull()
     }
 
     private fun assertMatchWasMappedCorrectly(
@@ -281,7 +281,7 @@ class MatchDaoToPersistentMatchDataSourceAdapterTest {
         result: Result<Unit>,
         assert: (Match) -> Unit,
     ) {
-        val newMatch = dataSourceAdapter.getMatch(oldMatch.id)!!
+        val newMatch = dataSource.getMatch(oldMatch.id)!!
         result.isSuccess.shouldBeTrue()
         assert(newMatch)
     }
