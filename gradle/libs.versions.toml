@@ -9,7 +9,7 @@ targetSdk = "34"
 
 # libs
 androidx-appcompat = "1.7.0-alpha03"
-androidx-core = "1.13.0-alpha02"
+androidx-core = "1.13.0-alpha04"
 androidx-junit = "1.2.0-alpha02"
 compose-compiler = "1.5.7"
 compose-material3 = "1.2.0-beta01"
