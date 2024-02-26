@@ -5,7 +5,7 @@ plugins {
 group = "org.scoredroid.buildlogic"
 
 kotlin {
-    jvmToolchain(jdkVersion = 17)
+    jvmToolchain(jdkVersion = libs.versions.java.get().toInt())
 }
 
 dependencies {

@@ -2,7 +2,7 @@
 # app
 agp = "8.2.2"
 compileSdk = "34"
-java = "17"
+java = "21"
 kotlin = "1.9.22"
 minSdk = "25"
 targetSdk = "34"
