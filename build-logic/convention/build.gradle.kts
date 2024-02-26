@@ -4,9 +4,8 @@ plugins {
 
 group = "org.scoredroid.buildlogic"
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+kotlin {
+    jvmToolchain(jdkVersion = 17)
 }
 
 dependencies {
