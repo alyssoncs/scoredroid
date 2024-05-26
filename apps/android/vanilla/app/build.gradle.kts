@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.scoredroid.dagger")
     id("org.scoredroid.detekt")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -40,9 +41,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packaging {
         resources {
