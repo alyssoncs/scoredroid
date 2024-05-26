@@ -27,7 +27,7 @@ viewmodel = "2.8.0"
 kotest = "5.9.0"
 ksp = "1.9.22-1.0.17"
 material = "1.13.0-alpha02"
-room = "2.6.1"
+room = "2.7.0-alpha02"
 turbine = "1.0.0"
 
 [libraries]
