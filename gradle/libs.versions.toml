@@ -8,7 +8,7 @@ minSdk = "25"
 targetSdk = "34"
 
 # libs
-androidx-appcompat = "1.7.0-alpha03"
+androidx-appcompat = "1.7.0-rc01"
 androidx-core = "1.13.0-alpha05"
 androidx-junit = "1.2.0-alpha03"
 compose-compiler = "1.5.10"
