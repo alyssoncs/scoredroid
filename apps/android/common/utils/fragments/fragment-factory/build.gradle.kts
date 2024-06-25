@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.scoredroid.android.lib)
-    id("org.scoredroid.dagger")
+    alias(libs.plugins.scoredroid.dagger)
 }
 
 android {
