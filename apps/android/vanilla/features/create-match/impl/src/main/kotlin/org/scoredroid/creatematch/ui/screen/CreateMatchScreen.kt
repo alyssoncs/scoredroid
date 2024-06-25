@@ -18,11 +18,11 @@ import org.scoredroid.ui.tooling.PreviewThemes
 @Composable
 internal fun CreateMatchScreen(
     viewModel: CreateMatchViewModel,
-    onCreated: () -> Unit,
+    onCreate: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    if (uiState.created) onCreated()
+    if (uiState.created) onCreate()
 
     CreateMatchScreenContent(uiState = uiState)
 }
