@@ -1,5 +1,5 @@
 plugins {
-    id("org.scoredroid.android-feature-public")
+    alias(libs.plugins.scoredroid.android.feature.public)
 }
 
 android {
