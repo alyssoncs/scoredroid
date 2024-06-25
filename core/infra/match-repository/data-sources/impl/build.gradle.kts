@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.scoredroid.kotlin.module)
     alias(libs.plugins.scoredroid.kotlin.module.junit5.setup)
-    id("org.scoredroid.unit-test")
+    alias(libs.plugins.scoredroid.unit.test)
 }
 
 dependencies {

@@ -92,3 +92,4 @@ scoredroid-kotlin-module-junit5-setup = { id = "org.scoredroid.kotlin-module-jun
 scoredroid-feature-entrypoint = { id = "org.scoredroid.feature-entrypoint" }
 scoredroid-feature-impl = { id = "org.scoredroid.feature-impl" }
 scoredroid-feature-public = { id = "org.scoredroid.feature-public" }
+scoredroid-unit-test = { id = "org.scoredroid.unit-test" }
