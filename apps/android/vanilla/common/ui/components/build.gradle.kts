@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.scoredroid.android.lib)
-    id("org.scoredroid.android-compose")
+    alias(libs.plugins.scoredroid.android.compose)
 }
 
 android {

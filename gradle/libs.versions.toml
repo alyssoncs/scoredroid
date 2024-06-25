@@ -82,6 +82,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 test-fixtures = { id = "java-test-fixtures" }
 
 # convention
+scoredroid-android-compose = { id = "org.scoredroid.android-compose" }
 scoredroid-android-feature-impl = { id = "org.scoredroid.android-feature-impl" }
 scoredroid-android-feature-public = { id = "org.scoredroid.android-feature-public" }
 scoredroid-android-lib = { id = "org.scoredroid.android-lib" }
