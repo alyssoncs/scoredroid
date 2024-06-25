@@ -83,4 +83,5 @@ test-fixtures = { id = "java-test-fixtures" }
 
 # convention
 scoredroid-kotlin-module = { id = "org.scoredroid.kotlin-module" }
+scoredroid-feature-impl = { id = "org.scoredroid.feature-impl" }
 scoredroid-feature-public = { id = "org.scoredroid.feature-public" }
