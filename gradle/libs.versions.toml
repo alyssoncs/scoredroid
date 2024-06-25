@@ -87,6 +87,7 @@ scoredroid-android-feature-impl = { id = "org.scoredroid.android-feature-impl" }
 scoredroid-android-feature-public = { id = "org.scoredroid.android-feature-public" }
 scoredroid-android-lib = { id = "org.scoredroid.android-lib" }
 scoredroid-dagger = { id = "org.scoredroid.dagger" }
+scoredroid-detekt = { id = "org.scoredroid.detekt" }
 scoredroid-enable-compose = { id = "org.scoredroid.enable-compose" }
 scoredroid-kotlin-module = { id = "org.scoredroid.kotlin-module" }
 scoredroid-kotlin-module-junit5-setup = { id = "org.scoredroid.kotlin-module-junit5-setup" }
