@@ -25,7 +25,7 @@ junit = "5.11.0-M2"
 viewmodel = "2.8.2"
 kotest = "5.9.1"
 ksp = "2.0.20-Beta1-1.0.22"
-material = "1.13.0-alpha02"
+material = "1.13.0-alpha03"
 room = "2.7.0-alpha02"
 turbine = "1.1.0"
 
