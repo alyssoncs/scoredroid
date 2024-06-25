@@ -1,3 +1,3 @@
 plugins {
-    id("org.scoredroid.kotlin-module")
+    alias(libs.plugins.scoredroid.kotlin.module)
 }
