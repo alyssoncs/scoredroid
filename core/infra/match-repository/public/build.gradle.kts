@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.scoredroid.kotlin.module)
-    id("java-test-fixtures")
+    alias(libs.plugins.test.fixtures)
 }
 
 dependencies {

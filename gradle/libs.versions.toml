@@ -79,6 +79,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+test-fixtures = { id = "java-test-fixtures" }
 
 # convention
 scoredroid-kotlin-module = { id = "org.scoredroid.kotlin-module" }

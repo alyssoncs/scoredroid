@@ -1,6 +1,6 @@
 plugins {
     id("org.scoredroid.feature-public")
-    id("java-test-fixtures")
+    alias(libs.plugins.test.fixtures)
 }
 
 dependencies {
