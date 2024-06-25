@@ -1,5 +1,5 @@
 plugins {
-    id("org.scoredroid.feature-entrypoint")
+    alias(libs.plugins.scoredroid.feature.entrypoint)
 }
 
 dependencies {
