@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.scoredroid.dagger)
     alias(libs.plugins.scoredroid.detekt)
     alias(libs.plugins.compose.compiler)
