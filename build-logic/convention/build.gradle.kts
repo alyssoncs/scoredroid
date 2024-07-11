@@ -11,6 +11,7 @@ kotlin {
 dependencies {
     implementation(libs.android.gradle)
     implementation(libs.compose.compiler.gradle)
+    implementation(libs.dependencies.sorter.gradle)
     implementation(libs.ksp.gradle)
     implementation(libs.kotlin.gradle)
     implementation(libs.detekt.gradle)

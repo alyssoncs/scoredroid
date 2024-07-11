@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.scoredroid.dagger)
-    alias(libs.plugins.scoredroid.detekt)
+    alias(libs.plugins.scoredroid.quality)
     alias(libs.plugins.compose.compiler)
 }
 
@@ -50,6 +50,18 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.appcompat)
+    implementation(libs.compose.material3)
+    implementation(libs.fragment.ktx)
+    implementation(libs.material)
+    implementation(projects.apps.android.common.infra.databaseMatchDataSource)
+    implementation(projects.apps.android.common.utils.fragments.fragmentFactory)
+    implementation(projects.apps.android.common.utils.fragments.transactions)
+    implementation(projects.apps.android.common.utils.viewmodels.vmFactory)
+    implementation(projects.apps.android.vanilla.features.createMatch.impl)
+    implementation(projects.apps.android.vanilla.features.editMatch.impl)
+    implementation(projects.apps.android.vanilla.features.history.impl)
+    implementation(projects.apps.android.vanilla.features.play.impl)
     implementation(projects.core.features.createMatch.entrypoint)
     implementation(projects.core.features.editMatch.entrypoint)
     implementation(projects.core.features.getMatch.entrypoint)
@@ -57,19 +69,5 @@ dependencies {
     implementation(projects.core.features.playMatch.entrypoint)
     implementation(projects.core.features.removeMatch.entrypoint)
 
-    implementation(projects.apps.android.vanilla.features.history.impl)
-    implementation(projects.apps.android.vanilla.features.createMatch.impl)
-    implementation(projects.apps.android.vanilla.features.editMatch.impl)
-    implementation(projects.apps.android.vanilla.features.play.impl)
-
-    implementation(projects.apps.android.common.infra.databaseMatchDataSource)
-    implementation(projects.apps.android.common.utils.fragments.fragmentFactory)
-    implementation(projects.apps.android.common.utils.fragments.transactions)
-    implementation(projects.apps.android.common.utils.viewmodels.vmFactory)
-
-    implementation(libs.androidx.appcompat)
-    implementation(libs.compose.material3)
-    implementation(libs.fragment.ktx)
-    implementation(libs.material)
     debugImplementation(libs.compose.ui.tooling)
 }
